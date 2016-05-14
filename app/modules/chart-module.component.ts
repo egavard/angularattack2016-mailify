@@ -6,6 +6,8 @@ import {ColorPickerDirective} from "../libs/color-picker/color-picker.directive"
 import {Module} from "./module";
 import { MODAL_DIRECTIVES } from 'ng2-bs3-modal/ng2-bs3-modal';
 import {ChartModuleMetadata} from "./chart-module-metadata.model";
+import {ChartPositionInformation} from './chart-position-information';
+import {log} from '../decorators/log.decorator';
 
 @Component({
     selector: 'chart-module',
@@ -14,8 +16,8 @@ import {ChartModuleMetadata} from "./chart-module-metadata.model";
 })
 export class ChartModule implements Module {
     @Input() readOnly:boolean;
-
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
+    private _chartPositionInformation:ChartPositionInformation
 
     private backgroundColor: string = "rgba(242,56,217,0.6)";
     private borderColor: string = "rgba(242,56,217,0.6)";
@@ -44,9 +46,12 @@ export class ChartModule implements Module {
         // this.chart.chartType='line';
     }
 
+    @log()
     constructor(private dataProviderService: DataProviderService){
         this.readOnly = true;
         this.randomizeData();
+        this.lineChartType = 'line';
+        this._chartPositionInformation = new ChartPositionInformation(0,0,1,1);
     }
 
     getModuleMetadata() {
@@ -94,10 +99,18 @@ export class ChartModule implements Module {
             error => console.log(error)
         );
     }
-
+    @log()
     private loadDataIntoChart(chart: Chart) {
         this.lineChartLabels = chart.labels;
         this.lineChartSeries = chart.series.map(s => s.title);
         this.lineChartData = chart.series.map(s => s.points);
+    }
+
+    get chartPositionInformation():ChartPositionInformation {
+        return this._chartPositionInformation;
+    }
+
+    set chartPositionInformation(value:ChartPositionInformation) {
+        this._chartPositionInformation = value;
     }
 }

@@ -11,17 +11,12 @@
 			<ul *ngFor="let availableModule of availableModules">
 				<li><i class="fa" [ngClass]="availableModule.getIcon()"></i>{{availableModule.getName()}}</li>
 			</ul>
-			<ul *ngFor="let item of items; let i = index">
-				<li [attr.data-row]="item.row" [attr.data-col]="item.col" [attr.data-sizex]="item.sizeX" [attr.data-sizey]="item.sizeY" style="display:inline-block; border:solid 1px red"> item {{i}}</li>
-			</ul>
 		</div>
 
-		<div class="col-md-5">
-			<debug-module [readOnly]="false"></debug-module>
-		</div>
-
-		<div class="col-md-5">
-			<chart-module [readOnly]="false"></chart-module>
-		</div>
+		<div class="col-md-10">
+            <ul *ngFor="let item of items; let i = index">
+                <chart-module [attr.data-row]="item.chartPositionInformation.row" [attr.data-col]="item.chartPositionInformation.col" [attr.data-sizex]="item.chartPositionInformation.sizeX" [attr.data-sizey]="item.chartPositionInformation.sizeY" style="display:inline-block; border:solid 1px red"></chart-module>
+            </ul>
+        </div>
 	</div>
 </div>

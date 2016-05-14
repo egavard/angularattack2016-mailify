@@ -6,6 +6,7 @@ import {HomeComponent} from './dashboard/home/home.component';
 import {AdminComponent} from "./dashboard/admin/admin.components";
 import {GridsterItem} from './libs/gridster/gridster';
 import {DebugModule} from './modules/debug-module.component';
+import {ChartModule} from './modules/chart-module.component';
 declare var $;
 @Component({
     selector:'app',
@@ -19,15 +20,9 @@ declare var $;
     { path: '/admin', component: AdminComponent }
 ])
 export class AppComponent {
-    private _items:GridsterItem[];
+    private _items:ChartModule[];
     constructor(){
-        this._items = new Array<GridsterItem>();
-        let item1 = new DebugModule(1,1,1,1);
-
-        let item2 = new DebugModule(2,1,1,2);
-
-        this._items.push(item1);
-        this._items.push(item2);
+        this._items = new Array<ChartModule>();
     }
     ngAfterViewInit(){
         $(".gridster ul").gridster({
@@ -35,11 +30,11 @@ export class AppComponent {
             widget_base_dimensions: [140, 140]
         })
     }
-    get items():GridsterItem[] {
+    get items():ChartModule[] {
         return this._items;
     }
 
-    set items(value:Array) {
+    set items(value:Array<ChartModule>) {
         this._items = value;
     }
 
