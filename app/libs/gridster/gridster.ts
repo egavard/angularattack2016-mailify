@@ -28,9 +28,10 @@ export class GridsterDraggable{
     private _enabled:boolean = true;
     private _scrollSensitivity:number = 20;
     private _scrollSpeed:number = 15;
-    private handle:any;
-    private start:any;
-    private drag:any;
+    private _handle:any;
+    private _start:any;
+    private _drag:any;
+    private _stop:any;
 
 
     get enabled():boolean {
@@ -360,4 +361,5 @@ export class GridsterItem{
     set rows(value:number) {
         this._rows = value;
     }
+
 }
