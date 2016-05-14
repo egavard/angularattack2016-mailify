@@ -9,7 +9,6 @@ import {CHART_DIRECTIVES} from './libs/ng2-charts-upgrade-rc1/ng2-charts';
 import {Chart} from './models/chart.model';
 import {ColorPickerDirective} from './libs/color-picker/color-picker.directive';
 import {TopNavComponent} from './dashboard/topnav/topnav.component';
-import {ColorPickerDirective} from './libs/color-picker/color-picker.directive'
 import {BaseChartComponent} from "./libs/ng2-charts-upgrade-rc1/components/charts/charts";
 import {SidebarComponent} from './dashboard/sidebar/sidebar.component';
 
