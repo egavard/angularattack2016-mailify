@@ -179,11 +179,13 @@ export class BaseChartComponent implements OnDestroy, OnChanges, OnInit {
 
   public hover(evt:any):void {
     let atEvent = this.chart.getPointsAtEvent || this.chart.getBarsAtEvent || this.chart.getSegmentsAtEvent;
-    let activePoints = atEvent.call(this.chart, evt);
-    if (activePoints.length > 0) {
-      let activeLabel = activePoints[0].label;
-      let activePoint = activePoints[0].value;
-      this.chartHover.emit({activePoints: activePoints, activePoint: activePoint, activeLabel: activeLabel});
+    if (activePoints) {
+      let activePoints = atEvent.call(this.chart, evt);
+      if (activePoints.length > 0) {
+        let activeLabel = activePoints[0].label;
+        let activePoint = activePoints[0].value;
+        this.chartHover.emit({activePoints: activePoints, activePoint: activePoint, activeLabel: activeLabel});
+      }
     }
   }
 
