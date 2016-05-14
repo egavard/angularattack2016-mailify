@@ -1,0 +1,26 @@
+<div class="container-fluid">
+	<div class="card card-block">
+		<div class="row">
+			<div class="col-md-6">
+				<h4>Best Graph Forever</h4>
+				<div style="width:100%;">
+					<base-chart style="width:100%;" class="chart"
+								[data]="lineChartData"
+								[labels]="lineChartLabels"
+								[options]="lineChartOptions"
+								[series]="lineChartSeries"
+								[colours]="lineChartColours"
+								[legend]="lineChartLegend"
+								[chartType]="lineChartType"
+								(chartHover)="chartHovered($event)"
+								(chartClick)="chartClicked($event)"></base-chart>
+				</div>
+
+				<a (click)="randomizeData()" class="btn btn-default">Randomize</a>
+				<input [(colorPicker)]="fillColor1" [style.background]="fillColor1" [value]="fillColor1" (colorPickerChange)="functionwhencolorchange($event)"/>
+			</div>
+		</div>
+	</div>
+
+	<gridster></gridster>
+</div>
