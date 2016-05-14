@@ -44,30 +44,31 @@ export class Gridster {
     private _flag:boolean = false;
     private _loaded:boolean = false;
     private _movingItem:GridsterItem;
-    private _items:GridsterItem[][] = [];
+    private _grid:GridsterItem[][] = [];
+    private _items:GridsterItem[] = [];
 
-    private floatingEvent:EventEmitter<any>;
-    private gridHeightEvent:EventEmitter<any>;
-    private movingItemEvent:EventEmitter<any>;
-    private displayedHeight:number;
+    private _floatingEvent:EventEmitter<any>;
+    private _gridHeightEvent:EventEmitter<any>;
+    private _movingItemEvent:EventEmitter<any>;
+    private _displayedHeight:number;
 
     constructor() {
-        this.floatingEvent = new EventEmitter<any>();
-        this.gridHeightEvent = new EventEmitter<any>();
-        this.movingItemEvent = new EventEmitter<any>();
+        this._floatingEvent = new EventEmitter<any>();
+        this._gridHeightEvent = new EventEmitter<any>();
+        this._movingItemEvent = new EventEmitter<any>();
 
 
         setTimeout(() => {
-            this.floatingEvent.subscribe((event:any) => {
+            this._floatingEvent.subscribe((event:any) => {
                 this.floatItemsUp();
             });
             this.loaded = true;
         }, 100);
 
-        this.gridHeightEvent.subscribe((event:any) => {
+        this._gridHeightEvent.subscribe((event:any) => {
            this.updateHeight(); 
         });
-        this.movingItemEvent.subscribe((event:any) => {
+        this._movingItemEvent.subscribe((event:any) => {
             this.updateHeight();
         })
     }
@@ -87,7 +88,7 @@ export class Gridster {
     }
 
     destroy():void {
-        this._items = [];
+        this._grid = [];
     }
     @log()
     canItemOccupy(item, row, column):boolean {
@@ -169,8 +170,8 @@ export class Gridster {
      * @param {Object} item
      */
     removeItem(item:GridsterItem) {
-        for (var rowIndex = 0, l = this._items.length; rowIndex < l; ++rowIndex) {
-            var columns = this._items[rowIndex];
+        for (var rowIndex = 0, l = this._grid.length; rowIndex < l; ++rowIndex) {
+            var columns = this._grid[rowIndex];
             if (!columns) {
                 continue;
             }
@@ -197,7 +198,7 @@ export class Gridster {
             var sizeX = 1,
                 col = column;
             while (col > -1) {
-                var items = this._items[row];
+                var items = this._grid[row];
                 if (items) {
                     var item = items[col];
                     if (item && (!excludeItems || excludeItems.indexOf(item) === -1) && item.sizeX >= sizeX && item.sizeY >= sizeY) {
@@ -223,8 +224,8 @@ export class Gridster {
      * Insert a single item into the grid
      *
      * @param {Object} item The item to insert
-     * @param {Number} row (Optional) Specifies the items row index
-     * @param {Number} column (Optional) Specifies the items column index
+     * @param {Number} row (Optional) Specifies the grid row index
+     * @param {Number} column (Optional) Specifies the grid column index
      * @param {Array} ignoreItems
      */
     @log()
@@ -248,14 +249,14 @@ export class Gridster {
         // check if item is already in grid
         if (item.oldRow !== null && typeof item.oldRow !== 'undefined') {
             var samePosition = item.oldRow === row && item.oldColumn === column;
-            var inGrid = this._items[row] && this._items[row][column] === item;
+            var inGrid = this._grid[row] && this._grid[row][column] === item;
             if (samePosition && inGrid) {
                 item.row = row;
                 item.col = column;
                 return;
             } else {
                 // remove from old position
-                var oldRow = this._items[item.oldRow];
+                var oldRow = this._grid[item.oldRow];
                 if (oldRow && oldRow[item.oldColumn] === item) {
                     delete oldRow[item.oldColumn];
                 }
@@ -267,10 +268,11 @@ export class Gridster {
 
         this.moveOverlappingItems(item, ignoreItems);
 
-        if (!this._items[row]) {
-            this._items[row] = [];
+        if (!this._grid[row]) {
+            this._grid[row] = [];
         }
-        this._items[row][column] = item;
+        this._grid[row][column] = item;
+        this._items.push(item);
 
         if (this._movingItem === item) {
             this.floatItemUp(item);
@@ -285,8 +287,8 @@ export class Gridster {
      * @param {Object} item2
      */
     swapItems(item1:GridsterItem, item2:GridsterItem) {
-        this._items[item1.row][item1.col] = item2;
-        this._items[item2.row][item2.col] = item1;
+        this._grid[item1.row][item1.col] = item2;
+        this._grid[item2.row][item2.col] = item1;
 
         var item1Row = item1.row;
         var item1Col = item1.col;
@@ -297,7 +299,7 @@ export class Gridster {
     };
 
     /**
-     * Prevents items from being overlapped
+     * Prevents grid from being overlapped
      *
      * @param {Object} item The item that should remain
      * @param {Array} ignoreItems
@@ -311,7 +313,7 @@ export class Gridster {
             ignoreItems.push(item);
         }
 
-        // get the items in the space occupied by the item's coordinates
+        // get the grid in the space occupied by the item's coordinates
         var overlappingItems = this.getItems(
             item.row,
             item.col,
@@ -323,9 +325,9 @@ export class Gridster {
     };
 
     /**
-     * Moves an array of items to a specified row
+     * Moves an array of grid to a specified row
      *
-     * @param {Array} items The items to move
+     * @param {Array} items The grid to move
      * @param {Number} newRow The target row
      * @param {Array} ignoreItems
      */
@@ -377,14 +379,14 @@ export class Gridster {
     };
 
     /**
-     * Moves all items up as much as possible
+     * Moves all grid up as much as possible
      */
     floatItemsUp() {
         if (this._floating === false) {
             return;
         }
-        for (var rowIndex = 0, l = this._items.length; rowIndex < l; ++rowIndex) {
-            var columns = this._items[rowIndex];
+        for (var rowIndex = 0, l = this._grid.length; rowIndex < l; ++rowIndex) {
+            var columns = this._grid[rowIndex];
             if (!columns) {
                 continue;
             }
@@ -435,8 +437,8 @@ export class Gridster {
     updateHeight(plus?:number) {
         var maxHeight = this._minRows;
         plus = plus || 0;
-        for (var rowIndex = this._items.length; rowIndex >= 0; --rowIndex) {
-            var columns = this._items[rowIndex];
+        for (var rowIndex = this._grid.length; rowIndex >= 0; --rowIndex) {
+            var columns = this._grid[rowIndex];
             if (!columns) {
                 continue;
             }
@@ -490,7 +492,7 @@ export class Gridster {
     }
 
     updateHeight() {
-        this.displayedHeight = (this.gridHeight * this.curRowHeight) + (this.outerMargin ? this.margins[0] : -this.margins[0]);
+        this._displayedHeight = (this.gridHeight * this.curRowHeight) + (this.outerMargin ? this.margins[0] : -this.margins[0]);
     }
 
 
@@ -734,11 +736,51 @@ export class Gridster {
         this._movingItem = value;
     }
 
-    get items():GridsterItem[][] {
+    get grid():GridsterItem[][] {
+        return this._grid;
+    }
+
+    set grid(value:Array) {
+        this._grid = value;
+    }
+
+    get items():GridsterItem[] {
         return this._items;
     }
 
     set items(value:Array) {
         this._items = value;
+    }
+
+    get floatingEvent():EventEmitter<any> {
+        return this._floatingEvent;
+    }
+
+    set floatingEvent(value:EventEmitter<any>) {
+        this._floatingEvent = value;
+    }
+
+    get gridHeightEvent():EventEmitter<any> {
+        return this._gridHeightEvent;
+    }
+
+    set gridHeightEvent(value:EventEmitter<any>) {
+        this._gridHeightEvent = value;
+    }
+
+    get movingItemEvent():EventEmitter<any> {
+        return this._movingItemEvent;
+    }
+
+    set movingItemEvent(value:EventEmitter<any>) {
+        this._movingItemEvent = value;
+    }
+
+    get displayedHeight():number {
+        return this._displayedHeight;
+    }
+
+    set displayedHeight(value:number) {
+        this._displayedHeight = value;
     }
 }
