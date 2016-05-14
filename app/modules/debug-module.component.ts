@@ -16,11 +16,4 @@ export class DebugModule extends GridsterItem {
         this.row = row;
         this.col = col;
     }
-
-    edit() {
-        console.log("bak");
-        this.modal.open();
-
-
-    }
 }
