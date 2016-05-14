@@ -16,6 +16,10 @@ export class AppComponent implements AfterViewInit{
     
     ngAfterViewInit(){
         let debugModule:DebugModule = new DebugModule(this.gridster);
+        debugModule.sizeX = 2;
+        debugModule.sizeY = 1;
+        debugModule.row = 0;
+        debugModule.col = 0;
         this.gridster.putItem(debugModule);
     }
 }

@@ -19,6 +19,10 @@ var AppComponent = (function () {
     }
     AppComponent.prototype.ngAfterViewInit = function () {
         var debugModule = new debug_module_component_1.DebugModule(this.gridster);
+        debugModule.sizeX = 2;
+        debugModule.sizeY = 1;
+        debugModule.row = 0;
+        debugModule.col = 0;
         this.gridster.putItem(debugModule);
     };
     __decorate([
