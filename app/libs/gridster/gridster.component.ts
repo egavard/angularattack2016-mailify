@@ -1,5 +1,5 @@
 import {GridsterPreview} from './gridster-preview.component';
-import {Component} from '@angular/core'
+import {Component, EventEmitter} from '@angular/core'
 import {COMMON_DIRECTIVES} from '@angular/common'
 import {GridsterResizable, GridsterDraggable, GridsterItem} from './gridster';
 
@@ -45,8 +45,30 @@ export class Gridster {
     private _movingItem:GridsterItem;
     private _items:GridsterItem[][] = [];
 
-    constructor() {
+    private floatingEvent:EventEmitter<any>;
+    private gridHeightEvent:EventEmitter<any>;
+    private movingItemEvent:EventEmitter<any>;
+    private displayedHeight:number;
 
+    constructor() {
+        this.floatingEvent = new EventEmitter<any>();
+        this.gridHeightEvent = new EventEmitter<any>();
+        this.movingItemEvent = new EventEmitter<any>();
+
+
+        setTimeout(() => {
+            this.floatingEvent.subscribe((event:any) => {
+                this.floatItemsUp();
+            });
+            this.loaded = true;
+        }, 100);
+
+        this.gridHeightEvent.subscribe((event:any) => {
+           this.updateHeight(); 
+        });
+        this.movingItemEvent.subscribe((event:any) => {
+            this.updateHeight();
+        })
     }
 
     layoutChanged():void {
@@ -277,7 +299,7 @@ export class Gridster {
      * @param {Object} item The item that should remain
      * @param {Array} ignoreItems
      */
-    moveOverlappingItems(item:GridsterItem, ignoreItems:GridsterItem[]) {
+    moveOverlappingItems(item:GridsterItem, ignoreItems?:GridsterItem[]) {
         // don't move item, so ignore it
         if (!ignoreItems) {
             ignoreItems = [item];
@@ -463,6 +485,11 @@ export class Gridster {
 
         return Math.round(pixels / this._curColWidth);
     }
+
+    updateHeight() {
+        this.displayedHeight = (this.gridHeight * this.curRowHeight) + (this.outerMargin ? this.margins[0] : -this.margins[0]);
+    }
+
 
     get gridster():Gridster {
         return this._gridster;
