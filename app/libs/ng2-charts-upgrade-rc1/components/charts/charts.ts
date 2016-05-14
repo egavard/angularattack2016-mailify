@@ -115,14 +115,12 @@ export class BaseChartComponent implements OnDestroy, OnChanges, OnInit {
     this.cvs = this.element.nativeElement.children[0];
     this.parent = this.element.nativeElement;
     this.initFlag = true;
-    console.log(this.data)
     if (this.data) {
       this.refresh();
     }
   }
 
   public ngOnChanges():any {
-    console.log(this.data)
     if (this.initFlag) {
       this.refresh();
     }

@@ -70,7 +70,6 @@ export class HomeComponent implements AfterViewInit {
     }
 
     functionwhencolorchange(color){
-        console.log(color);
         this.chart.colours[0].backgroundColor = color;
         this.chart.colours[0].borderColor = color;
 
