@@ -1,2 +1,13 @@
-<h4><button (click)="edit()" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button> Debug Module</h4>
+<h4><button (click)="modal.open('lg')" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button> Debug Module</h4>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum eros in nunc varius dapibus. Aliquam vel aliquam ante. Vivamus euismod tortor vel tincidunt gravida. Etiam enim velit, consectetur non eleifend in, lobortis sed quam. Vivamus imperdiet odio efficitur leo ultricies ullamcorper. Quisque congue elit in est lobortis, eget accumsan eros rhoncus. Cras congue quam et arcu scelerisque, ut hendrerit turpis ultrices. Praesent quis magna nec massa lacinia porttitor. Proin tristique, ipsum quis varius aliquam, justo nunc molestie sem, quis tristique leo magna at leo. Nullam dapibus efficitur auctor. </p>
+
+
+<modal #modal>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">I'm a modal!</h4>
+    </modal-header>
+    <modal-body>
+        Hello World!
+    </modal-body>
+    <modal-footer [show-default-buttons]="true"></modal-footer>
+</modal>

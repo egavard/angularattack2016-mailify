@@ -171,6 +171,7 @@ export class BaseChartComponent implements OnDestroy, OnChanges, OnInit {
   public click(evt:any):void {
     let atEvent = this.chart.getPointsAtEvent || this.chart.getBarsAtEvent || this.chart.getSegmentsAtEvent;
     if (activePoints) {
+      
       let activePoints = atEvent.call(this.chart, evt);
       if (activePoints.length > 0) {
         let activeLabel = activePoints[0].label;

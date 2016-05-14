@@ -1,9 +1,11 @@
 import {Component} from '@angular/core';
 import {GridsterItem} from '../libs/gridster/gridster';
+import { MODAL_DIRECTIVES, ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 @Component({
     selector: 'debug-module',
-    templateUrl: './app/modules/debug-module.html'
+    templateUrl: './app/modules/debug-module.html',
+    directives: [MODAL_DIRECTIVES],
 })
 export class DebugModule extends GridsterItem {
 
@@ -17,5 +19,8 @@ export class DebugModule extends GridsterItem {
 
     edit() {
         console.log("bak");
+        this.modal.open();
+
+
     }
 }
