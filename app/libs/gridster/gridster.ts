@@ -405,12 +405,18 @@ export class GridsterItem{
     private _rows:number;
     private _mapStyle:Map<String,String>;
     private _element:any;
+    private _draggable:GridsterDraggable;
+    private _resizable:GridsterResizable;
 
     constructor(gridster:Gridster) {
         this._gridster = gridster;
         this.mapStyle = new Map<String,String>();
         this.sizeX = this._gridster.defaultSizeX;
         this.sizeY = this._gridster.defaultSizeY;
+        this.draggable = new GridsterDraggable();
+        this.resizable = new GridsterResizable();
+        this.resizable.item = this;
+        this.resizable.gridster = this.gridster;
     }
 
 
@@ -696,6 +702,22 @@ export class GridsterItem{
 
     set element(value:any) {
         this._element = value;
+    }
+
+    get draggable():GridsterDraggable {
+        return this._draggable;
+    }
+
+    set draggable(value:GridsterDraggable) {
+        this._draggable = value;
+    }
+
+    get resizable():GridsterResizable {
+        return this._resizable;
+    }
+
+    set resizable(value:GridsterResizable) {
+        this._resizable = value;
     }
 }
 export class GridsterTouch{
