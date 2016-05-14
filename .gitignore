@@ -4,3 +4,4 @@ app/**/*.js
 app/**/*.js.map
 typings
 .idea
+!app/libs/jquery-gridster/**/*.js

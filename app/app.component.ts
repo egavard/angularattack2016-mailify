@@ -17,4 +17,28 @@ import {AdminComponent} from "./dashboard/admin/admin.components";
     { path: '/admin', component: AdminComponent }
 ])
 export class AppComponent {
+    private _items:GridsterItem[];
+    constructor(){
+        this._items = new Array<GridsterItem>();
+        let item1 = new DebugModule(1,1,1,1);
+
+        let item2 = new DebugModule(2,1,1,2);
+
+        this._items.push(item1);
+        this._items.push(item2);
+    }
+    ngAfterViewInit(){
+        $(".gridster ul").gridster({
+            widget_margins: [10, 10],
+            widget_base_dimensions: [140, 140]
+        })
+    }
+    get items():GridsterItem[] {
+        return this._items;
+    }
+
+    set items(value:Array) {
+        this._items = value;
+    }
+
 }
