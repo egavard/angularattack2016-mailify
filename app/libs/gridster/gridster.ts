@@ -28,6 +28,9 @@ export class GridsterDraggable{
     private _enabled:boolean = true;
     private _scrollSensitivity:number = 20;
     private _scrollSpeed:number = 15;
+    private handle:any;
+    private start:any;
+    private drag:any;
 
 
     get enabled():boolean {
@@ -89,7 +92,7 @@ export class GridsterItem{
     };
 
     /**
-     * Returns the items most important attributes
+     * Returns the grid most important attributes
      */
     toJSON() {
         return {
@@ -105,7 +108,7 @@ export class GridsterItem{
     };
 
     /**
-     * Set the items position
+     * Set the grid position
      *
      * @param {Number} row
      * @param {Number} column
@@ -172,7 +175,7 @@ export class GridsterItem{
     };
 
     /**
-     * Sets the items sizeY property
+     * Sets the grid sizeY property
      *
      * @param {Number} rows
      * @param {Boolean} preventMove
@@ -182,7 +185,7 @@ export class GridsterItem{
     };
 
     /**
-     * Sets the items sizeX property
+     * Sets the grid sizeX property
      *
      * @param {Number} columns
      * @param {Boolean} preventMove
