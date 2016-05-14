@@ -235,7 +235,7 @@ export class BaseChartComponent implements OnDestroy, OnChanges, OnInit {
     }
   }
 
-  private refresh():any {
+   refresh():any {
     if (this.options.responsive && this.parent.clientHeight === 0) {
       return setTimeout(() => this.refresh(), 50);
     }

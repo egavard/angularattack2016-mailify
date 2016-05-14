@@ -8,19 +8,31 @@ import {DataProviderService} from './services/data-provider.service';
 import {CHART_DIRECTIVES} from './libs/ng2-charts-upgrade-rc1/ng2-charts';
 import {Chart} from './models/chart.model';
 import {ColorPickerDirective} from './libs/color-picker/color-picker.directive';
-import {TopNavComponent} from './dashboard/topnav.component';
+import {TopNavComponent} from './dashboard/topnav/topnav.component';
+import {BaseChartComponent} from "./libs/ng2-charts-upgrade-rc1/components/charts/charts";
+import {SidebarComponent} from './dashboard/sidebar/sidebar.component';
 
 @Component({
     selector:'app',
     moduleId:module.id,
     templateUrl:'./app.html',
-    directives:[Gridster, CHART_DIRECTIVES, ColorPickerDirective, TopNavComponent]
+    directives:[Gridster, CHART_DIRECTIVES, ColorPickerDirective, TopNavComponent, SidebarComponent]
 })
 export class AppComponent implements AfterViewInit {
     @ViewChild(Gridster) gridster:Gridster;
-    private lineChartData:Array<Array<number>> = [];
-    private lineChartLabels:Array<string> = [];
-    private lineChartSeries:Array<string> = [];
+    @ViewChild(BaseChartComponent) chart:BaseChartComponent;
+    
+    private fillColor1: string = "rgba(249,0,198,1)";
+    private strokeColor1: string;
+    private pointColor1: string;
+    private pointStrokeColor1: string;
+    private pointHighlightFill1: string;
+    private pointHighlightStroke1: string;
+
+
+    private lineChartData:Array<any> = [];
+    private lineChartLabels:Array<any> = [];
+    private lineChartSeries:Array<any> = [];
     private lineChartOptions:any = {
         animation: false,
         responsive: true,
@@ -28,32 +40,17 @@ export class AppComponent implements AfterViewInit {
     };
     private lineChartColours:Array<any> = [
         { // grey
-            fillColor: 'rgba(148,159,177,0.2)',
-            strokeColor: 'rgba(148,159,177,1)',
-            pointColor: 'rgba(148,159,177,1)',
-            pointStrokeColor: '#fff',
+            backgroundColor: this.fillColor1,
+            borderColor: 'rgba(249,0,198,1)',
+            pointColor: 'rgba(249,0,198,1)',
+            pointBackgroundColor: '#000',
             pointHighlightFill: '#fff',
             pointHighlightStroke: 'rgba(148,159,177,0.8)'
         },
-        { // dark grey
-            fillColor: 'rgba(77,83,96,0.2)',
-            strokeColor: 'rgba(77,83,96,1)',
-            pointColor: 'rgba(77,83,96,1)',
-            pointStrokeColor: '#fff',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(77,83,96,1)'
-        },
-        { // grey
-            fillColor: 'rgba(148,159,177,0.2)',
-            strokeColor: 'rgba(148,159,177,1)',
-            pointColor: 'rgba(148,159,177,1)',
-            pointStrokeColor: '#fff',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(148,159,177,0.8)'
-        }
+       
     ];
     private lineChartLegend:boolean = true;
-    private lineChartType:string = 'radar';
+    private lineChartType:string = 'line';
 	private color: string = "#127bdc";
 
     ngAfterViewInit(){
@@ -76,6 +73,14 @@ export class AppComponent implements AfterViewInit {
 
     chartHovered(e:any) {
         console.log(e);
+    }
+
+    functionwhencolorchange(color){
+        console.log(color);
+        this.chart.colours[0].backgroundColor = color;
+        this.chart.colours[0].borderColor = color;
+
+        this.chart.refresh();
     }
 
     /**

@@ -4,7 +4,7 @@ import {DROPDOWN_DIRECTIVES, ACCORDION_DIRECTIVES} from 'ng2-bootstrap/ng2-boots
 
 @Component({
     selector: 'topnav',
-    templateUrl: './app/dashboard/topnav.html',
+    templateUrl: './app/dashboard/topnav/topnav.html',
     directives: [ DROPDOWN_DIRECTIVES, CORE_DIRECTIVES, ACCORDION_DIRECTIVES ]
 })
 export class TopNavComponent {
