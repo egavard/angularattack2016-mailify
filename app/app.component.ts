@@ -9,6 +9,8 @@ import {CHART_DIRECTIVES} from './libs/ng2-charts-upgrade-rc1/ng2-charts';
 import {Chart} from './models/chart.model';
 import {ColorPickerDirective} from './libs/color-picker/color-picker.directive';
 import {TopNavComponent} from './dashboard/topnav.component';
+import {ColorPickerDirective} from './libs/color-picker/color-picker.directive'
+import {BaseChartComponent} from "./libs/ng2-charts-upgrade-rc1/components/charts/charts";
 
 @Component({
     selector:'app',
@@ -18,6 +20,46 @@ import {TopNavComponent} from './dashboard/topnav.component';
 })
 export class AppComponent implements AfterViewInit {
     @ViewChild(Gridster) gridster:Gridster;
+    @ViewChild(BaseChartComponent) chart:BaseChartComponent;
+    
+    ngAfterViewInit(){
+        let debugModule:DebugModule = new DebugModule(this.gridster);
+        debugModule.sizeX = 2;
+        debugModule.sizeY = 1;
+        debugModule.row = 0;
+        debugModule.col = 0;
+        this.gridster.putItem(debugModule);
+    }
+    constructor(private dataProviderService: DataProviderService){
+        console.log(dataProviderService.getBasicChart());
+        
+    }
+
+
+
+    private fillColor1: string = "rgba(249,0,198,1)";
+    private strokeColor1: string
+    private pointColor1: string
+    private pointStrokeColor1: string
+    private pointHighlightFill1: string
+    private pointHighlightStroke1: string
+
+    functionwhencolorchange(color){
+        console.log(color);
+        this.chart.colours[0].backgroundColor = color;
+        this.chart.colours[0].borderColor = color;
+
+            this.chart.refresh();
+    }
+
+// lineChart
+    private lineChartData:Array<any> = [
+        [65, 59, 80, 81, 56, 55, 40],
+        [28, 48, 40, 19, 86, 27, 90],
+        [18, 48, 77, 9, 100, 27, 40]
+    ];
+    private lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    private lineChartSeries:Array<any> = ['Series A', 'Series B', 'Series C'];
     private lineChartData:Array<any> = [];
     private lineChartLabels:Array<any> = [];
     private lineChartSeries:Array<any> = [];
@@ -28,29 +70,14 @@ export class AppComponent implements AfterViewInit {
     };
     private lineChartColours:Array<any> = [
         { // grey
-            fillColor: 'rgba(148,159,177,0.2)',
-            strokeColor: 'rgba(148,159,177,1)',
-            pointColor: 'rgba(148,159,177,1)',
-            pointStrokeColor: '#fff',
+            backgroundColor: this.fillColor1,
+            borderColor: 'rgba(249,0,198,1)',
+            pointColor: 'rgba(249,0,198,1)',
+            pointBackgroundColor: '#000',
             pointHighlightFill: '#fff',
             pointHighlightStroke: 'rgba(148,159,177,0.8)'
         },
-        { // dark grey
-            fillColor: 'rgba(77,83,96,0.2)',
-            strokeColor: 'rgba(77,83,96,1)',
-            pointColor: 'rgba(77,83,96,1)',
-            pointStrokeColor: '#fff',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(77,83,96,1)'
-        },
-        { // grey
-            fillColor: 'rgba(148,159,177,0.2)',
-            strokeColor: 'rgba(148,159,177,1)',
-            pointColor: 'rgba(148,159,177,1)',
-            pointStrokeColor: '#fff',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(148,159,177,0.8)'
-        }
+       
     ];
     private lineChartLegend:boolean = true;
     private lineChartType:string = 'radar';
