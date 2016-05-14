@@ -3,5 +3,6 @@
  */
 import {bootstrap} from '@angular/platform-browser-dynamic'
 import { AppComponent} from './app.component';
+import {DataProviderService} from './services/data-provider.service';
 
-bootstrap(AppComponent);
+bootstrap(AppComponent, [DataProviderService]);

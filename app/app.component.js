@@ -14,8 +14,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var gridster_component_1 = require('./libs/gridster/gridster.component');
 var debug_module_component_1 = require('./modules/debug-module.component');
+var data_provider_service_1 = require('./services/data-provider.service');
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(dataProviderService) {
+        this.dataProviderService = dataProviderService;
+        console.log(dataProviderService.getBasicChart());
     }
     AppComponent.prototype.ngAfterViewInit = function () {
         var debugModule = new debug_module_component_1.DebugModule(this.gridster);
@@ -36,7 +39,7 @@ var AppComponent = (function () {
             templateUrl: './app.html',
             directives: [gridster_component_1.Gridster]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [data_provider_service_1.DataProviderService])
     ], AppComponent);
     return AppComponent;
 }());

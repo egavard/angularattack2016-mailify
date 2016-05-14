@@ -4,6 +4,7 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import {Gridster} from './libs/gridster/gridster.component';
 import {DebugModule} from './modules/debug-module.component';
+import {DataProviderService} from './services/data-provider.service';
 
 @Component({
     selector:'app',
@@ -22,4 +23,8 @@ export class AppComponent implements AfterViewInit{
         debugModule.col = 0;
         this.gridster.putItem(debugModule);
     }
+    constructor(private dataProviderService:DataProviderService){
+        console.log(dataProviderService.getBasicChart());
+        
+    } 
 }
