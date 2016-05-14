@@ -7,12 +7,14 @@ import {DebugModule} from './modules/debug-module.component';
 import {DataProviderService} from './services/data-provider.service';
 import {CHART_DIRECTIVES} from './libs/ng2-charts-upgrade-rc1/ng2-charts';
 import {Chart} from './models/chart.model';
+import {ColorPickerDirective} from './libs/color-picker/color-picker.directive';
+import {TopNavComponent} from './dashboard/topnav.component';
 
 @Component({
     selector:'app',
     moduleId:module.id,
     templateUrl:'./app.html',
-    directives:[Gridster, CHART_DIRECTIVES]
+    directives:[Gridster, CHART_DIRECTIVES, ColorPickerDirective, TopNavComponent]
 })
 export class AppComponent implements AfterViewInit {
     @ViewChild(Gridster) gridster:Gridster;
@@ -52,6 +54,7 @@ export class AppComponent implements AfterViewInit {
     ];
     private lineChartLegend:boolean = true;
     private lineChartType:string = 'radar';
+	private color: string = "#127bdc";
 
     ngAfterViewInit(){
         let debugModule:DebugModule = new DebugModule(this.gridster);
