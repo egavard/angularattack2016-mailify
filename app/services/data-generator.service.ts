@@ -15,7 +15,7 @@ export class DataGenerator {
         for (let j of numberOfCharts) {
             var values = [];
             for (let k of numberOfCategories) {
-                values.push(getRandomInt(0, maxValue));
+                values.push(this.getRandomInt(0, maxValue));
             }
             data.charts.push({
                 title: 'Series ${j}',

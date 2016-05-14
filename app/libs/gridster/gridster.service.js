@@ -259,10 +259,9 @@ string | string | string | string | string[];
     return this._inputTags;
 }
 set;
-inputTags(value, []);
-{
-    this._inputTags = value;
-}
+inputTags(value, Array(), {
+    this: ._inputTags = value
+});
 var GridsterResizableService = (function () {
     function GridsterResizableService() {
     }

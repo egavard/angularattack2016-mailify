@@ -19,7 +19,7 @@ var DataGenerator = (function () {
             var values = [];
             for (var _b = 0, numberOfCategories_2 = numberOfCategories; _b < numberOfCategories_2.length; _b++) {
                 var k = numberOfCategories_2[_b];
-                values.push(getRandomInt(0, maxValue));
+                values.push(this.getRandomInt(0, maxValue));
             }
             data.charts.push({
                 title: 'Series ${j}',
