@@ -10,8 +10,8 @@ export class ModulesService {
     constructor() {
         this.modulesMetadata = [
             new DebugModuleMetadata(),
-            new ChartModuleMetadata("fa-line-chart", "Chart Line", ChartType.LINE),
-            new ChartModuleMetadata("fa-bar-chart", "Chart Bar", ChartType.BAR),
+            new ChartModuleMetadata("fa-line-chart", "Line Chart", ChartType.LINE),
+            new ChartModuleMetadata("fa-bar-chart", "Bar Chart", ChartType.BAR),
         ];
     }
     

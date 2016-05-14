@@ -4,12 +4,13 @@ import {ModuleMetadata} from "../../modules/module-metadata.model";
 import {DebugModule} from "../../modules/debug-module.component";
 import {GridsterItem} from '../../libs/gridster/gridster';
 import {log} from '../../decorators/log.decorator';
+import {ChartModule} from "../../modules/chart-module.component";
 declare var $;
 
 @Component({
     selector: 'home',
     templateUrl: './app/dashboard/admin/admin.html',
-    directives: [ DebugModule ]
+    directives: [ DebugModule, ChartModule ]
 })
 export class AdminComponent {
     private availableModules: ModuleMetadata[];
