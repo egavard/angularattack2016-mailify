@@ -1,0 +1,20 @@
+<h4>Table Module</h4>
+
+<table class="table" [class.table-striped]="striped" [class.table-sm]="condensed">
+    <thead>
+        <tr>
+            <th *ngIf="showSeriesTitle"></th>
+            <th *ngFor="let label of data.labels">{{ label }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let serie of data.series">
+            <td *ngIf="showSeriesTitle">
+                {{ serie.title }}
+            </td>
+            <td *ngFor="let point of serie.points">
+                {{ point }}
+            </td>
+        </tr>
+    </tbody>
+</table>

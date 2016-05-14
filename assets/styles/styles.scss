@@ -461,3 +461,19 @@ a:hover{
 		}
 	}
 }
+
+.health-module {
+	&.default {
+		text-align: center;
+		i {
+			font-size: 6em;
+			color: orange;
+			&.high {
+				color: lightgreen;
+			}
+			&.low {
+				color: red;
+			}
+		}
+	}
+}

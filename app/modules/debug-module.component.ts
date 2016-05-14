@@ -26,6 +26,6 @@ export class DebugModule extends GridsterItem implements Module {
     }
 
     getModuleMetadata() {
-        return DebugModuleMetadata;
+        return null;
     }
 }

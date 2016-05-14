@@ -1,0 +1,13 @@
+<h4>Health Module</h4>
+
+<div class="row health-module default">
+    <div class="col-md-12 description" *ngIf="topText" [style.color]="colors.top">
+        {{ topText }}
+    </div>
+    <div class="col-md-12">
+        <i class="fa" [ngClass]="getModuleClass()"></i>
+    </div>
+    <div class="col-md-12 description" *ngIf="bottomText" [style.color]="colors.bottom">
+        {{ bottomText }}
+    </div>
+</div>

@@ -39,7 +39,6 @@ export class ChartModule implements Module {
             pointHighlightFill: '#fff',
             pointHighlightStroke: 'rgba(148,159,177,0.8)'
         },
-
     ];
     @Input() lineChartType:string = 'line';
     private sourceUrl1: string = '';

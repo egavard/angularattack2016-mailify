@@ -19,7 +19,7 @@ declare var $;
     { path: '/admin', component: AdminComponent }
 ])
 export class AppComponent {
-    private _items:GridsterItem[];
+    private _items: Array<GridsterItem>;
     constructor(){
         this._items = new Array<GridsterItem>();
         let item1 = new DebugModule(1,1,1,1);
@@ -35,11 +35,11 @@ export class AppComponent {
             widget_base_dimensions: [140, 140]
         })
     }
-    get items():GridsterItem[] {
+    get items():Array<GridsterItem> {
         return this._items;
     }
 
-    set items(value:Array) {
+    set items(value:Array<GridsterItem>) {
         this._items = value;
     }
 

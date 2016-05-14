@@ -24,7 +24,7 @@ export class ChartModuleMetadata implements ModuleMetadata {
         return this._name;
     }
 
-    getShartType(): ChartType {
+    getChartType(): ChartType {
         return this._type;
     }
 

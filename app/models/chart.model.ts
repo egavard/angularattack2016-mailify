@@ -8,8 +8,7 @@ export class Chart {
         this._labels = labels;
         this._series = series;
     }
-
-
+    
     get labels():Array<string> {
         return this._labels;
     }
