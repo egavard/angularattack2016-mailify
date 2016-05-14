@@ -80,7 +80,7 @@ export class AppComponent implements AfterViewInit {
        
     ];
     private lineChartLegend:boolean = true;
-    private lineChartType:string = 'radar';
+    private lineChartType:string = 'line';
 	private color: string = "#127bdc";
 
     ngAfterViewInit(){
