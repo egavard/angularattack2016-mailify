@@ -1,4 +1,4 @@
-<h4><button *ngIf="!readOnly" (click)="edit()" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button> Chart Module</h4>
+<h4><button *ngIf="!readOnly" (click)="modal.open('lg')" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button> Chart Module</h4>
 
 <base-chart style="width:100%;" class="chart"
 			[data]="lineChartData"
@@ -9,3 +9,28 @@
 			[chartType]="lineChartType"
 			(chartHover)="chartHovered($event)"
 			(chartClick)="chartClicked($event)"></base-chart>
+<modal #modal>
+	<modal-header [show-close]="true">
+		<h4 class="modal-title">Configuration</h4>
+	</modal-header>
+	<modal-body>
+		<p>
+			<label class="control-label">backgroundColor : </label>
+			<input [(colorPicker)]="backgroundColor" [style.background]="backgroundColor" [value]="backgroundColor" (colorPickerChange)="backgroundColorChanged($event)"/>
+		</p>
+
+		<p>
+			<label class="control-label">borderColor : </label>
+			<input [(colorPicker)]="borderColor" [style.background]="borderColor" [value]="borderColor" (colorPickerChange)="borderColorChanged($event)"/>
+		</p>
+
+        <p>
+            <label class="control-label">pointBackgroundColor : </label>
+            <input [(colorPicker)]="pointBackgroundColor" [style.background]="pointBackgroundColor" [value]="pointBackgroundColor" (colorPickerChange)="pointBackgroundColorChanged($event)"/>
+        </p>
+
+
+	</modal-body>
+	<modal-footer [show-default-buttons]="true"></modal-footer>
+</modal>
+

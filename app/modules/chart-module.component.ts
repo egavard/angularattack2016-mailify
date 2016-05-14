@@ -4,24 +4,23 @@ import {BaseChartComponent, CHART_DIRECTIVES} from "../libs/ng2-charts-upgrade-r
 import {Chart} from "../models/chart.model";
 import {ColorPickerDirective} from "../libs/color-picker/color-picker.directive";
 import {Module} from "./module";
+import { MODAL_DIRECTIVES } from 'ng2-bs3-modal/ng2-bs3-modal';
 import {ChartModuleMetadata} from "./chart-module-metadata.model";
 
 @Component({
     selector: 'chart-module',
     templateUrl: './app/modules/chart-module.html',
-    directives:[CHART_DIRECTIVES, ColorPickerDirective]
+    directives:[CHART_DIRECTIVES, ColorPickerDirective, MODAL_DIRECTIVES]
 })
 export class ChartModule implements Module {
     @Input() readOnly:boolean;
 
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
 
-    private fillColor1: string = "rgba(242,56,217,0.6)";
-    private strokeColor1: string;
-    private pointColor1: string;
-    private pointStrokeColor1: string;
-    private pointHighlightFill1: string;
-    private pointHighlightStroke1: string;
+    private backgroundColor: string = "rgba(242,56,217,0.6)";
+    private borderColor: string = "rgba(242,56,217,0.6)";
+    private pointBackgroundColor: string = "rgba(242,56,217,0.6)";
+
     private lineChartData:Array<any> = [];
     private lineChartLabels:Array<any> = [];
     private lineChartSeries:Array<any> = [];
@@ -32,13 +31,10 @@ export class ChartModule implements Module {
     };
     private lineChartColours:Array<any> = [
         { // grey
-            backgroundColor: this.fillColor1,
-            borderColor: 'rgba(249,0,198,1)',
-            pointColor: 'rgba(249,0,198,1)',
-            pointBackgroundColor: '#000',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(148,159,177,0.8)'
-        },
+            backgroundColor: this.backgroundColor,
+            borderColor: this.borderColor,
+            pointBackgroundColor: this.pointBackgroundColor,
+        }
 
     ];
     @Input() lineChartType:string = 'line';
@@ -69,9 +65,17 @@ export class ChartModule implements Module {
         console.log(e);
     }
 
-    functionwhencolorchange(color){
+    backgroundColorChanged(color){
         this.chart.colours[0].backgroundColor = color;
+        this.chart.refresh();
+    }
+    borderColorChanged(color){
         this.chart.colours[0].borderColor = color;
+        this.chart.refresh();
+    }
+   
+    pointBackgroundColorChanged(color){
+        this.chart.colours[0].pointBackgroundColor = color;
         this.chart.refresh();
     }
 
