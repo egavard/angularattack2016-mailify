@@ -7,8 +7,9 @@ import {Gridster} from './gridster.component';
 @Injectable()
 export class GridsterDraggableService{
     private _item:GridsterItem;
+    
     private _gridster:Gridster;
-    private _inputTags = ['select','option','input', 'textarea','button'];
+    private _inputTags:Array<string> = ['select','option','input', 'textarea','button'];
     private lastMouseX:number;
     private lastMouseY:number;
 
@@ -22,8 +23,7 @@ export class GridsterDraggableService{
     private mOffX:number;
     private mOffY:number;
     private realdocument:any = window.document;
-
-
+    
     mouseDown(e:any){
         let target = e.target;
         if (this._inputTags.indexOf(target.nodeName.toLowerCase()) !== -1) {
@@ -248,7 +248,7 @@ export class GridsterDraggableService{
             this.gridster.draggable.stop(event, $el, this.itemOptions);
         }
     }
-    
+
     enable() {
         if (this.enabled === true) {
             return;
@@ -307,7 +307,7 @@ export class GridsterDraggableService{
         return this._inputTags;
     }
 
-    set inputTags(value:[]) {
+    set inputTags(value:Array<string>) {
         this._inputTags = value;
     }
 }
