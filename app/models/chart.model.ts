@@ -1,10 +1,10 @@
-import { Series } from './series.model'
+import { ChartSeries } from './chart-series.model.ts'
 
 export class Chart {
     private _labels: Array<string>;
-    private _series: Array<Series>;
+    private _series: Array<ChartSeries>;
 
-    constructor(labels:string[], series:Series[]) {
+    constructor(labels:string[], series:ChartSeries[]) {
         this._labels = labels;
         this._series = series;
     }
@@ -18,11 +18,11 @@ export class Chart {
         this._labels = value;
     }
 
-    get series():Array<Series> {
+    get series():Array<ChartSeries> {
         return this._series;
     }
 
-    set series(value:Array<Series>) {
+    set series(value:Array<ChartSeries>) {
         this._series = value;
     }
 }

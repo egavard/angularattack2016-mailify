@@ -1,4 +1,4 @@
-export class Series {
+export class ChartSeries {
     private _title: string;
     private _points: Array<number>;
 

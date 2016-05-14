@@ -1,4 +1,5 @@
 import {ModuleMetadata} from "./module-metadata.model";
+import {DebugModule} from "./debug-module.component";
 
 export class DebugModuleMetadata implements ModuleMetadata {
     getIcon() {
@@ -7,5 +8,9 @@ export class DebugModuleMetadata implements ModuleMetadata {
 
     getName() {
         return "Debug Module";
+    }
+
+    getType() {
+        return DebugModule;
     }
 }
