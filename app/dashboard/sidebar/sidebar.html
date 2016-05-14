@@ -1,0 +1,16 @@
+<button class="btn btn-default" id="toggle-sidebar" type="button" (click)="eventCalled()">
+    &#9776;
+</button>
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
+    <ul class="list-group">
+        <a class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i> Dashboard
+        </a>
+        <a class="list-group-item">
+            <i class="fa fa-fw fa-bar-chart-o"></i> Charts
+        </a>
+        <a class="list-group-item">
+            <i class="fa fa-fw fa-table"></i> Tables
+        </a>
+    </ul>
+</nav>

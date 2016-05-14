@@ -8,15 +8,16 @@ import {DataProviderService} from './services/data-provider.service';
 import {CHART_DIRECTIVES} from './libs/ng2-charts-upgrade-rc1/ng2-charts';
 import {Chart} from './models/chart.model';
 import {ColorPickerDirective} from './libs/color-picker/color-picker.directive';
-import {TopNavComponent} from './dashboard/topnav.component';
+import {TopNavComponent} from './dashboard/topnav/topnav.component';
 import {ColorPickerDirective} from './libs/color-picker/color-picker.directive'
 import {BaseChartComponent} from "./libs/ng2-charts-upgrade-rc1/components/charts/charts";
+import {SidebarComponent} from './dashboard/sidebar/sidebar.component';
 
 @Component({
     selector:'app',
     moduleId:module.id,
     templateUrl:'./app.html',
-    directives:[Gridster, CHART_DIRECTIVES, ColorPickerDirective, TopNavComponent]
+    directives:[Gridster, CHART_DIRECTIVES, ColorPickerDirective, TopNavComponent, SidebarComponent]
 })
 export class AppComponent implements AfterViewInit {
     @ViewChild(Gridster) gridster:Gridster;
