@@ -1,8 +1,12 @@
 import {GridsterItem} from '../libs/gridster/gridster';
-import {Gridster} from '../libs/gridster/gridster.component';
 
-export class DebugModule extends GridsterItem {
-    constructor(gridster:Gridster) {
-        super(gridster);
+export class DebugModule extends GridsterItem{
+
+    constructor(sizeX:number, sizeY:number, row:number, col:number){
+        super();
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+        this.row = row;
+        this.col = col;
     }
 }

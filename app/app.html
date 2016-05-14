@@ -2,4 +2,9 @@
 <sidebar></sidebar>
 <section class="main-container" [ngClass]="{sidebarPushRight: isActive}">
 	<router-outlet></router-outlet>
+    <div class="gridster">
+        <ul *ngFor="let item of items; let i = index">
+            <li [attr.data-row]="item.row" [attr.data-col]="item.col" [attr.data-sizex]="item.sizeX" [attr.data-sizey]="item.sizeY"> item {{i}}</li>
+        </ul>
+    </div>
 </section>
