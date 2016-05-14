@@ -1,19 +1,31 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {GridsterItem} from '../libs/gridster/gridster';
 import { MODAL_DIRECTIVES, ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {Module} from "./module";
+import {DebugModuleMetadata} from "./debug-module-metadata.model";
 
 @Component({
     selector: 'debug-module',
     templateUrl: './app/modules/debug-module.html',
     directives: [MODAL_DIRECTIVES],
 })
-export class DebugModule extends GridsterItem {
+export class DebugModule extends GridsterItem implements Module {
+    @Input() readOnly:boolean;
+    @Input() sizeX:number = 1;
+    @Input() sizeY:number = 1;
+    @Input() row:number = 1;
+    @Input() col:number = 1;
 
-    constructor(sizeX:number = 1, sizeY:number = 1, row:number = 1, col:number = 1){
+    constructor() {
         super();
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-        this.row = row;
-        this.col = col;
+        this.readOnly = true;
+    }
+
+    edit() {
+        console.log("bak");
+    }
+
+    getModuleMetadata() {
+        return DebugModuleMetadata;
     }
 }

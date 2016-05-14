@@ -1,4 +1,5 @@
 import {ModuleMetadata} from "./module-metadata.model";
+import {ChartModule} from "./chart-module.component";
 
 export enum ChartType {
     LINE, BAR
@@ -25,5 +26,9 @@ export class ChartModuleMetadata implements ModuleMetadata {
 
     getShartType(): ChartType {
         return this._type;
+    }
+
+    getType() {
+        return ChartModule;
     }
 }

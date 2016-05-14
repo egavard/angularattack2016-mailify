@@ -1,15 +1,19 @@
-import {Component, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, ViewChild, AfterViewInit, Input} from '@angular/core';
 import {DataProviderService} from "../services/data-provider.service";
 import {BaseChartComponent, CHART_DIRECTIVES} from "../libs/ng2-charts-upgrade-rc1/components/charts/charts";
 import {Chart} from "../models/chart.model";
 import {ColorPickerDirective} from "../libs/color-picker/color-picker.directive";
+import {Module} from "./module";
+import {ChartModuleMetadata} from "./chart-module-metadata.model";
 
 @Component({
     selector: 'chart-module',
     templateUrl: './app/modules/chart-module.html',
     directives:[CHART_DIRECTIVES, ColorPickerDirective]
 })
-export class ChartModule  {
+export class ChartModule implements Module {
+    @Input() readOnly:boolean;
+
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
 
     private fillColor1: string = "rgba(242,56,217,0.6)";
@@ -37,16 +41,20 @@ export class ChartModule  {
         },
 
     ];
-    private lineChartLegend:boolean = true;
-    private lineChartType:string = 'line';
-    private color: string = "#127bdc";
+    @Input() lineChartType:string = 'line';
     private sourceUrl1: string = '';
 
     ngAfterViewInit(){
+        // this.chart.chartType='line';
     }
 
     constructor(private dataProviderService: DataProviderService){
+        this.readOnly = true;
         this.randomizeData();
+    }
+
+    getModuleMetadata() {
+        return null;
     }
 
     edit() {

@@ -5,11 +5,12 @@ import {ColorPickerDirective} from "../../libs/color-picker/color-picker.directi
 import {DebugModule} from "../../modules/debug-module.component";
 import {DataProviderService} from "../../services/data-provider.service";
 import {Chart} from "../../models/chart.model";
+import {ChartModule} from "../../modules/chart-module.component";
 
 @Component({
     selector: 'home',
     templateUrl: './app/dashboard/home/home.html',
-    directives:[ CHART_DIRECTIVES, ColorPickerDirective]
+    directives:[ DebugModule, ChartModule, CHART_DIRECTIVES, ColorPickerDirective]
 })
 export class HomeComponent implements AfterViewInit {
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;

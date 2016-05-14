@@ -1,7 +1,17 @@
 <div class="container-fluid">
-    <div class="card card-block">
-        <h4>Best Graph Forever</h4>
-        <div class="row">
+    <div class="row card card-block">
+		<div class="col-md-6">
+			<debug-module></debug-module>
+
+			<chart-module [lineChartType]="'bar'"></chart-module>
+		</div>
+		<div class="col-md-6">
+			<chart-module [lineChartType]="'line'"></chart-module>
+
+			<chart-module [lineChartType]="'radar'"></chart-module>
+		</div>
+
+		<!--<div class="row">
             <div class="col-md-6">
                 <div style="width:100%;">
                     <base-chart style="width:100%;" class="chart"
@@ -10,7 +20,6 @@
                                 [options]="lineChartOptions"
                                 [series]="lineChartSeries"
                                 [colours]="lineChartColours"
-                                [legend]="lineChartLegend"
                                 [chartType]="lineChartType"
                                 (chartHover)="chartHovered($event)"
                                 (chartClick)="chartClicked($event)"></base-chart>
@@ -43,6 +52,6 @@
                            [value]="fillColor1" (colorPickerChange)="functionwhencolorchange($event)"/>
                 </div>
             </form>
-        </div>
+        </div>-->
     </div>
 </div>
