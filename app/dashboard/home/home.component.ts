@@ -6,7 +6,6 @@ import {DebugModule} from "../../modules/debug-module.component";
 import {DataProviderService} from "../../services/data-provider.service";
 import {Chart} from "../../models/chart.model";
 
-
 @Component({
     selector: 'home',
     templateUrl: './app/dashboard/home/home.html',

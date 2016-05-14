@@ -1,6 +1,3 @@
-/**
- * Created by egavard on 14/05/16.
- */
 (function(global) {
 
     // map tells the System loader where to look for things
@@ -12,7 +9,8 @@
         'ng2-charts':                 'app/libs/ng2-charts-upgrade-rc1',
 		'ng2-bootstrap':              'node_modules/ng2-bootstrap',
 		'moment':                     'node_modules/moment',
-		'color-picker':                 'app/libs/color-picker'
+		'color-picker':               'app/libs/color-picker',
+		'angular2-fontawesome':       'node_modules/angular2-fontawesome/lib'
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
@@ -23,7 +21,8 @@
         'ng2-charts':                 { defaultExtension: 'js' },
 		'ng2-bootstrap':              { defaultExtension: 'js' },
 		'moment':                     { main: 'moment.js', defaultExtension: 'js' },
-		'color-picker':               { defaultExtension: 'js' }
+		'color-picker':               { defaultExtension: 'js' },
+		'angular2-fontawesome':       { defaultExtension: 'js' }
     };
 
     var packageNames = [
