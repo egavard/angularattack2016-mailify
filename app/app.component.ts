@@ -6,6 +6,7 @@ import {Gridster} from './libs/gridster/gridster.component';
 import {DebugModule} from './modules/debug-module.component';
 import {DataProviderService} from './services/data-provider.service';
 import {CHART_DIRECTIVES} from './libs/ng2-charts-upgrade-rc1/ng2-charts';
+import {Chart} from './models/chart.model';
 
 @Component({
     selector:'app',
@@ -15,31 +16,9 @@ import {CHART_DIRECTIVES} from './libs/ng2-charts-upgrade-rc1/ng2-charts';
 })
 export class AppComponent implements AfterViewInit {
     @ViewChild(Gridster) gridster:Gridster;
-    
-    ngAfterViewInit(){
-        let debugModule:DebugModule = new DebugModule(this.gridster);
-        debugModule.sizeX = 2;
-        debugModule.sizeY = 1;
-        debugModule.row = 0;
-        debugModule.col = 0;
-        this.gridster.putItem(debugModule);
-    }
-    
-    constructor(private dataProviderService: DataProviderService){
-        console.log(dataProviderService.getBasicCharts());
-    }
-
-
-
-
-// lineChart
-    private lineChartData:Array<any> = [
-        [65, 59, 80, 81, 56, 55, 40],
-        [28, 48, 40, 19, 86, 27, 90],
-        [18, 48, 77, 9, 100, 27, 40]
-    ];
-    private lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-    private lineChartSeries:Array<any> = ['Series A', 'Series B', 'Series C'];
+    private lineChartData:Array<any> = [];
+    private lineChartLabels:Array<any> = [];
+    private lineChartSeries:Array<any> = [];
     private lineChartOptions:any = {
         animation: false,
         responsive: true,
@@ -73,6 +52,23 @@ export class AppComponent implements AfterViewInit {
     ];
     private lineChartLegend:boolean = true;
     private lineChartType:string = 'radar';
+
+    ngAfterViewInit(){
+        let debugModule:DebugModule = new DebugModule(this.gridster);
+        debugModule.sizeX = 2;
+        debugModule.sizeY = 1;
+        debugModule.row = 0;
+        debugModule.col = 0;
+        this.gridster.putItem(debugModule);
+    }
+    
+    constructor(private dataProviderService: DataProviderService){
+        dataProviderService.getBasicChart().then((chart: Chart) => {
+            this.lineChartLabels = chart.labels;
+            this.lineChartSeries = chart.series.map(s => s.title);
+            this.lineChartData = chart.series.map(s => s.points);
+        });
+    }
 
     // events
     chartClicked(e:any) {

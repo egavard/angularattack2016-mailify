@@ -1,25 +1,27 @@
+import { Series } from './series.model'
+
 export class Chart {
-    private _title: string;
-    private _points: number[];
+    private _labels: string[];
+    private _series: Series[];
 
-    constructor(title:string, points:number[]) {
-        this._title = title;
-        this._points = points;
+    constructor(labels:string[], series:Series[]) {
+        this._labels = labels;
+        this._series = series;
     }
 
-    get title():string {
-        return this._title;
+    get labels():string[] {
+        return this._labels;
     }
 
-    set title(value:string) {
-        this._title = value;
+    set labels(value:Array) {
+        this._labels = value;
     }
 
-    get points():number[] {
-        return this._points;
+    get series():Series[] {
+        return this._series;
     }
 
-    set points(value:Array) {
-        this._points = value;
+    set series(value:Array) {
+        this._series = value;
     }
 }

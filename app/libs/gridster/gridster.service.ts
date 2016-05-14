@@ -283,9 +283,9 @@ export class GridsterDraggableService{
         }
     };
 
-    this.destroy = function() {
-    this.disable();
-};
+    destroy() {
+        this.disable();
+    }
 
     get item():GridsterItem {
         return this._item;

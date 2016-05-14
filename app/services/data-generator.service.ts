@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Observable';
 
 /**
  * Simple dummy data generator to be injected into charts
@@ -8,18 +7,18 @@ export class DataGenerator {
     generateDummyData(numberOfCategories:number, numberOfCharts:number, maxValue = 100) {
         let data = {labels:[],charts:[]};
 
-        for (let i of numberOfCategories) {
-            data.labels.push('Label ${i}');
+        for (let i = 0; i < numberOfCategories; ++i) {
+            data.labels.push(`Label ${i}`);
         }
 
-        for (let j of numberOfCharts) {
+        for (let j = 0; j < numberOfCharts; ++j) {
             var values = [];
-            for (let k of numberOfCategories) {
+            for (let k = 0; k < numberOfCategories; ++k) {
                 values.push(this.getRandomInt(0, maxValue));
             }
             data.charts.push({
-                title: 'Series ${j}',
-                values: values
+                title: `Series ${j}`,
+                points: values
             });
         }
         // simulate raw JSON string from remote call
