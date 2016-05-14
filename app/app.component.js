@@ -12,6 +12,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by egavard on 14/05/16.
  */
 var core_1 = require('@angular/core');
+var gridster_component_1 = require('./libs/gridster/gridster.component');
 var AppComponent = (function () {
     function AppComponent() {
     }
@@ -19,7 +20,8 @@ var AppComponent = (function () {
         core_1.Component({
             selector: 'app',
             moduleId: module.id,
-            templateUrl: './app.html'
+            templateUrl: './app.html',
+            directives: [gridster_component_1.Gridster]
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);
