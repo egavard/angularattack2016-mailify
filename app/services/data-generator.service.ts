@@ -5,13 +5,8 @@ import { Observable } from 'rxjs/Observable';
  */
 export class DataGenerator {
 
-    /**
-     * Generates dumym data JSON string
-     */
-    generateDummyData(numberOfCategories:number, numberOfCharts:number, maxValue = 100):Observable {
-        var data = {};
-        data.labels = [];
-        data.charts = [];
+    generateDummyData(numberOfCategories:number, numberOfCharts:number, maxValue = 100) {
+        let data = {labels:[],charts:[]};
 
         for (let i of numberOfCategories) {
             data.labels.push('Label ${i}');

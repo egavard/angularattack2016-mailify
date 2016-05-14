@@ -3,8 +3,8 @@ export class Chart {
     private _points: number[];
 
     constructor(title:string, points:number[]) {
-        _title = title;
-        _points = points;
+        this._title = title;
+        this._points = points;
     }
 
     get title():string {
