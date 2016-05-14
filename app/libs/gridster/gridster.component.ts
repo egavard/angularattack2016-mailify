@@ -51,6 +51,7 @@ export class Gridster {
     private _gridHeightEvent:EventEmitter<any>;
     private _movingItemEvent:EventEmitter<any>;
     private _displayedHeight:number;
+    private _curWidth:number;
 
     constructor() {
         this._floatingEvent = new EventEmitter<any>();
@@ -782,5 +783,13 @@ export class Gridster {
 
     set displayedHeight(value:number) {
         this._displayedHeight = value;
+    }
+
+    get curWidth():number {
+        return this._curWidth;
+    }
+
+    set curWidth(value:number) {
+        this._curWidth = value;
     }
 }

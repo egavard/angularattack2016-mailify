@@ -1,12 +1,307 @@
-import {Gridster} from './gridster.component';
-import {ElementRef} from '@angular/core'
 /**
  * Created by egavard on 14/05/16.
  */
+import {Gridster} from './gridster.component';
+import {ElementRef} from '@angular/core'
 export class GridsterResizable{
     private _enabled:boolean = true;
     private _handles:string[] = ['s', 'e', 'n', 'w', 'se', 'ne', 'sw', 'nw'];
 
+    private _item:GridsterItem;
+
+    private _gridster:Gridster;
+    private _inputTags:Array<string> = ['select','option','input', 'textarea','button'];
+    private lastMouseX:number;
+    private lastMouseY:number;
+
+    private elmX:number;
+    private elmY:number;
+    private elmW:number;
+    private elmH:number;
+
+    private originalCol:number;
+    private originalRow:number;
+    private mOffX:number;
+    private mOffY:number;
+    private realdocument:any = window.document;
+    private enabled:boolean;
+    private gridsterTouch:GridsterTouch;
+    private itemOptions:any;
+    private minLeft:number;
+    private minTop:number;
+    private maxTop:number;
+
+    mouseDown(e:any){
+        let target = e.target;
+        if (this._inputTags.indexOf(target.nodeName.toLowerCase()) !== -1) {
+            return false;
+        }
+
+        // exit, if a resize handle was hit
+        if (target.className.indexOf('gridster-item-resizable-handler') != -1) {
+            return false;
+        }
+
+        // exit, if the target has it's own click event
+        if (target.onclick) {
+            return false;
+        }
+
+
+        switch (e.which) {
+            case 1:
+                // left mouse button
+                break;
+            case 2:
+            case 3:
+                // right or middle mouse button
+                return;
+        }
+
+        this.lastMouseX = e.pageX;
+        this.lastMouseY = e.pageY;
+
+        this.elmX = parseInt(this._item.element.style.left, 10);
+        this.elmY = parseInt(this._item.element.style.top, 10);
+        this.elmW = this._item.element.offsetWidth;
+        this.elmH = this._item.element.offsetHeight;
+
+        this.originalCol = this.item.col;
+        this.originalRow = this.item.row;
+
+        this.dragStart(e);
+
+        return true;
+    }
+
+    mouseMove(e) {
+        if (this.item.element.className.indexOf('gridster-item-moving') == -1 || this.item.element.className.indexOf('gridster-item-resizing') == -1) {
+            return false;
+        }
+
+        var maxLeft = this.gridster.curWidth - 1;
+
+        // Get the current mouse position.
+        let mouseX = e.pageX;
+        let mouseY = e.pageY;
+
+        // Get the deltas
+        var diffX = mouseX - this.lastMouseX + this.mOffX;
+        var diffY = mouseY - this.lastMouseY + this.mOffY;
+        this.mOffX = this.mOffY = 0;
+
+        // Update last processed mouse positions.
+        this.lastMouseX = mouseX;
+        this.lastMouseY = mouseY;
+
+        var dX = diffX,
+            dY = diffY;
+        if (this.elmX + dX < this.minLeft) {
+            diffX = this.minLeft - this.elmX;
+            this.mOffX = dX - diffX;
+        } else if (this.elmX + this.elmW + dX > maxLeft) {
+            diffX = maxLeft - this.elmX - this.elmW;
+            this.mOffX = dX - diffX;
+        }
+
+        if (this.elmY + dY < this.minTop) {
+            diffY = this.minTop - this.elmY;
+            this.mOffY = dY - diffY;
+        } else if (this.elmY + this.elmH + dY > this.maxTop) {
+            diffY = this.maxTop - this.elmY - this.elmH;
+            this.mOffY = dY - diffY;
+        }
+        this.elmX += diffX;
+        this.elmY += diffY;
+
+        // set new position
+
+        this._item.element.style.top = this.elmY + 'px';
+        this._item.element.style.left = this.elmX + 'px';
+
+
+        this.drag(e);
+
+        return true;
+    }
+
+    mouseUp(e) {
+        if (this.item.element.className.indexOf('gridster-item-moving') == -1 || this.item.element.className.indexOf('gridster-item-resizing') == -1) {
+            return false;
+        }
+
+        this.mOffX = this.mOffY = 0;
+
+        this.dragStop(e);
+
+        return true;
+    }
+
+    dragStart(event) {
+        this.item.element.className += ' gridster-item-moving ';
+        this.gridster.movingItem = this.item;
+
+        this.gridster.updateHeight(this.item.sizeY);
+
+        if (this.gridster.draggable && this.gridster.draggable.start) {
+            this.gridster.draggable.start(event, this.item.element, this.itemOptions);
+        }
+
+    }
+
+    drag(event) {
+        var oldRow = this.item.row,
+            oldCol = this.item.col,
+            hasCallback = this.gridster.draggable && this.gridster.draggable.drag,
+            scrollSensitivity = this.gridster.draggable.scrollSensitivity,
+            scrollSpeed = this.gridster.draggable.scrollSpeed;
+
+        var row = this.gridster.pixelsToRows(this.elmY);
+        var col = this.gridster.pixelsToColumns(this.elmX);
+
+        var itemsInTheWay = this.gridster.getItems(row, col, this.item.sizeX, this.item.sizeY, [this.item]);
+        var hasItemsInTheWay = itemsInTheWay.length !== 0;
+
+        if (this.gridster.swapping === true && hasItemsInTheWay) {
+            var boundingBoxItem = this.gridster.getBoundingBox(itemsInTheWay),
+                sameSize = boundingBoxItem.sizeX === this.item.sizeX && boundingBoxItem.sizeY === this.item.sizeY,
+                sameRow = boundingBoxItem.row === oldRow,
+                sameCol = boundingBoxItem.col === oldCol,
+                samePosition = boundingBoxItem.row === row && boundingBoxItem.col === col,
+                inline = sameRow || sameCol;
+
+            if (sameSize && itemsInTheWay.length === 1) {
+                if (samePosition) {
+                    this.gridster.swapItems(this.item, itemsInTheWay[0]);
+                } else if (inline) {
+                    return;
+                }
+            } else if (boundingBoxItem.sizeX <= this.item.sizeX && boundingBoxItem.sizeY <= this.item.sizeY && inline) {
+                var emptyRow = this.item.row <= row ? this.item.row : row + this.item.sizeY,
+                    emptyCol = this.item.col <= col ? this.item.col : col + this.item.sizeX,
+                    rowOffset = emptyRow - boundingBoxItem.row,
+                    colOffset = emptyCol - boundingBoxItem.col;
+
+                for (var i = 0, l = itemsInTheWay.length; i < l; ++i) {
+                    var itemInTheWay = itemsInTheWay[i];
+
+                    var itemsInFreeSpace = this.gridster.getItems(
+                        itemInTheWay.row + rowOffset,
+                        itemInTheWay.col + colOffset,
+                        itemInTheWay.sizeX,
+                        itemInTheWay.sizeY,
+                        [this.item]
+                    );
+
+                    if (itemsInFreeSpace.length === 0) {
+                        this.gridster.putItem(itemInTheWay, itemInTheWay.row + rowOffset, itemInTheWay.col + colOffset);
+                    }
+                }
+            }
+        }
+
+        if (this.gridster.pushing !== false || !hasItemsInTheWay) {
+            this.item.row = row;
+            this.item.col = col;
+        }
+
+        if (event.pageY - this.realdocument.body.scrollTop < scrollSensitivity) {
+            this.realdocument.body.scrollTop = this.realdocument.body.scrollTop - scrollSpeed;
+        } else if (window.innerHeight - (event.pageY - this.realdocument.body.scrollTop) < scrollSensitivity) {
+            this.realdocument.body.scrollTop = this.realdocument.body.scrollTop + scrollSpeed;
+        }
+
+        if (event.pageX - this.realdocument.body.scrollLeft < scrollSensitivity) {
+            this.realdocument.body.scrollLeft = this.realdocument.body.scrollLeft - scrollSpeed;
+        } else if (window.innerWidth - (event.pageX - this.realdocument.body.scrollLeft) < scrollSensitivity) {
+            this.realdocument.body.scrollLeft = this.realdocument.body.scrollLeft + scrollSpeed;
+        }
+
+        if (hasCallback || oldRow !== this.item.row || oldCol !== this.item.col) {
+            if (hasCallback) {
+                this.gridster.draggable.drag(event, this.item.element, this.itemOptions);
+            }
+        }
+    }
+
+    dragStop(event) {
+        this.item.element.className = this.item.element.className.replace('gridster-item-moving','');
+        var row = this.gridster.pixelsToRows(this.elmY);
+        var col = this.gridster.pixelsToColumns(this.elmX);
+        if (this.gridster.pushing !== false || this.gridster.getItems(row, col, this.item.sizeX, this.item.sizeY, [this.item]).length === 0) {
+            this.item.row = row;
+            this.item.col = col;
+        }
+        this.gridster.movingItem = null;
+        this.item.setPosition(this.item.row, this.item.col);
+
+
+        if (this.gridster.draggable && this.gridster.draggable.stop) {
+            this.gridster.draggable.stop(event, this.item.element, this.itemOptions);
+        }
+    }
+
+    enable() {
+        if (this.enabled === true) {
+            return;
+        }
+        this.enabled = true;
+
+        if (this.gridsterTouch) {
+            this.gridsterTouch.enable();
+            return;
+        }
+
+        this.gridsterTouch = new GridsterTouch(this.item.element, this.mouseDown, this.mouseMove, this.mouseUp);
+        this.gridsterTouch.enable();
+    };
+
+    disable() {
+        if (this.enabled === false) {
+            return;
+        }
+
+        this.enabled = false;
+        if (this.gridsterTouch) {
+            this.gridsterTouch.disable();
+        }
+    };
+
+    toggle(enabled) {
+        if (enabled) {
+            this.enable();
+        } else {
+            this.disable();
+        }
+    };
+
+    destroy = function() {
+        this.disable();
+    };
+
+    get item():GridsterItem {
+        return this._item;
+    }
+
+    set item(value:GridsterItem) {
+        this._item = value;
+    }
+
+    get gridster():Gridster {
+        return this._gridster;
+    }
+
+    set gridster(value:Gridster) {
+        this._gridster = value;
+    }
+
+    get inputTags(): string[] {
+        return this._inputTags;
+    }
+
+    set inputTags(value:Array<string>) {
+        this._inputTags = value;
+    }
 
     get enabled():boolean {
         return this._enabled;
@@ -62,7 +357,7 @@ export class GridsterDraggable{
         return this._handle;
     }
 
-    set handle(value:any) {
+    set setHandle(value:any) {
         this._handle = value;
     }
 
@@ -70,7 +365,7 @@ export class GridsterDraggable{
         return this._start;
     }
 
-    set start(value:any) {
+    set setStart(value:any) {
         this._start = value;
     }
 
@@ -78,7 +373,7 @@ export class GridsterDraggable{
         return this._drag;
     }
 
-    set drag(value:any) {
+    set setDrag(value:any) {
         this._drag = value;
     }
 
@@ -86,7 +381,7 @@ export class GridsterDraggable{
         return this._stop;
     }
 
-    set stop(value:any) {
+    set setStop(value:any) {
         this._stop = value;
     }
 }
@@ -395,4 +690,305 @@ export class GridsterItem{
         this._rows = value;
     }
 
+    get element():any {
+        return this._element;
+    }
+
+    set element(value:any) {
+        this._element = value;
+    }
+}
+export class GridsterTouch{
+    private lastXYById = {};
+    private target:any;
+    private documentToTargetDelta:any={};
+    private useSetReleaseCapture:boolean = false;
+    // saving the settings for contentZooming and touchaction before activation
+    private contentZooming:any;
+    private msTouchAction:any;
+    private prevent:any = true;
+    private pointerList:any;
+    private endEvent:any;
+    private startEvent:any;
+    private moveEvent:any;
+
+
+
+    constructor(element, mouseDown, mouseMove, mouseUp) {
+        this.documentToTargetDelta = this.computeDocumentToElementDelta(this.target);
+    }
+
+
+    //  Opera doesn't have Object.keys so we use this wrapper
+    numberOfKeys(theObject) {
+        if (Object.keys) {
+            return Object.keys(theObject).length;
+        }
+
+        var n = 0,
+            key;
+        for (key in theObject) {
+            ++n;
+        }
+
+        return n;
+    };
+
+    //  this calculates the delta needed to convert pageX/Y to offsetX/Y because offsetX/Y don't exist in the TouchEvent object or in Firefox's MouseEvent object
+    computeDocumentToElementDelta(theElement) {
+        var elementLeft = 0;
+        var elementTop = 0;
+        var oldIEUserAgent = navigator.userAgent.match(/\bMSIE\b/);
+
+        for (var offsetElement = theElement; offsetElement != null; offsetElement = offsetElement.offsetParent) {
+
+            elementLeft += offsetElement.offsetLeft;
+            elementTop += offsetElement.offsetTop;
+
+        }
+
+        return {
+            x: elementLeft,
+            y: elementTop
+        };
+    };
+
+    //  cache the delta from the document to our event target (reinitialized each mousedown/MSPointerDown/touchstart)
+
+    //  common event handler for the mouse/pointer/touch models and their down/start, move, up/end, and cancel events
+    doEvent(theEvtObj) {
+
+        if (theEvtObj.type === 'mousemove' && this.numberOfKeys(this.lastXYById) === 0) {
+            return;
+        }
+
+
+        this.pointerList = theEvtObj.changedTouches ? theEvtObj.changedTouches : [theEvtObj];
+        for (var i = 0; i < this.pointerList.length; ++i) {
+            var pointerObj = this.pointerList[i];
+            var pointerId = (typeof pointerObj.identifier !== 'undefined') ? pointerObj.identifier : (typeof pointerObj.pointerId !== 'undefined') ? pointerObj.pointerId : 1;
+
+            var pageX = pointerObj.pageX;
+            var pageY = pointerObj.pageY;
+
+            if (theEvtObj.type.match(/(start|down)$/i)) {
+                //  clause for processing MSPointerDown, touchstart, and mousedown
+
+                //  refresh the document-to-target delta on start in case the target has moved relative to document
+                this.documentToTargetDelta = this.computeDocumentToElementDelta(this.target);
+
+                //  protect against failing to get an up or end on this pointerId
+                if (this.lastXYById[pointerId]) {
+                    if (this.endEvent) {
+                        this.endEvent({
+                            target: theEvtObj.target,
+                            which: theEvtObj.which,
+                            pointerId: pointerId,
+                            pageX: pageX,
+                            pageY: pageY
+                        });
+                    }
+
+                    this.lastXYById[pointerId] = null;
+                }
+
+                if (this.startEvent) {
+                    if (this.prevent) {
+                        this.prevent = this.startEvent({
+                            target: theEvtObj.target,
+                            which: theEvtObj.which,
+                            pointerId: pointerId,
+                            pageX: pageX,
+                            pageY: pageY
+                        });
+                    }
+                }
+
+                //  init last page positions for this pointer
+                this.lastXYById[pointerId] = {
+                    x: pageX,
+                    y: pageY
+                };
+
+                // IE pointer model
+                if (this.target.msSetPointerCapture) {
+                    this.target.msSetPointerCapture(pointerId);
+                } else if (theEvtObj.type === 'mousedown' && this.numberOfKeys(this.lastXYById) === 1) {
+                    if (this.useSetReleaseCapture) {
+                        this.target.setCapture(true);
+                    } else {
+                        document.addEventListener('mousemove', this.doEvent, false);
+                        document.addEventListener('mouseup', this.doEvent, false);
+                    }
+                }
+            } else if (theEvtObj.type.match(/move$/i)) {
+                //  clause handles mousemove, MSPointerMove, and touchmove
+
+                if (this.lastXYById[pointerId] && !(this.lastXYById[pointerId].x === pageX && this.lastXYById[pointerId].y === pageY)) {
+                    //  only extend if the pointer is down and it's not the same as the last point
+
+                    if (this.moveEvent && this.prevent) {
+                        this.prevent = this.moveEvent({
+                            target: theEvtObj.target,
+                            which: theEvtObj.which,
+                            pointerId: pointerId,
+                            pageX: pageX,
+                            pageY: pageY
+                        });
+                    }
+
+                    //  update last page positions for this pointer
+                    this.lastXYById[pointerId].x = pageX;
+                    this.lastXYById[pointerId].y = pageY;
+                }
+            } else if (this.lastXYById[pointerId] && theEvtObj.type.match(/(up|end|cancel)$/i)) {
+                //  clause handles up/end/cancel
+
+                if (this.endEvent && this.prevent) {
+                    this.prevent = this.endEvent({
+                        target: theEvtObj.target,
+                        which: theEvtObj.which,
+                        pointerId: pointerId,
+                        pageX: pageX,
+                        pageY: pageY
+                    });
+                }
+
+                //  delete last page positions for this pointer
+                this.lastXYById[pointerId] = null;
+
+                //  in the Microsoft pointer model, release the capture for this pointer
+                //  in the mouse model, release the capture or remove document-level event handlers if there are no down points
+                //  nothing is required for the iOS touch model because capture is implied on touchstart
+                if (this.target.msReleasePointerCapture) {
+                    this.target.msReleasePointerCapture(pointerId);
+                } else if (theEvtObj.type === 'mouseup' && this.numberOfKeys(this.lastXYById) === 0) {
+                    if (this.useSetReleaseCapture) {
+                        this.target.releaseCapture();
+                    } else {
+                        document.removeEventListener('mousemove', this.doEvent, false);
+                        document.removeEventListener('mouseup', this.doEvent, false);
+                    }
+                }
+            }
+        }
+
+        if (this.prevent) {
+            if (theEvtObj.preventDefault) {
+                theEvtObj.preventDefault();
+            }
+
+            if (theEvtObj.preventManipulation) {
+                theEvtObj.preventManipulation();
+            }
+
+            if (theEvtObj.preventMouseEvent) {
+                theEvtObj.preventMouseEvent();
+            }
+        }
+    };
+
+    enable() {
+
+        if (window.navigator.msPointerEnabled) {
+            //  Microsoft pointer model
+            this.target.addEventListener('MSPointerDown', this.doEvent, false);
+            this.target.addEventListener('MSPointerMove', this.doEvent, false);
+            this.target.addEventListener('MSPointerUp', this.doEvent, false);
+            this.target.addEventListener('MSPointerCancel', this.doEvent, false);
+
+            //  css way to prevent panning in our target area
+            if (typeof this.target.style.msContentZooming !== 'undefined') {
+                this.contentZooming = this.target.style.msContentZooming;
+                this.target.style.msContentZooming = 'none';
+            }
+
+            //  new in Windows Consumer Preview: css way to prevent all built-in touch actions on our target
+            //  without this, you cannot touch draw on the element because IE will intercept the touch events
+            if (typeof this.target.style.msTouchAction !== 'undefined') {
+                this.msTouchAction = this.target.style.msTouchAction;
+                this.target.style.msTouchAction = 'none';
+            }
+        } else if (this.target.addEventListener) {
+            //  iOS touch model
+            this.target.addEventListener('touchstart', this.doEvent, false);
+            this.target.addEventListener('touchmove', this.doEvent, false);
+            this. target.addEventListener('touchend', this.doEvent, false);
+            this.target.addEventListener('touchcancel', this.doEvent, false);
+
+            //  mouse model
+            this.target.addEventListener('mousedown', this.doEvent, false);
+
+            //  mouse model with capture
+            //  rejecting gecko because, unlike ie, firefox does not send events to target when the mouse is outside target
+            if (this.target.setCapture && !window.navigator.userAgent.match(/\bGecko\b/)) {
+                this.useSetReleaseCapture = true;
+
+                this.target.addEventListener('mousemove', this.doEvent, false);
+                this.target.addEventListener('mouseup', this.doEvent, false);
+            }
+        } else if (this.target.attachEvent && this.target.setCapture) {
+            //  legacy IE mode - mouse with capture
+            this.useSetReleaseCapture = true;
+            this.target.attachEvent('onmousedown', function() {
+                this.doEvent(window.event);
+                window.event.returnValue = false;
+                return false;
+            });
+            this.target.attachEvent('onmousemove', function() {
+                this.doEvent(window.event);
+                window.event.returnValue = false;
+                return false;
+            });
+            this.target.attachEvent('onmouseup', function() {
+                this.doEvent(window.event);
+                window.event.returnValue = false;
+                return false;
+            });
+        }
+    };
+
+    disable = function() {
+        if (window.navigator.msPointerEnabled) {
+            //  Microsoft pointer model
+            this.target.removeEventListener('MSPointerDown', this.doEvent, false);
+            this.target.removeEventListener('MSPointerMove', this.doEvent, false);
+            this.target.removeEventListener('MSPointerUp', this.doEvent, false);
+            this.target.removeEventListener('MSPointerCancel', this.doEvent, false);
+
+            //  reset zooming to saved value
+            if (this.contentZooming) {
+                this.target.style.msContentZooming = this.contentZooming;
+            }
+
+            // reset touch action setting
+            if (this.msTouchAction) {
+                this.target.style.msTouchAction = this.msTouchAction;
+            }
+        } else if (this.target.removeEventListener) {
+            //  iOS touch model
+            this.target.removeEventListener('touchstart', this.doEvent, false);
+            this.target.removeEventListener('touchmove', this.doEvent, false);
+            this.target.removeEventListener('touchend', this.doEvent, false);
+            this.target.removeEventListener('touchcancel', this.doEvent, false);
+
+            //  mouse model
+            this.target.removeEventListener('mousedown', this.doEvent, false);
+
+            //  mouse model with capture
+            //  rejecting gecko because, unlike ie, firefox does not send events to target when the mouse is outside target
+            if (this.target.setCapture && !window.navigator.userAgent.match(/\bGecko\b/)) {
+                this.useSetReleaseCapture = true;
+
+                this.target.removeEventListener('mousemove', this.doEvent, false);
+                this.target.removeEventListener('mouseup', this.doEvent, false);
+            }
+        } else if (this.target.detachEvent && this.target.setCapture) {
+            //  legacy IE mode - mouse with capture
+            this.useSetReleaseCapture = true;
+            this.target.detachEvent('onmousedown');
+            this.target.detachEvent('onmousemove');
+            this.target.detachEvent('onmouseup');
+        }
+    };
 }

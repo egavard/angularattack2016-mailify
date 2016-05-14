@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {DataGenerator} from './data-generator.service';
 import {Chart} from '../models/chart.model';
 import {Http} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class DataProviderService {
@@ -19,11 +20,6 @@ export class DataProviderService {
     }
     
     getBasicChartFromSourceUrl(sourceUrl: string) {
-        return Promise.resolve(this.http.get(sourceUrl)
-            .map((data: any) => {
-                console.log(data);
-                return new Chart(data.labels, data.series);
-            })
-        );
+        return this.http.get(sourceUrl).map(response => response.json());
     }
 }

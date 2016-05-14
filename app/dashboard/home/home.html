@@ -1,0 +1,50 @@
+<div class="container-fluid">
+    <div class="card card-block">
+        <h4>Best Graph Forever</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div style="width:100%;">
+                    <base-chart style="width:100%;" class="chart"
+                                [data]="lineChartData"
+                                [labels]="lineChartLabels"
+                                [options]="lineChartOptions"
+                                [series]="lineChartSeries"
+                                [colours]="lineChartColours"
+                                [legend]="lineChartLegend"
+                                [chartType]="lineChartType"
+                                (chartHover)="chartHovered($event)"
+                                (chartClick)="chartClicked($event)"></base-chart>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <form>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <div>
+                            <label class="control-label">Random data</label>
+                        </div>
+                        <input type="button" (click)="randomizeData()" value="Randomize" class="btn btn-primary"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Source URL</label>
+                        <div class="input-group">
+                            <input class="form-control" type="text" [(ngModel)]="sourceUrl1"/>
+                                <span class="input-group-btn">
+                                    <input type="button" value="Load" (click)="loadDataFromSourceUrl()"
+                                           class="btn btn-primary"/>
+                                </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label class="control-label">Fill color</label>
+                    <input class="form-control" [(colorPicker)]="fillColor1" [style.background]="fillColor1"
+                           [value]="fillColor1" (colorPickerChange)="functionwhencolorchange($event)"/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <gridster></gridster>
+</div>
