@@ -48,12 +48,12 @@ export class HomeComponent implements AfterViewInit {
     private sourceUrl1: string = '';
 
     ngAfterViewInit(){
-        let debugModule:DebugModule = new DebugModule(this.gridster);
-        debugModule.sizeX = 2;
-        debugModule.sizeY = 1;
-        debugModule.row = 0;
-        debugModule.col = 0;
-        this.gridster.putItem(debugModule);
+        // let debugModule:DebugModule = new DebugModule(this.gridster);
+        // debugModule.sizeX = 2;
+        // debugModule.sizeY = 1;
+        // debugModule.row = 0;
+        // debugModule.col = 0;
+        // this.gridster.putItem(debugModule);
     }
 
     constructor(private dataProviderService: DataProviderService){
