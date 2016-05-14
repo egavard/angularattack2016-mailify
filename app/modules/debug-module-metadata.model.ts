@@ -2,7 +2,7 @@ import {ModuleMetadata} from "./module-metadata.model";
 
 export class DebugModuleMetadata implements ModuleMetadata {
     getIcon() {
-        return "fa-debug";
+        return "fa-bug";
     }
 
     getName() {

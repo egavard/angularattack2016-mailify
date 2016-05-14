@@ -9,7 +9,7 @@
 		<div class="col-md-2 card card-block availableModules">
 			<h4>Modules</h4>
 			<ul *ngFor="let availableModule of availableModules">
-				<li><i class="fa" [ngClass]="'fa-bug'"></i>{{availableModule.getName()}}</li>
+				<li><i class="fa" [ngClass]="availableModule.getIcon()"></i>{{availableModule.getName()}}</li>
 			</ul>
 		</div>
 
