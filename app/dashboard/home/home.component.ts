@@ -9,10 +9,9 @@ import {Chart} from "../../models/chart.model";
 @Component({
     selector: 'home',
     templateUrl: './app/dashboard/home/home.html',
-    directives:[Gridster, CHART_DIRECTIVES, ColorPickerDirective]
+    directives:[ CHART_DIRECTIVES, ColorPickerDirective]
 })
 export class HomeComponent implements AfterViewInit {
-    @ViewChild(Gridster) gridster:Gridster;
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
 
     private fillColor1: string = "rgba(242,56,217,0.6)";
@@ -48,12 +47,6 @@ export class HomeComponent implements AfterViewInit {
     private sourceUrl1: string = '';
 
     ngAfterViewInit(){
-        let debugModule:DebugModule = new DebugModule(this.gridster);
-        debugModule.sizeX = 2;
-        debugModule.sizeY = 1;
-        debugModule.row = 0;
-        debugModule.col = 0;
-        this.gridster.putItem(debugModule);
     }
 
     constructor(private dataProviderService: DataProviderService){

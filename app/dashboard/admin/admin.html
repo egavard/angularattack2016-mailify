@@ -5,16 +5,18 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row gridster">
 		<div class="col-md-2 card card-block availableModules">
 			<h4>Modules</h4>
 			<ul *ngFor="let availableModule of availableModules">
-				<li><i class="fa" [ngClass]="'fa-bug'"></i>{{availableModule.getName()}}</li>
+				<li><i class="fa" [ngClass]="availableModule.getIcon()"></i>{{availableModule.getName()}}</li>
 			</ul>
 		</div>
 
 		<div class="col-md-10 card card-block">
-			<gridster></gridster>
+			<ul *ngFor="let item of items; let i = index">
+				<li [attr.data-row]="item.row" [attr.data-col]="item.col" [attr.data-sizex]="item.sizeX" [attr.data-sizey]="item.sizeY" style="display:inline-block; border:solid 1px red"> item {{i}}</li>
+			</ul>
 		</div>
 	</div>
 </div>

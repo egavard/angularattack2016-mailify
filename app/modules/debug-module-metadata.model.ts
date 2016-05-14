@@ -3,14 +3,14 @@ import {DebugModule} from "./debug-module.component";
 
 export class DebugModuleMetadata implements ModuleMetadata {
     getIcon() {
-        return "fa-debug";
+        return "fa-bug";
     }
 
     getName() {
         return "Debug Module";
     }
 
-    getType() {
+    getType(){
         return DebugModule;
     }
 }
