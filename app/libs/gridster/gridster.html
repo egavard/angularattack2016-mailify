@@ -1,6 +1,6 @@
 <div class="gridster" [ngClass]="{'gridster-loaded':loaded,'gridster-mobile':isMobile, 'gridster-desktop':!isMobile}" [ngStyle]="{'height':displayedHeight}">
     <gridster-preview *ngIf="movingItem" [gridster]="gridster"></gridster-preview>
     <div *ngFor="let item of items">
-        <span [ngStyle]="item.mapStyle">DEBUG</span>
+        <span [ngStyle]="item.mapStyle">{{item.row}} {{item.col}}</span>
     </div>
 </div>

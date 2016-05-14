@@ -2,6 +2,7 @@ import {GridsterPreview} from './gridster-preview.component';
 import {Component, EventEmitter} from '@angular/core'
 import {COMMON_DIRECTIVES} from '@angular/common'
 import {GridsterResizable, GridsterDraggable, GridsterItem} from './gridster';
+import {log} from '../../decorators/log.decorator';
 
 /**
  * Created by egavard on 14/05/16.
@@ -88,11 +89,12 @@ export class Gridster {
     destroy():void {
         this._items = [];
     }
-
+    @log()
     canItemOccupy(item, row, column):boolean {
         return row > -1 && column > -1 && item.sizeX + column <= this._columns && item.sizeY + row <= this._maxRows;
     }
 
+    @log()
     autoSetItemPosition(item:GridsterItem) {
         // walk through each row and column looking for a place it will fit
         for (var rowIndex = 0; rowIndex < this._maxRows; ++rowIndex) {
@@ -225,6 +227,7 @@ export class Gridster {
      * @param {Number} column (Optional) Specifies the items column index
      * @param {Array} ignoreItems
      */
+    @log()
     putItem(item:GridsterItem, row?:number, column?:number, ignoreItems?:GridsterItem[]) {
         // auto place item if no row specified
         if (typeof row === 'undefined' || row === null) {
