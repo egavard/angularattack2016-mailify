@@ -4,9 +4,7 @@
 export class DataGenerator {
 
     generateDummyData(numberOfCategories:number, numberOfCharts:number, maxValue = 100) {
-        var data = {};
-        data.labels = [];
-        data.charts = [];
+        let data = {labels:[],charts:[]};
 
         for (let i of numberOfCategories) {
             data.labels.push('Label ${i}');
