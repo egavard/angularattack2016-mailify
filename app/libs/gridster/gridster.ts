@@ -1,67 +1,75 @@
 /**
  * Created by egavard on 14/05/16.
  */
+    import { Component, Directive, ElementRef, Input} from '@angular/core'
+@Component({
+    selector:'gridster',
+    moduleId:module.id,
+    templateUrl:'./gridster.html',
+    directives:[GridsterPreview]
+})
 export class Gridster {
-    private columns:number = 6;
-    private pushing:boolean = true;
-    private floating:boolean = true;
-    private swapping:boolean = true;
-    private width:string = 'auto';
-    private colWidth:string = 'auto';
-    private rowHeight:string = 'match';
-    private margins:number[] = [10, 10];
-    private outerMargin:boolean = true;
-    private isMobile:boolean = false;
-    private mobileBreakPoint:number = 600;
-    private mobileModeEnabled:boolean = true;
-    private minRows:number = 1;
-    private maxRows:number = 100;
-    private defaultSizeX:number = 2;
-    private defaultSizeY:number = 1;
-    private minSizeX:number = 1;
-    private maxSizeX:number = null;
-    private minSizeY:number = 1;
-    private maxSizeY:number = null;
-    private gridHeight:number;
-    private curRowHeight:number;
-    private saveGridItemCalculatedHeightInMobile:boolean = false;
-    private resizable:GridsterResizable = new GridsterResizable();
-    private draggable:GridsterDraggable = new GridsterDraggable();
-    private flag:boolean = false;
-    private loaded:boolean = false;
-    private movingItem:GridsterItem;
-    private items:GridsterItem[][] = [];
+    private _columns:number = 6;
+    private _pushing:boolean = true;
+    private _floating:boolean = true;
+    private _swapping:boolean = true;
+    private _width:string = 'auto';
+    private _colWidth:string = 'auto';
+    private _rowHeight:string = 'match';
+    private _margins:number[] = [10, 10];
+    private _outerMargin:boolean = true;
+    private _isMobile:boolean = false;
+    private _mobileBreakPoint:number = 600;
+    private _mobileModeEnabled:boolean = true;
+    private _minRows:number = 1;
+    private _maxRows:number = 100;
+    private _defaultSizeX:number = 2;
+    private _defaultSizeY:number = 1;
+    private _minSizeX:number = 1;
+    private _maxSizeX:number = null;
+    private _minSizeY:number = 1;
+    private _maxSizeY:number = null;
+    private _gridHeight:number;
+    private _curRowHeight:number;
+    private _curColWidth:number;
+    private _saveGridItemCalculatedHeightInMobile:boolean = false;
+    private _resizable:GridsterResizable = new GridsterResizable();
+    private _draggable:GridsterDraggable = new GridsterDraggable();
+    private _flag:boolean = false;
+    private _loaded:boolean = false;
+    private _movingItem:GridsterItem;
+    private _items:GridsterItem[][] = [];
 
     constructor() {
 
     }
 
     layoutChanged():void {
-        if (this.flag) {
+        if (this._flag) {
             return;
         }
-        this.flag = true;
+        this._flag = true;
         setTimeout(() => {
-            this.flag = false;
-            if (this.loaded) {
+            this._flag = false;
+            if (this._loaded) {
                 this.floatItemsUp();
             }
-            this.updateHeight(this.movingItem ? this.movingItem.sizeY : 0);
+            this.updateHeight(this._movingItem ? this._movingItem.sizeY : 0);
         }, 30);
     }
 
     destroy():void {
-        this.items = [];
+        this._items = [];
     }
 
     canItemOccupy(item, row, column):boolean {
-        return row > -1 && column > -1 && item.sizeX + column <= this.columns && item.sizeY + row <= this.maxRows;
+        return row > -1 && column > -1 && item.sizeX + column <= this._columns && item.sizeY + row <= this._maxRows;
     }
 
     autoSetItemPosition(item:GridsterItem) {
         // walk through each row and column looking for a place it will fit
-        for (var rowIndex = 0; rowIndex < this.maxRows; ++rowIndex) {
-            for (var colIndex = 0; colIndex < this.columns; ++colIndex) {
+        for (var rowIndex = 0; rowIndex < this._maxRows; ++rowIndex) {
+            for (var colIndex = 0; colIndex < this._columns; ++colIndex) {
                 // only insert if position is not already taken and it can fit
                 var items = this.getItems(rowIndex, colIndex, item.sizeX, item.sizeY, [item]);
                 if (items.length === 0 && this.canItemOccupy(item, rowIndex, colIndex)) {
@@ -132,8 +140,8 @@ export class Gridster {
      * @param {Object} item
      */
     removeItem(item:GridsterItem) {
-        for (var rowIndex = 0, l = this.items.length; rowIndex < l; ++rowIndex) {
-            var columns = this.items[rowIndex];
+        for (var rowIndex = 0, l = this._items.length; rowIndex < l; ++rowIndex) {
+            var columns = this._items[rowIndex];
             if (!columns) {
                 continue;
             }
@@ -160,7 +168,7 @@ export class Gridster {
             var sizeX = 1,
                 col = column;
             while (col > -1) {
-                var items = this.items[row];
+                var items = this._items[row];
                 if (items) {
                     var item = items[col];
                     if (item && (!excludeItems || excludeItems.indexOf(item) === -1) && item.sizeX >= sizeX && item.sizeY >= sizeY) {
@@ -203,21 +211,21 @@ export class Gridster {
 
         // keep item within allowed bounds
         if (!this.canItemOccupy(item, row, column)) {
-            column = Math.min(this.columns - item.sizeX, Math.max(0, column));
-            row = Math.min(this.maxRows - item.sizeY, Math.max(0, row));
+            column = Math.min(this._columns - item.sizeX, Math.max(0, column));
+            row = Math.min(this._maxRows - item.sizeY, Math.max(0, row));
         }
 
         // check if item is already in grid
         if (item.oldRow !== null && typeof item.oldRow !== 'undefined') {
             var samePosition = item.oldRow === row && item.oldColumn === column;
-            var inGrid = this.items[row] && this.items[row][column] === item;
+            var inGrid = this._items[row] && this._items[row][column] === item;
             if (samePosition && inGrid) {
                 item.row = row;
                 item.col = column;
                 return;
             } else {
                 // remove from old position
-                var oldRow = this.items[item.oldRow];
+                var oldRow = this._items[item.oldRow];
                 if (oldRow && oldRow[item.oldColumn] === item) {
                     delete oldRow[item.oldColumn];
                 }
@@ -229,12 +237,12 @@ export class Gridster {
 
         this.moveOverlappingItems(item, ignoreItems);
 
-        if (!this.items[row]) {
-            this.items[row] = [];
+        if (!this._items[row]) {
+            this._items[row] = [];
         }
-        this.items[row][column] = item;
+        this._items[row][column] = item;
 
-        if (this.movingItem === item) {
+        if (this._movingItem === item) {
             this.floatItemUp(item);
         }
         this.layoutChanged();
@@ -247,8 +255,8 @@ export class Gridster {
      * @param {Object} item2
      */
     swapItems(item1:GridsterItem, item2:GridsterItem) {
-        this.items[item1.row][item1.col] = item2;
-        this.items[item2.row][item2.col] = item1;
+        this._items[item1.row][item1.col] = item2;
+        this._items[item2.row][item2.col] = item1;
 
         var item1Row = item1.row;
         var item1Col = item1.col;
@@ -328,36 +336,36 @@ export class Gridster {
      * @param {Array} ignoreItems
      */
     moveItemDown(item:GridsterItem, newRow:number, ignoreItems:GridsterItem[]) {
-    if (item.row >= newRow) {
-        return;
-    }
-    while (item.row < newRow) {
-        ++item.row;
-        this.moveOverlappingItems(item, ignoreItems);
-    }
-    this.putItem(item, item.row, item.col, ignoreItems);
-};
+        if (item.row >= newRow) {
+            return;
+        }
+        while (item.row < newRow) {
+            ++item.row;
+            this.moveOverlappingItems(item, ignoreItems);
+        }
+        this.putItem(item, item.row, item.col, ignoreItems);
+    };
 
     /**
      * Moves all items up as much as possible
      */
     floatItemsUp() {
-    if (this.floating === false) {
-        return;
-    }
-    for (var rowIndex = 0, l = this.items.length; rowIndex < l; ++rowIndex) {
-        var columns = this.items[rowIndex];
-        if (!columns) {
-            continue;
+        if (this._floating === false) {
+            return;
         }
-        for (var colIndex = 0, len = columns.length; colIndex < len; ++colIndex) {
-            var item = columns[colIndex];
-            if (item) {
-                this.floatItemUp(item);
+        for (var rowIndex = 0, l = this._items.length; rowIndex < l; ++rowIndex) {
+            var columns = this._items[rowIndex];
+            if (!columns) {
+                continue;
+            }
+            for (var colIndex = 0, len = columns.length; colIndex < len; ++colIndex) {
+                var item = columns[colIndex];
+                if (item) {
+                    this.floatItemUp(item);
+                }
             }
         }
-    }
-};
+    };
 
     /**
      * Float an item up to the most suitable row
@@ -365,29 +373,29 @@ export class Gridster {
      * @param {Object} item The item to move
      */
     floatItemUp(item:GridsterItem) {
-    if (this.floating === false) {
-        return;
-    }
-    var colIndex = item.col,
-        sizeY = item.sizeY,
-        sizeX = item.sizeX,
-        bestRow = null,
-        bestColumn = null,
-        rowIndex = item.row - 1;
-
-    while (rowIndex > -1) {
-        var items = this.getItems(rowIndex, colIndex, sizeX, sizeY, [item]);
-        if (items.length !== 0) {
-            break;
+        if (this._floating === false) {
+            return;
         }
-        bestRow = rowIndex;
-        bestColumn = colIndex;
-        --rowIndex;
-    }
-    if (bestRow !== null) {
-        this.putItem(item, bestRow, bestColumn);
-    }
-};
+        var colIndex = item.col,
+            sizeY = item.sizeY,
+            sizeX = item.sizeX,
+            bestRow = null,
+            bestColumn = null,
+            rowIndex = item.row - 1;
+
+        while (rowIndex > -1) {
+            var items = this.getItems(rowIndex, colIndex, sizeX, sizeY, [item]);
+            if (items.length !== 0) {
+                break;
+            }
+            bestRow = rowIndex;
+            bestColumn = colIndex;
+            --rowIndex;
+        }
+        if (bestRow !== null) {
+            this.putItem(item, bestRow, bestColumn);
+        }
+    };
 
     /**
      * Update gridsters height
@@ -395,21 +403,21 @@ export class Gridster {
      * @param {Number} plus (Optional) Additional height to add
      */
     updateHeight(plus?:number) {
-    var maxHeight = this.minRows;
-    plus = plus || 0;
-    for (var rowIndex = this.items.length; rowIndex >= 0; --rowIndex) {
-        var columns = this.items[rowIndex];
-        if (!columns) {
-            continue;
-        }
-        for (var colIndex = 0, len = columns.length; colIndex < len; ++colIndex) {
-            if (columns[colIndex]) {
-                maxHeight = Math.max(maxHeight, rowIndex + plus + columns[colIndex].sizeY);
+        var maxHeight = this._minRows;
+        plus = plus || 0;
+        for (var rowIndex = this._items.length; rowIndex >= 0; --rowIndex) {
+            var columns = this._items[rowIndex];
+            if (!columns) {
+                continue;
+            }
+            for (var colIndex = 0, len = columns.length; colIndex < len; ++colIndex) {
+                if (columns[colIndex]) {
+                    maxHeight = Math.max(maxHeight, rowIndex + plus + columns[colIndex].sizeY);
+                }
             }
         }
-    }
-    this.gridHeight = this.maxRows - maxHeight > 0 ? Math.min(this.maxRows, maxHeight) : Math.max(this.maxRows, maxHeight);
-};
+        this._gridHeight = this._maxRows - maxHeight > 0 ? Math.min(this._maxRows, maxHeight) : Math.max(this._maxRows, maxHeight);
+    };
 
     /**
      * Returns the number of rows that will fit in given amount of pixels
@@ -418,573 +426,301 @@ export class Gridster {
      * @param {Boolean} ceilOrFloor (Optional) Determines rounding method
      */
     pixelsToRows(pixels:number, ceilOrFloor?:boolean) {
-    if (!this.outerMargin) {
-        pixels += this.margins[0] / 2;
+        if (!this._outerMargin) {
+            pixels += this._margins[0] / 2;
+        }
+
+        if (ceilOrFloor === true) {
+            return Math.ceil(pixels / this._curRowHeight);
+        } else if (ceilOrFloor === false) {
+            return Math.floor(pixels / this._curRowHeight);
+        }
+
+        return Math.round(pixels / this._curRowHeight);
+    };
+    /**
+     * Returns the number of columns that will fit in a given amount of pixels
+     *
+     * @param {Number} pixels
+     * @param {Boolean} ceilOrFloor (Optional) Determines rounding method
+     * @returns {Number} The number of columns
+     */
+    pixelsToColumns(pixels:number, ceilOrFloor?:boolean) {
+        if (!this._outerMargin) {
+            pixels += this._margins[1] / 2;
+        }
+
+        if (ceilOrFloor === true) {
+            return Math.ceil(pixels / this._curColWidth);
+        } else if (ceilOrFloor === false) {
+            return Math.floor(pixels / this._curColWidth);
+        }
+
+        return Math.round(pixels / this._curColWidth);
     }
 
-    if (ceilOrFloor === true) {
-        return Math.ceil(pixels / this.curRowHeight);
-    } else if (ceilOrFloor === false) {
-        return Math.floor(pixels / this.curRowHeight);
+    get columns():number {
+        return this._columns;
     }
 
-    return Math.round(pixels / this.curRowHeight);
-};
+    set columns(value:number) {
+        this._columns = value;
+    }
 
+    get pushing():boolean {
+        return this._pushing;
+    }
 
+    set pushing(value:boolean) {
+        this._pushing = value;
+    }
+
+    get floating():boolean {
+        return this._floating;
+    }
+
+    set floating(value:boolean) {
+        this._floating = value;
+    }
+
+    get swapping():boolean {
+        return this._swapping;
+    }
+
+    set swapping(value:boolean) {
+        this._swapping = value;
+    }
+
+    get width():string {
+        return this._width;
+    }
+
+    set width(value:string) {
+        this._width = value;
+    }
+
+    get colWidth():string {
+        return this._colWidth;
+    }
+
+    set colWidth(value:string) {
+        this._colWidth = value;
+    }
+
+    get rowHeight():string {
+        return this._rowHeight;
+    }
+
+    set rowHeight(value:string) {
+        this._rowHeight = value;
+    }
+
+    get margins():number[] {
+        return this._margins;
+    }
+
+    set margins(value:Array) {
+        this._margins = value;
+    }
+
+    get outerMargin():boolean {
+        return this._outerMargin;
+    }
+
+    set outerMargin(value:boolean) {
+        this._outerMargin = value;
+    }
+
+    get isMobile():boolean {
+        return this._isMobile;
+    }
+
+    set isMobile(value:boolean) {
+        this._isMobile = value;
+    }
+
+    get mobileBreakPoint():number {
+        return this._mobileBreakPoint;
+    }
+
+    set mobileBreakPoint(value:number) {
+        this._mobileBreakPoint = value;
+    }
+
+    get mobileModeEnabled():boolean {
+        return this._mobileModeEnabled;
+    }
+
+    set mobileModeEnabled(value:boolean) {
+        this._mobileModeEnabled = value;
+    }
+
+    get minRows():number {
+        return this._minRows;
+    }
+
+    set minRows(value:number) {
+        this._minRows = value;
+    }
+
+    get maxRows():number {
+        return this._maxRows;
+    }
+
+    set maxRows(value:number) {
+        this._maxRows = value;
+    }
+
+    get defaultSizeX():number {
+        return this._defaultSizeX;
+    }
+
+    set defaultSizeX(value:number) {
+        this._defaultSizeX = value;
+    }
+
+    get defaultSizeY():number {
+        return this._defaultSizeY;
+    }
+
+    set defaultSizeY(value:number) {
+        this._defaultSizeY = value;
+    }
+
+    get minSizeX():number {
+        return this._minSizeX;
+    }
+
+    set minSizeX(value:number) {
+        this._minSizeX = value;
+    }
+
+    get maxSizeX():number {
+        return this._maxSizeX;
+    }
+
+    set maxSizeX(value:number) {
+        this._maxSizeX = value;
+    }
+
+    get minSizeY():number {
+        return this._minSizeY;
+    }
+
+    set minSizeY(value:number) {
+        this._minSizeY = value;
+    }
+
+    get maxSizeY():number {
+        return this._maxSizeY;
+    }
+
+    set maxSizeY(value:number) {
+        this._maxSizeY = value;
+    }
+
+    get gridHeight():number {
+        return this._gridHeight;
+    }
+
+    set gridHeight(value:number) {
+        this._gridHeight = value;
+    }
+
+    get curRowHeight():number {
+        return this._curRowHeight;
+    }
+
+    set curRowHeight(value:number) {
+        this._curRowHeight = value;
+    }
+
+    get curColWidth():number {
+        return this._curColWidth;
+    }
+
+    set curColWidth(value:number) {
+        this._curColWidth = value;
+    }
+
+    get saveGridItemCalculatedHeightInMobile():boolean {
+        return this._saveGridItemCalculatedHeightInMobile;
+    }
+
+    set saveGridItemCalculatedHeightInMobile(value:boolean) {
+        this._saveGridItemCalculatedHeightInMobile = value;
+    }
+
+    get resizable():GridsterResizable {
+        return this._resizable;
+    }
+
+    set resizable(value:GridsterResizable) {
+        this._resizable = value;
+    }
+
+    get draggable():GridsterDraggable {
+        return this._draggable;
+    }
+
+    set draggable(value:GridsterDraggable) {
+        this._draggable = value;
+    }
+
+    get flag():boolean {
+        return this._flag;
+    }
+
+    set flag(value:boolean) {
+        this._flag = value;
+    }
+
+    get loaded():boolean {
+        return this._loaded;
+    }
+
+    set loaded(value:boolean) {
+        this._loaded = value;
+    }
+
+    get movingItem():GridsterItem {
+        return this._movingItem;
+    }
+
+    set movingItem(value:GridsterItem) {
+        this._movingItem = value;
+    }
+
+    get items():GridsterItem[][] {
+        return this._items;
+    }
+
+    set items(value:Array) {
+        this._items = value;
+    }
 }
-// This returned angular module 'gridster' is what is exported.
-return angular.module('gridster', [])
-
-
-    .controller('GridsterCtrl', ['gridsterConfig', '$timeout',
-        function(gridsterConfig, $timeout) {
-
-            var gridster = this;
-
-            /**
-             * Create options from gridsterConfig constant
-             */
-            angular.extend(this, gridsterConfig);
-
-            this.resizable = angular.extend({}, gridsterConfig.resizable || {});
-            this.draggable = angular.extend({}, gridsterConfig.draggable || {});
-
-            var flag = false;
-            this.layoutChanged = function() {
-                if (flag) {
-                    return;
-                }
-                flag = true;
-                $timeout(function() {
-                    flag = false;
-                    if (gridster.loaded) {
-                        gridster.floatItemsUp();
-                    }
-                    gridster.updateHeight(gridster.movingItem ? gridster.movingItem.sizeY : 0);
-                }, 30);
-            };
-
-            /**
-             * A positional array of the items in the grid
-             */
-            this.grid = [];
-
-            /**
-             * Clean up after yourself
-             */
-            this.destroy = function() {
-                // empty the grid to cut back on the possibility
-                // of circular references
-                if (this.grid) {
-                    this.grid = [];
-                }
-                this.$element = null;
-            };
-
-            /**
-             * Overrides default options
-             *
-             * @param {Object} options The options to override
-             */
-            this.setOptions = function(options) {
-                if (!options) {
-                    return;
-                }
-
-                options = angular.extend({}, options);
-
-                // all this to avoid using jQuery...
-                if (options.draggable) {
-                    angular.extend(this.draggable, options.draggable);
-                    delete(options.draggable);
-                }
-                if (options.resizable) {
-                    angular.extend(this.resizable, options.resizable);
-                    delete(options.resizable);
-                }
-
-                angular.extend(this, options);
-
-                if (!this.margins || this.margins.length !== 2) {
-                    this.margins = [0, 0];
-                } else {
-                    for (var x = 0, l = this.margins.length; x < l; ++x) {
-                        this.margins[x] = parseInt(this.margins[x], 10);
-                        if (isNaN(this.margins[x])) {
-                            this.margins[x] = 0;
-                        }
-                    }
-                }
-            };
-
-            /**
-             * Check if item can occupy a specified position in the grid
-             *
-             * @param {Object} item The item in question
-             * @param {Number} row The row index
-             * @param {Number} column The column index
-             * @returns {Boolean} True if if item fits
-             */
-            this.canItemOccupy = function(item, row, column) {
-                return row > -1 && column > -1 && item.sizeX + column <= this.columns && item.sizeY + row <= this.maxRows;
-            };
-
-            /**
-             * Set the item in the first suitable position
-             *
-             * @param {Object} item The item to insert
-             */
-            this.autoSetItemPosition = function(item) {
-                // walk through each row and column looking for a place it will fit
-                for (var rowIndex = 0; rowIndex < this.maxRows; ++rowIndex) {
-                    for (var colIndex = 0; colIndex < this.columns; ++colIndex) {
-                        // only insert if position is not already taken and it can fit
-                        var items = this.getItems(rowIndex, colIndex, item.sizeX, item.sizeY, item);
-                        if (items.length === 0 && this.canItemOccupy(item, rowIndex, colIndex)) {
-                            this.putItem(item, rowIndex, colIndex);
-                            return;
-                        }
-                    }
-                }
-                throw new Error('Unable to place item!');
-            };
-
-            /**
-             * Gets items at a specific coordinate
-             *
-             * @param {Number} row
-             * @param {Number} column
-             * @param {Number} sizeX
-             * @param {Number} sizeY
-             * @param {Array} excludeItems An array of items to exclude from selection
-             * @returns {Array} Items that match the criteria
-             */
-            this.getItems = function(row, column, sizeX, sizeY, excludeItems) {
-                var items = [];
-                if (!sizeX || !sizeY) {
-                    sizeX = sizeY = 1;
-                }
-                if (excludeItems && !(excludeItems instanceof Array)) {
-                    excludeItems = [excludeItems];
-                }
-                for (var h = 0; h < sizeY; ++h) {
-                    for (var w = 0; w < sizeX; ++w) {
-                        var item = this.getItem(row + h, column + w, excludeItems);
-                        if (item && (!excludeItems || excludeItems.indexOf(item) === -1) && items.indexOf(item) === -1) {
-                            items.push(item);
-                        }
-                    }
-                }
-                return items;
-            };
-
-            /**
-             * @param {Array} items
-             * @returns {Object} An item that represents the bounding box of the items
-             */
-            this.getBoundingBox = function(items) {
-
-                if (items.length === 0) {
-                    return null;
-                }
-                if (items.length === 1) {
-                    return {
-                        row: items[0].row,
-                        col: items[0].col,
-                        sizeY: items[0].sizeY,
-                        sizeX: items[0].sizeX
-                    };
-                }
-
-                var maxRow = 0;
-                var maxCol = 0;
-                var minRow = 9999;
-                var minCol = 9999;
-
-                for (var i = 0, l = items.length; i < l; ++i) {
-                    var item = items[i];
-                    minRow = Math.min(item.row, minRow);
-                    minCol = Math.min(item.col, minCol);
-                    maxRow = Math.max(item.row + item.sizeY, maxRow);
-                    maxCol = Math.max(item.col + item.sizeX, maxCol);
-                }
-
-                return {
-                    row: minRow,
-                    col: minCol,
-                    sizeY: maxRow - minRow,
-                    sizeX: maxCol - minCol
-                };
-            };
-
-
-            /**
-             * Removes an item from the grid
-             *
-             * @param {Object} item
-             */
-            this.removeItem = function(item) {
-                for (var rowIndex = 0, l = this.grid.length; rowIndex < l; ++rowIndex) {
-                    var columns = this.grid[rowIndex];
-                    if (!columns) {
-                        continue;
-                    }
-                    var index = columns.indexOf(item);
-                    if (index !== -1) {
-                        columns[index] = null;
-                        break;
-                    }
-                }
-                this.layoutChanged();
-            };
-
-            /**
-             * Returns the item at a specified coordinate
-             *
-             * @param {Number} row
-             * @param {Number} column
-             * @param {Array} excludeItems Items to exclude from selection
-             * @returns {Object} The matched item or null
-             */
-            this.getItem = function(row, column, excludeItems) {
-                if (excludeItems && !(excludeItems instanceof Array)) {
-                    excludeItems = [excludeItems];
-                }
-                var sizeY = 1;
-                while (row > -1) {
-                    var sizeX = 1,
-                        col = column;
-                    while (col > -1) {
-                        var items = this.grid[row];
-                        if (items) {
-                            var item = items[col];
-                            if (item && (!excludeItems || excludeItems.indexOf(item) === -1) && item.sizeX >= sizeX && item.sizeY >= sizeY) {
-                                return item;
-                            }
-                        }
-                        ++sizeX;
-                        --col;
-                    }
-                    --row;
-                    ++sizeY;
-                }
-                return null;
-            };
-
-            /**
-             * Insert an array of items into the grid
-             *
-             * @param {Array} items An array of items to insert
-             */
-            this.putItems = function(items) {
-                for (var i = 0, l = items.length; i < l; ++i) {
-                    this.putItem(items[i]);
-                }
-            };
-
-            /**
-             * Insert a single item into the grid
-             *
-             * @param {Object} item The item to insert
-             * @param {Number} row (Optional) Specifies the items row index
-             * @param {Number} column (Optional) Specifies the items column index
-             * @param {Array} ignoreItems
-             */
-            this.putItem = function(item, row, column, ignoreItems) {
-                // auto place item if no row specified
-                if (typeof row === 'undefined' || row === null) {
-                    row = item.row;
-                    column = item.col;
-                    if (typeof row === 'undefined' || row === null) {
-                        this.autoSetItemPosition(item);
-                        return;
-                    }
-                }
-
-                // keep item within allowed bounds
-                if (!this.canItemOccupy(item, row, column)) {
-                    column = Math.min(this.columns - item.sizeX, Math.max(0, column));
-                    row = Math.min(this.maxRows - item.sizeY, Math.max(0, row));
-                }
-
-                // check if item is already in grid
-                if (item.oldRow !== null && typeof item.oldRow !== 'undefined') {
-                    var samePosition = item.oldRow === row && item.oldColumn === column;
-                    var inGrid = this.grid[row] && this.grid[row][column] === item;
-                    if (samePosition && inGrid) {
-                        item.row = row;
-                        item.col = column;
-                        return;
-                    } else {
-                        // remove from old position
-                        var oldRow = this.grid[item.oldRow];
-                        if (oldRow && oldRow[item.oldColumn] === item) {
-                            delete oldRow[item.oldColumn];
-                        }
-                    }
-                }
-
-                item.oldRow = item.row = row;
-                item.oldColumn = item.col = column;
-
-                this.moveOverlappingItems(item, ignoreItems);
-
-                if (!this.grid[row]) {
-                    this.grid[row] = [];
-                }
-                this.grid[row][column] = item;
-
-                if (this.movingItem === item) {
-                    this.floatItemUp(item);
-                }
-                this.layoutChanged();
-            };
-
-            /**
-             * Trade row and column if item1 with item2
-             *
-             * @param {Object} item1
-             * @param {Object} item2
-             */
-            this.swapItems = function(item1, item2) {
-                this.grid[item1.row][item1.col] = item2;
-                this.grid[item2.row][item2.col] = item1;
-
-                var item1Row = item1.row;
-                var item1Col = item1.col;
-                item1.row = item2.row;
-                item1.col = item2.col;
-                item2.row = item1Row;
-                item2.col = item1Col;
-            };
-
-            /**
-             * Prevents items from being overlapped
-             *
-             * @param {Object} item The item that should remain
-             * @param {Array} ignoreItems
-             */
-            this.moveOverlappingItems = function(item, ignoreItems) {
-                // don't move item, so ignore it
-                if (!ignoreItems) {
-                    ignoreItems = [item];
-                } else if (ignoreItems.indexOf(item) === -1) {
-                    ignoreItems = ignoreItems.slice(0);
-                    ignoreItems.push(item);
-                }
-
-                // get the items in the space occupied by the item's coordinates
-                var overlappingItems = this.getItems(
-                    item.row,
-                    item.col,
-                    item.sizeX,
-                    item.sizeY,
-                    ignoreItems
-                );
-                this.moveItemsDown(overlappingItems, item.row + item.sizeY, ignoreItems);
-            };
-
-            /**
-             * Moves an array of items to a specified row
-             *
-             * @param {Array} items The items to move
-             * @param {Number} newRow The target row
-             * @param {Array} ignoreItems
-             */
-            this.moveItemsDown = function(items, newRow, ignoreItems) {
-                if (!items || items.length === 0) {
-                    return;
-                }
-                items.sort(function(a, b) {
-                    return a.row - b.row;
-                });
-
-                ignoreItems = ignoreItems ? ignoreItems.slice(0) : [];
-                var topRows = {},
-                    item, i, l;
-
-                // calculate the top rows in each column
-                for (i = 0, l = items.length; i < l; ++i) {
-                    item = items[i];
-                    var topRow = topRows[item.col];
-                    if (typeof topRow === 'undefined' || item.row < topRow) {
-                        topRows[item.col] = item.row;
-                    }
-                }
-
-                // move each item down from the top row in its column to the row
-                for (i = 0, l = items.length; i < l; ++i) {
-                    item = items[i];
-                    var rowsToMove = newRow - topRows[item.col];
-                    this.moveItemDown(item, item.row + rowsToMove, ignoreItems);
-                    ignoreItems.push(item);
-                }
-            };
-
-            /**
-             * Moves an item down to a specified row
-             *
-             * @param {Object} item The item to move
-             * @param {Number} newRow The target row
-             * @param {Array} ignoreItems
-             */
-            this.moveItemDown = function(item, newRow, ignoreItems) {
-                if (item.row >= newRow) {
-                    return;
-                }
-                while (item.row < newRow) {
-                    ++item.row;
-                    this.moveOverlappingItems(item, ignoreItems);
-                }
-                this.putItem(item, item.row, item.col, ignoreItems);
-            };
-
-            /**
-             * Moves all items up as much as possible
-             */
-            this.floatItemsUp = function() {
-                if (this.floating === false) {
-                    return;
-                }
-                for (var rowIndex = 0, l = this.grid.length; rowIndex < l; ++rowIndex) {
-                    var columns = this.grid[rowIndex];
-                    if (!columns) {
-                        continue;
-                    }
-                    for (var colIndex = 0, len = columns.length; colIndex < len; ++colIndex) {
-                        var item = columns[colIndex];
-                        if (item) {
-                            this.floatItemUp(item);
-                        }
-                    }
-                }
-            };
-
-            /**
-             * Float an item up to the most suitable row
-             *
-             * @param {Object} item The item to move
-             */
-            this.floatItemUp = function(item) {
-                if (this.floating === false) {
-                    return;
-                }
-                var colIndex = item.col,
-                    sizeY = item.sizeY,
-                    sizeX = item.sizeX,
-                    bestRow = null,
-                    bestColumn = null,
-                    rowIndex = item.row - 1;
-
-                while (rowIndex > -1) {
-                    var items = this.getItems(rowIndex, colIndex, sizeX, sizeY, item);
-                    if (items.length !== 0) {
-                        break;
-                    }
-                    bestRow = rowIndex;
-                    bestColumn = colIndex;
-                    --rowIndex;
-                }
-                if (bestRow !== null) {
-                    this.putItem(item, bestRow, bestColumn);
-                }
-            };
-
-            /**
-             * Update gridsters height
-             *
-             * @param {Number} plus (Optional) Additional height to add
-             */
-            this.updateHeight = function(plus) {
-                var maxHeight = this.minRows;
-                plus = plus || 0;
-                for (var rowIndex = this.grid.length; rowIndex >= 0; --rowIndex) {
-                    var columns = this.grid[rowIndex];
-                    if (!columns) {
-                        continue;
-                    }
-                    for (var colIndex = 0, len = columns.length; colIndex < len; ++colIndex) {
-                        if (columns[colIndex]) {
-                            maxHeight = Math.max(maxHeight, rowIndex + plus + columns[colIndex].sizeY);
-                        }
-                    }
-                }
-                this.gridHeight = this.maxRows - maxHeight > 0 ? Math.min(this.maxRows, maxHeight) : Math.max(this.maxRows, maxHeight);
-            };
-
-            /**
-             * Returns the number of rows that will fit in given amount of pixels
-             *
-             * @param {Number} pixels
-             * @param {Boolean} ceilOrFloor (Optional) Determines rounding method
-             */
-            this.pixelsToRows = function(pixels, ceilOrFloor) {
-                if (!this.outerMargin) {
-                    pixels += this.margins[0] / 2;
-                }
-
-                if (ceilOrFloor === true) {
-                    return Math.ceil(pixels / this.curRowHeight);
-                } else if (ceilOrFloor === false) {
-                    return Math.floor(pixels / this.curRowHeight);
-                }
-
-                return Math.round(pixels / this.curRowHeight);
-            };
-
-            /**
-             * Returns the number of columns that will fit in a given amount of pixels
-             *
-             * @param {Number} pixels
-             * @param {Boolean} ceilOrFloor (Optional) Determines rounding method
-             * @returns {Number} The number of columns
-             */
-            this.pixelsToColumns = function(pixels, ceilOrFloor) {
-                if (!this.outerMargin) {
-                    pixels += this.margins[1] / 2;
-                }
-
-                if (ceilOrFloor === true) {
-                    return Math.ceil(pixels / this.curColWidth);
-                } else if (ceilOrFloor === false) {
-                    return Math.floor(pixels / this.curColWidth);
-                }
-
-                return Math.round(pixels / this.curColWidth);
+@Component({
+    selector:'gridsterPreview',
+    template:`<div ng-style="previewStyle()" class="gridster-item gridster-preview-holder"></div>`
+})
+export class GridsterPreview {
+    @Input gridster:Gridster;
+    previewStyle() {
+        if (!this.gridster.movingItem) {
+            return {
+                display: 'none'
             };
         }
-    ])
 
-    .directive('gridsterPreview', function() {
         return {
-            replace: true,
-            scope: true,
-            require: '^gridster',
-            template: '<div ng-style="previewStyle()" class="gridster-item gridster-preview-holder"></div>',
-            link: function(scope, $el, attrs, gridster) {
-
-                /**
-                 * @returns {Object} style object for preview element
-                 */
-                scope.previewStyle = function() {
-                    if (!gridster.movingItem) {
-                        return {
-                            display: 'none'
-                        };
-                    }
-
-                    return {
-                        display: 'block',
-                        height: (gridster.movingItem.sizeY * gridster.curRowHeight - gridster.margins[0]) + 'px',
-                        width: (gridster.movingItem.sizeX * gridster.curColWidth - gridster.margins[1]) + 'px',
-                        top: (gridster.movingItem.row * gridster.curRowHeight + (gridster.outerMargin ? gridster.margins[0] : 0)) + 'px',
-                        left: (gridster.movingItem.col * gridster.curColWidth + (gridster.outerMargin ? gridster.margins[1] : 0)) + 'px'
-                    };
-                };
-            }
+            display: 'block',
+            height: (this.gridster.movingItem.sizeY * this.gridster.curRowHeight - this.gridster.margins[0]) + 'px',
+            width: (this.gridster.movingItem.sizeX * this.gridster.curColWidth - this.gridster.margins[1]) + 'px',
+            top: (this.gridster.movingItem.row * this.gridster.curRowHeight + (this.gridster.outerMargin ? this.gridster.margins[0] : 0)) + 'px',
+            left: (this.gridster.movingItem.col * this.gridster.curColWidth + (this.gridster.outerMargin ? this.gridster.margins[1] : 0)) + 'px'
         };
-    })
+    }
+}
 
     /**
      * The gridster directive
