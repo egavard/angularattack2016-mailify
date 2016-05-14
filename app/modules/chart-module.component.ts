@@ -4,24 +4,25 @@ import {BaseChartComponent, CHART_DIRECTIVES} from "../libs/ng2-charts-upgrade-r
 import {Chart} from "../models/chart.model";
 import {ColorPickerDirective} from "../libs/color-picker/color-picker.directive";
 import {Module} from "./module";
+import { MODAL_DIRECTIVES } from 'ng2-bs3-modal/ng2-bs3-modal';
 import {ChartModuleMetadata} from "./chart-module-metadata.model";
+import {ChartPositionInformation} from './chart-position-information';
+import {log} from '../decorators/log.decorator';
 
 @Component({
     selector: 'chart-module',
     templateUrl: './app/modules/chart-module.html',
-    directives:[CHART_DIRECTIVES, ColorPickerDirective]
+    directives:[CHART_DIRECTIVES, ColorPickerDirective, MODAL_DIRECTIVES]
 })
 export class ChartModule implements Module {
     @Input() readOnly:boolean;
-
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
+    private _chartPositionInformation:ChartPositionInformation
 
-    private fillColor1: string = "rgba(242,56,217,0.6)";
-    private strokeColor1: string;
-    private pointColor1: string;
-    private pointStrokeColor1: string;
-    private pointHighlightFill1: string;
-    private pointHighlightStroke1: string;
+    private backgroundColor: string = "rgba(242,56,217,0.6)";
+    private borderColor: string = "rgba(242,56,217,0.6)";
+    private pointBackgroundColor: string = "rgba(242,56,217,0.6)";
+
     private lineChartData:Array<any> = [];
     private lineChartLabels:Array<any> = [];
     private lineChartSeries:Array<any> = [];
@@ -32,13 +33,11 @@ export class ChartModule implements Module {
     };
     private lineChartColours:Array<any> = [
         { // grey
-            backgroundColor: this.fillColor1,
-            borderColor: 'rgba(249,0,198,1)',
-            pointColor: 'rgba(249,0,198,1)',
-            pointBackgroundColor: '#000',
-            pointHighlightFill: '#fff',
-            pointHighlightStroke: 'rgba(148,159,177,0.8)'
-        },
+            backgroundColor: this.backgroundColor,
+            borderColor: this.borderColor,
+            pointBackgroundColor: this.pointBackgroundColor,
+        }
+
     ];
     @Input() lineChartType:string = 'line';
     private sourceUrl1: string = '';
@@ -47,9 +46,12 @@ export class ChartModule implements Module {
         // this.chart.chartType='line';
     }
 
+    @log()
     constructor(private dataProviderService: DataProviderService){
         this.readOnly = true;
         this.randomizeData();
+        this.lineChartType = 'line';
+        this._chartPositionInformation = new ChartPositionInformation(0,0,1,1);
     }
 
     getModuleMetadata() {
@@ -68,9 +70,17 @@ export class ChartModule implements Module {
         console.log(e);
     }
 
-    functionwhencolorchange(color){
+    backgroundColorChanged(color){
         this.chart.colours[0].backgroundColor = color;
+        this.chart.refresh();
+    }
+    borderColorChanged(color){
         this.chart.colours[0].borderColor = color;
+        this.chart.refresh();
+    }
+   
+    pointBackgroundColorChanged(color){
+        this.chart.colours[0].pointBackgroundColor = color;
         this.chart.refresh();
     }
 
@@ -89,10 +99,18 @@ export class ChartModule implements Module {
             error => console.log(error)
         );
     }
-
+    @log()
     private loadDataIntoChart(chart: Chart) {
         this.lineChartLabels = chart.labels;
         this.lineChartSeries = chart.series.map(s => s.title);
         this.lineChartData = chart.series.map(s => s.points);
+    }
+
+    get chartPositionInformation():ChartPositionInformation {
+        return this._chartPositionInformation;
+    }
+
+    set chartPositionInformation(value:ChartPositionInformation) {
+        this._chartPositionInformation = value;
     }
 }
