@@ -24,9 +24,9 @@ export class AppComponent implements AfterViewInit {
         debugModule.col = 0;
         this.gridster.putItem(debugModule);
     }
+    
     constructor(private dataProviderService: DataProviderService){
-        console.log(dataProviderService.getBasicChart());
-        
+        console.log(dataProviderService.getBasicCharts());
     }
 
 

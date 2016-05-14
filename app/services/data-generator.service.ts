@@ -1,9 +1,14 @@
+import { Observable } from 'rxjs/Observable';
+
 /**
  * Simple dummy data generator to be injected into charts
  */
 export class DataGenerator {
 
-    generateDummyData(numberOfCategories:number, numberOfCharts:number, maxValue = 100) {
+    /**
+     * Generates dumym data JSON string
+     */
+    generateDummyData(numberOfCategories:number, numberOfCharts:number, maxValue = 100):Observable {
         var data = {};
         data.labels = [];
         data.charts = [];
@@ -23,7 +28,7 @@ export class DataGenerator {
             });
         }
         // simulate raw JSON string from remote call
-        return JSON.stringify(data);
+        return Promise.resolve(data);
     }
 
     /**
