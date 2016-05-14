@@ -236,7 +236,7 @@ export class GridsterDraggableService{
         $el.removeClass('gridster-item-moving');
         var row = this.gridster.pixelsToRows(this.elmY);
         var col = this.gridster.pixelsToColumns(this.elmX);
-        if (this.gridster.pushing !== false || this.gridster.getItems(row, col, this.item.sizeX, this.item.sizeY, this.item).length === 0) {
+        if (this.gridster.pushing !== false || this.gridster.getItems(row, col, this.item.sizeX, this.item.sizeY, [this.item]).length === 0) {
             this.item.row = row;
             this.item.col = col;
         }
@@ -248,24 +248,21 @@ export class GridsterDraggableService{
             this.gridster.draggable.stop(event, $el, this.itemOptions);
         }
     }
+    
+    enable() {
+        if (this.enabled === true) {
+            return;
+        }
+        this.enabled = true;
 
-    var enabled = null;
-    var gridsterTouch = null;
+        if (this.gridsterTouch) {
+            this.gridsterTouch.enable();
+            return;
+        }
 
-    this.enable = function() {
-    if (enabled === true) {
-        return;
-    }
-    enabled = true;
-
-    if (gridsterTouch) {
-        gridsterTouch.enable();
-        return;
-    }
-
-    gridsterTouch = new GridsterTouch($el[0], mouseDown, mouseMove, mouseUp);
-    gridsterTouch.enable();
-};
+        this.gridsterTouch = new GridsterTouch($el[0], this.mouseDown, this.mouseMove, this.mouseUp);
+        this.gridsterTouch.enable();
+    };
 
     disable() {
         if (enabled === false) {

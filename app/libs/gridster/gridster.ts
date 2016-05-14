@@ -57,6 +57,38 @@ export class GridsterDraggable{
     set scrollSpeed(value:number) {
         this._scrollSpeed = value;
     }
+
+    get handle():any {
+        return this._handle;
+    }
+
+    set handle(value:any) {
+        this._handle = value;
+    }
+
+    get start():any {
+        return this._start;
+    }
+
+    set start(value:any) {
+        this._start = value;
+    }
+
+    get drag():any {
+        return this._drag;
+    }
+
+    set drag(value:any) {
+        this._drag = value;
+    }
+
+    get stop():any {
+        return this._stop;
+    }
+
+    set stop(value:any) {
+        this._stop = value;
+    }
 }
 /**
  * Should be implemented by every single module !
