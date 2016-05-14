@@ -13,7 +13,7 @@ import {CHART_DIRECTIVES} from './libs/ng2-charts-upgrade-rc1/ng2-charts';
     templateUrl:'./app.html',
     directives:[Gridster, CHART_DIRECTIVES]
 })
-export class AppComponent implements AfterViewInit{
+export class AppComponent implements AfterViewInit {
     @ViewChild(Gridster) gridster:Gridster;
     
     ngAfterViewInit(){
@@ -24,7 +24,7 @@ export class AppComponent implements AfterViewInit{
         debugModule.col = 0;
         this.gridster.putItem(debugModule);
     }
-    constructor(private dataProviderService:DataProviderService){
+    constructor(private dataProviderService: DataProviderService){
         console.log(dataProviderService.getBasicChart());
         
     }

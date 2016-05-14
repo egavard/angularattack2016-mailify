@@ -27,8 +27,10 @@ var DataProviderService = (function () {
     function DataProviderService(dataGenerator) {
         this.dataGenerator = dataGenerator;
     }
-    DataProviderService.prototype.getBasicChart = function () {
-        return this.dataGenerator.generateDummyData(8, 2);
+    DataProviderService.prototype.getBasicChart = function (numberOfCategories, numberOfSeries) {
+        if (numberOfCategories === void 0) { numberOfCategories = 8; }
+        if (numberOfSeries === void 0) { numberOfSeries = 2; }
+        return this.dataGenerator.generateDummyData(numberOfCategories, numberOfSeries);
     };
     DataProviderService = __decorate([
         core_1.Injectable(), 

@@ -22,7 +22,7 @@ export class DataProviderService {
     constructor(private dataGenerator: DataGenerator) {
     }
 
-    getBasicChart() {
-      return this.dataGenerator.generateDummyData(8, 2);
+    getBasicChart(numberOfCategories = 8, numberOfSeries = 2) {
+      return this.dataGenerator.generateDummyData(numberOfCategories, numberOfSeries);
     }
 }
