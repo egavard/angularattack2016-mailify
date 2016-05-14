@@ -3,6 +3,7 @@ import {ModulesService} from "../../services/modules.service";
 import {ModuleMetadata} from "../../modules/module-metadata.model";
 import {DebugModule} from "../../modules/debug-module.component";
 import {GridsterItem} from '../../libs/gridster/gridster';
+import {log} from '../../decorators/log.decorator';
 declare var $;
 
 @Component({
@@ -28,6 +29,10 @@ export class AdminComponent {
                 }
             }
         })
+    }
+    @log()
+    availableModuleDrop(event){
+
     }
 
 
