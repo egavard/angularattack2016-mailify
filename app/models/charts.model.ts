@@ -5,8 +5,8 @@ export class Charts {
     private _charts: Chart[];
 
     constructor(labels:string[], charts:Chart[]) {
-        _labels = labels;
-        _charts = charts;
+        this._labels = labels;
+        this._charts = charts;
     }
 
     get labels():string[] {

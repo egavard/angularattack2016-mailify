@@ -11,7 +11,8 @@
         '@angular':                   'node_modules/@angular',
         'ng2-charts':                 'app/libs/ng2-charts-upgrade-rc1',
 		'ng2-bootstrap':              'node_modules/ng2-bootstrap',
-		'moment':                     'node_modules/moment'
+		'moment':                     'node_modules/moment',
+		'color-picker':                 'app/libs/color-picker'
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
@@ -21,7 +22,8 @@
         'angular2-in-memory-web-api': { defaultExtension: 'js' },
         'ng2-charts':                 { defaultExtension: 'js' },
 		'ng2-bootstrap':              { defaultExtension: 'js' },
-		'moment':                     { main: 'moment.js', defaultExtension: 'js' }
+		'moment':                     { main: 'moment.js', defaultExtension: 'js' },
+		'color-picker':               { defaultExtension: 'js' }
     };
 
     var packageNames = [

@@ -6,13 +6,13 @@ import {Gridster} from './libs/gridster/gridster.component';
 import {DebugModule} from './modules/debug-module.component';
 import {DataProviderService} from './services/data-provider.service';
 import {CHART_DIRECTIVES} from './libs/ng2-charts-upgrade-rc1/ng2-charts';
-import {TopNavComponent} from './dashboard/topnav.component';
+import {ColorPickerDirective} from './libs/color-picker/color-picker.directive'
 
 @Component({
     selector:'app',
-    moduleId: module.id,
+    moduleId:module.id,
     templateUrl:'./app.html',
-    directives:[Gridster, TopNavComponent, CHART_DIRECTIVES]
+    directives:[Gridster, CHART_DIRECTIVES, ColorPickerDirective]
 })
 export class AppComponent implements AfterViewInit {
     @ViewChild(Gridster) gridster:Gridster;
@@ -30,6 +30,9 @@ export class AppComponent implements AfterViewInit {
         
     }
 
+
+
+    private color: string = "#127bdc";
 
 
 
