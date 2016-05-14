@@ -1,3 +1,15 @@
 Hello world
+<div style="width:100%; height: 150px">
+        <base-chart style="width:100%; height: 150px" class="chart"
+                    [data]="lineChartData"
+                    [labels]="lineChartLabels"
+                    [options]="lineChartOptions"
+                    [series]="lineChartSeries"
+                    [colours]="lineChartColours"
+                    [legend]="lineChartLegend"
+                    [chartType]="lineChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></base-chart>
+</div>
 
 <gridster></gridster>
