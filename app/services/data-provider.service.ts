@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DataGenerator } from './data-generator.service';
 
 /*
  {
@@ -18,8 +19,10 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class DataProviderService {
 
+    constructor(private dataGenerator: DataGenerator) {
+    }
+
     getBasicChart() {
-      return "{\"labels\": [\"Group 1\", \"Group 2\", \"Group 3\", \"Group 4\", \"Group 5\"],\"charts\": " +
-        "[{\"title\":\"Chart 1 \",\"values\": [1, 2, 3, 4, 5]}, {\"title\": \"Chart 2 \",\"values\": [1, 2, 3, 4, 5]}]}"
+      return this.dataGenerator.generateDummyData(8, 2);
     }
 }
