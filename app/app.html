@@ -1,7 +1,8 @@
-<topnav></topnav>
+<topnav class="navbar-static-top"></topnav>
 <sidebar></sidebar>
 
 <section class="main-container" [ngClass]="{sidebarPushRight: isActive}">
+	<input type="button" (click)="randomizeData()" value="Randomize data" />
 	<div style="width:100%; height: 150px">
 		<base-chart style="width:100%; height: 150px" class="chart"
 					[data]="lineChartData"

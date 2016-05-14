@@ -1,6 +1,6 @@
 export class Series {
     private _title: string;
-    private _points: number[];
+    private _points: Array<number>;
 
     constructor(title:string, points:number[]) {
         this._title = title;
@@ -15,11 +15,11 @@ export class Series {
         this._title = value;
     }
 
-    get points():number[] {
+    get points():Array<number> {
         return this._points;
     }
 
-    set points(value:Array) {
+    set points(value:Array<number>) {
         this._points = value;
     }
 }

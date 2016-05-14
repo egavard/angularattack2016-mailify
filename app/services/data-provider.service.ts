@@ -9,10 +9,10 @@ export class DataProviderService {
     constructor(private dataGenerator:DataGenerator) {
     }
 
-    getBasicChart(numberOfCategories = 8, numberOfSeries = 2):Promise<Chart> {
+    getBasicChart(numberOfCategories = 8, numberOfSeries = 2, maxValue = 100):Promise<Chart> {
         return Promise.resolve(
-            this.dataGenerator.generateDummyData(numberOfCategories, numberOfSeries).then((data: any) => {
-                return new Chart(data.labels, data.charts);
+            this.dataGenerator.generateDummyData(numberOfCategories, numberOfSeries, maxValue).then((data: any) => {
+                return new Chart(data.labels, data.series);
             })
         );
     }

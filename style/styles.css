@@ -4561,3 +4561,6 @@ a.bg-danger:focus, a.bg-danger:hover {
 
 .chart {
   display: block; }
+
+.main-container {
+  margin-top: 54px; }

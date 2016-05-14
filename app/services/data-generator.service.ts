@@ -4,19 +4,19 @@
  */
 export class DataGenerator {
 
-    generateDummyData(numberOfCategories:number, numberOfCharts:number, maxValue = 100) {
-        let data = {labels:[],charts:[]};
+    generateDummyData(numberOfCategories:number, numberOfSeries:number, maxValue = 100) {
+        let data = {labels:[],series:[]};
 
         for (let i = 0; i < numberOfCategories; ++i) {
             data.labels.push(`Label ${i}`);
         }
 
-        for (let j = 0; j < numberOfCharts; ++j) {
+        for (let j = 0; j < numberOfSeries; ++j) {
             var values = [];
             for (let k = 0; k < numberOfCategories; ++k) {
                 values.push(this.getRandomInt(0, maxValue));
             }
-            data.charts.push({
+            data.series.push({
                 title: `Series ${j}`,
                 points: values
             });

@@ -18,9 +18,9 @@ import {TopNavComponent} from './dashboard/topnav.component';
 })
 export class AppComponent implements AfterViewInit {
     @ViewChild(Gridster) gridster:Gridster;
-    private lineChartData:Array<any> = [];
-    private lineChartLabels:Array<any> = [];
-    private lineChartSeries:Array<any> = [];
+    private lineChartData:Array<Array<number>> = [];
+    private lineChartLabels:Array<string> = [];
+    private lineChartSeries:Array<string> = [];
     private lineChartOptions:any = {
         animation: false,
         responsive: true,
@@ -66,11 +66,7 @@ export class AppComponent implements AfterViewInit {
     }
     
     constructor(private dataProviderService: DataProviderService){
-        dataProviderService.getBasicChart().then((chart: Chart) => {
-            this.lineChartLabels = chart.labels;
-            this.lineChartSeries = chart.series.map(s => s.title);
-            this.lineChartData = chart.series.map(s => s.points);
-        });
+        this.randomizeData();
     }
 
     // events
@@ -82,6 +78,15 @@ export class AppComponent implements AfterViewInit {
         console.log(e);
     }
 
-
+    /**
+     * re-generates random data
+     */
+    randomizeData() {
+        this.dataProviderService.getBasicChart(10, 4).then((chart: Chart) => {
+            this.lineChartLabels = chart.labels;
+            this.lineChartSeries = chart.series.map(s => s.title);
+            this.lineChartData = chart.series.map(s => s.points);
+        });
+    }
 
 }
