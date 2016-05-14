@@ -13,9 +13,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var gridster_component_1 = require('./libs/gridster/gridster.component');
+var debug_module_component_1 = require('./modules/debug-module.component');
 var AppComponent = (function () {
     function AppComponent() {
     }
+    AppComponent.prototype.ngAfterViewInit = function () {
+        var debugModule = new debug_module_component_1.DebugModule(this.gridster);
+        this.gridster.putItem(debugModule);
+    };
+    __decorate([
+        core_1.ViewChild(gridster_component_1.Gridster), 
+        __metadata('design:type', gridster_component_1.Gridster)
+    ], AppComponent.prototype, "gridster", void 0);
     AppComponent = __decorate([
         core_1.Component({
             selector: 'app',

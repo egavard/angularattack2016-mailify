@@ -74,7 +74,7 @@ export class GridsterItem{
     private _rows:number;
     private _mapStyle:Map<String,String>;
 
-    constructor(gridster:Gridster, private _eltRef:ElementRef) {
+    constructor(gridster:Gridster) {
         this._gridster = gridster;
         this.mapStyle = new Map<String,String>();
         this.sizeX = this._gridster.defaultSizeX;
@@ -86,7 +86,6 @@ export class GridsterItem{
         // set these to null to avoid the possibility of circular references
         this._gridster = null;
         //TODO check native element method to remove an HTML node
-        // this._eltRef.nativeElement.remove();
     };
 
     /**
