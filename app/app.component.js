@@ -15,9 +15,51 @@ var core_1 = require('@angular/core');
 var gridster_component_1 = require('./libs/gridster/gridster.component');
 var debug_module_component_1 = require('./modules/debug-module.component');
 var data_provider_service_1 = require('./services/data-provider.service');
+var ng2_charts_1 = require('./libs/ng2-charts-upgrade-rc1/ng2-charts');
 var AppComponent = (function () {
     function AppComponent(dataProviderService) {
         this.dataProviderService = dataProviderService;
+        // lineChart
+        this.lineChartData = [
+            [65, 59, 80, 81, 56, 55, 40],
+            [28, 48, 40, 19, 86, 27, 90],
+            [18, 48, 77, 9, 100, 27, 40]
+        ];
+        this.lineChartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+        this.lineChartSeries = ['Series A', 'Series B', 'Series C'];
+        this.lineChartOptions = {
+            animation: false,
+            responsive: true,
+            multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>'
+        };
+        this.lineChartColours = [
+            {
+                fillColor: 'rgba(148,159,177,0.2)',
+                strokeColor: 'rgba(148,159,177,1)',
+                pointColor: 'rgba(148,159,177,1)',
+                pointStrokeColor: '#fff',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(148,159,177,0.8)'
+            },
+            {
+                fillColor: 'rgba(77,83,96,0.2)',
+                strokeColor: 'rgba(77,83,96,1)',
+                pointColor: 'rgba(77,83,96,1)',
+                pointStrokeColor: '#fff',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(77,83,96,1)'
+            },
+            {
+                fillColor: 'rgba(148,159,177,0.2)',
+                strokeColor: 'rgba(148,159,177,1)',
+                pointColor: 'rgba(148,159,177,1)',
+                pointStrokeColor: '#fff',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(148,159,177,0.8)'
+            }
+        ];
+        this.lineChartLegend = true;
+        this.lineChartType = 'radar';
         console.log(dataProviderService.getBasicChart());
     }
     AppComponent.prototype.ngAfterViewInit = function () {
@@ -28,6 +70,13 @@ var AppComponent = (function () {
         debugModule.col = 0;
         this.gridster.putItem(debugModule);
     };
+    // events
+    AppComponent.prototype.chartClicked = function (e) {
+        console.log(e);
+    };
+    AppComponent.prototype.chartHovered = function (e) {
+        console.log(e);
+    };
     __decorate([
         core_1.ViewChild(gridster_component_1.Gridster), 
         __metadata('design:type', gridster_component_1.Gridster)
@@ -37,7 +86,7 @@ var AppComponent = (function () {
             selector: 'app',
             moduleId: module.id,
             templateUrl: './app.html',
-            directives: [gridster_component_1.Gridster]
+            directives: [gridster_component_1.Gridster, ng2_charts_1.CHART_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [data_provider_service_1.DataProviderService])
     ], AppComponent);

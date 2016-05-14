@@ -109,6 +109,7 @@ export class GridsterItem{
     private _cols:number;
     private _rows:number;
     private _mapStyle:Map<String,String>;
+    private _element:any;
 
     constructor(gridster:Gridster) {
         this._gridster = gridster;
