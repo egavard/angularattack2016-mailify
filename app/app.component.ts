@@ -52,6 +52,7 @@ export class AppComponent implements AfterViewInit {
     private lineChartLegend:boolean = true;
     private lineChartType:string = 'line';
 	private color: string = "#127bdc";
+    private sourceUrl1: string = '';
 
     ngAfterViewInit(){
         let debugModule:DebugModule = new DebugModule(this.gridster);
@@ -76,7 +77,6 @@ export class AppComponent implements AfterViewInit {
     }
 
     functionwhencolorchange(color){
-        console.log(color);
         this.chart.colours[0].backgroundColor = color;
         this.chart.colours[0].borderColor = color;
 
@@ -87,11 +87,21 @@ export class AppComponent implements AfterViewInit {
      * re-generates random data
      */
     randomizeData() {
-        this.dataProviderService.getBasicChart(10, 4).then((chart: Chart) => {
-            this.lineChartLabels = chart.labels;
-            this.lineChartSeries = chart.series.map(s => s.title);
-            this.lineChartData = chart.series.map(s => s.points);
-        });
+        this.dataProviderService.getBasicChartFromRandomData(10, 4).then(
+            (chart: Chart) => this.loadDataIntoChart(chart)
+        );
+    }
+
+    loadDataFromSourceUrl() {
+        this.dataProviderService.getBasicChartFromSourceUrl(this.sourceUrl1).then(
+            (chart: Chart) => this.loadDataIntoChart(chart)
+        );
+    }
+
+    private loadDataIntoChart(chart: Chart) {
+        this.lineChartLabels = chart.labels;
+        this.lineChartSeries = chart.series.map(s => s.title);
+        this.lineChartData = chart.series.map(s => s.points);
     }
 
 }

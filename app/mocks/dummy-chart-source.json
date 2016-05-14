@@ -1,0 +1,13 @@
+{
+  "labels": ["Label 1", "Label 2", "Label 3", "Label 4", "Label 5", "Label 6", "Label 7", "Label 8"],
+  "series": [
+    {
+      "title": "Series 1",
+      "points": [10, 55, 24, 32, 44, 55, 14, 2]
+    },
+    {
+      "title": "Series 2",
+      "points": [55, 41, 63, 2, 63, 3, 78, 10]
+    }
+  ]
+}
