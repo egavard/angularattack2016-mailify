@@ -15,7 +15,7 @@
     </div>
     <div class="row card card-block">
 		<div class="col-md-12" [ngGrid]="{'max_cols': 12}" style="display:inline-block; background-color:#efefef">
-            <div *ngFor="let item of items; let i = index" [ngGridItem]="{'sizex': 3, 'sizey':1, 'col': ((i%3)?1:4), 'row':((i/6)+1)}">
+            <div *ngFor="let item of items; let i = index" [ngGridItem]="{'sizex': 2, 'sizey':1, 'col': item.chartPositionInformation.col, 'row': item.chartPositionInformation.row}">
                     <chart-module style="display:inline-block;"
                                   [attr.id]="item.id"
                                   [attr.data-sizex]="item.chartPositionInformation.sizeX"
