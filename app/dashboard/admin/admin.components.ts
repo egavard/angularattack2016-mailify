@@ -29,13 +29,11 @@ export class AdminComponent implements AfterViewInit {
         if(storedItems){
             this.items = storedItems;
         }else{
-            let item1 = new ChartModule(dataProviderService, 'ChartModule');
-            item1.chartPositionInformation = new ChartPositionInformation(0,0,2,1);
-            let item2 = new ChartModule(dataProviderService, 'HealthModule');
-            item2.chartPositionInformation = new ChartPositionInformation(4,0,2,1);
-
             this.items = [];
-            this.items.push(item1, item2);
+            let debugModule = new ChartModule(dataProviderService,'DebugModule');
+            debugModule.chartPositionInformation = new ChartPositionInformation(1,1,2,1);
+            debugModule.moduleData = 'Please use dashboard to change this home page';
+            this.items.push(debugModule);
         }
     }
 
