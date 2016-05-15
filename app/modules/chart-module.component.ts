@@ -35,33 +35,8 @@ export class ChartModule implements Module {
     @Input() data:number[][];
     @Input() labels:string[];
 
-    @Input() chartOptions:any = {
-        animation: false,
-        responsive: true,
-        elements: {
-            line: {
-                borderWidth: 1
-            }
-        },
-        multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>'
-    };
-    @Input() chartColors:Array<SeriesColors> = [
-        new SeriesColors("rgba(222, 239, 183, 0.6)",
-            "rgba(222, 239, 183, 1)",
-            "rgba(222, 239, 183, 1)")
-        ,
-        new SeriesColors(
-            "rgba(0, 204, 13, 0.6)",
-            "rgba(38, 127, 44, 1)",
-            "rgba(0, 255, 16, 1)"
-        ),
-        new SeriesColors(
-            "rgba(76, 118, 255, 0.6)",
-            "rgba(63, 58, 232, 1)",
-            "rgba(58, 145, 232, 1)"
-        )
-
-    ];
+    @Input() chartOptions:any;
+    @Input() chartColors:Array<any>;
     @Input() private sourceUrl:string = '';
     @Input() chartType:string = 'line';
     @ViewChild('modal') modal:ModalComponent;
@@ -69,6 +44,34 @@ export class ChartModule implements Module {
     constructor(private dataProviderService:DataProviderService) {
         this.readOnly = true;
         this.series = [];
+        this.chartColors = [
+            {
+                backgroundColor: "rgba(222, 239, 183, 0.6)",
+                borderColor: "rgba(222, 239, 183, 1)",
+                pointBackgroundColor: "rgba(222, 239, 183, 1)"
+            },
+            {
+                backgroundColor: "rgba(0, 204, 13, 0.6)",
+                borderColor: "rgba(38, 127, 44, 1)",
+                pointBackgroundColor: "rgba(0, 255, 16, 1)"
+            },
+            {
+                backgroundColor: "rgba(76, 118, 255, 0.6)",
+                borderColor: "rgba(63, 58, 232, 1)",
+                pointBackgroundColor: "rgba(58, 145, 232, 1)"
+            }
+
+        ];
+        this.chartOptions = {
+            animation: false,
+            responsive: true,
+            elements: {
+                line: {
+                    borderWidth: 1
+                }
+            },
+            multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>'
+        };
         this._chartPositionInformation = new ChartPositionInformation(0, 0, 1, 1);
         this.randomizeData();
         //setInterval(() => this.randomizeData(), 5000);
@@ -79,11 +82,21 @@ export class ChartModule implements Module {
     }
 
     getConfig() {
-        console.log(this.chart);
         return {
-            type: this.chart.chartType,
-            colors: this.chart.colours
+            type: this.chartType,
+            colors: this.chartColors.map(c => {
+                return {
+                    backgroundColor: c.backgroundColor,
+                    borderColor: c.borderColor,
+                    pointBackgroundColor: c.pointBackgroundColor
+                };
+            })
         };
+    }
+
+    setConfig(config: any) {
+        this.chartType = config.type;
+        this.chartColors = config.colors;
     }
 
     get chartPositionInformation():ChartPositionInformation {
@@ -161,16 +174,5 @@ export class ChartModule implements Module {
         this.dataPrepared = true;
     }
 
-}
 
-export class SeriesColors {
-    backgroundColor:string;
-    borderColor:string;
-    pointBackgroundColor:string;
-
-    constructor(backgroundColor:string, borderColor:string, pointBackgroundColor:string) {
-        this.backgroundColor = backgroundColor;
-        this.borderColor = borderColor;
-        this.pointBackgroundColor = pointBackgroundColor;
-    }
 }

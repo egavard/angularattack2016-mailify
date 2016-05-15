@@ -13,6 +13,10 @@ export class ModuleConfigService {
     }
 
     saveConfig(configId: string, config: any) {
-        return this.http.put(`${FIREBASE}/configs/${configId}.json`, JSON.stringify(config));
+        if (configId) {
+            return this.http.put(`${FIREBASE}/configs/${configId}.json`, JSON.stringify(config));
+        } else {
+            throw 'invalid config id';
+        }
     }
 }
