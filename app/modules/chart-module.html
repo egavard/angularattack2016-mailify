@@ -15,12 +15,6 @@
 	</modal-header>
 	<modal-body>
 
-
-        <select (change)="onSelectType($event.target.value)">
-            <option *ngFor="#serie of types" [value]="serie.id">{{serie.name}}</option>
-        </select>
-
-
         <select (change)="onSelect($event.target.value)">
             <option *ngFor="#serie of series" [value]="serie.id">{{serie.name}}</option>
         </select>

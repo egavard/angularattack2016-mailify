@@ -59,12 +59,6 @@ export class ChartModule implements Module {
     @ViewChild('modal') modal: ModalComponent;
     @Input() public series: Serie[];
     @Input() public selectedSerie=null;
-    @Input() public types: Serie[] = [
-        { "id": 1, "name": "line" },
-        { "id": 2, "name": "bar" },
-        { "id": 3, "name": "radar" }
-    ];
-    @Input() public selectedType: Serie = this.types[0];
 
     @log()
     constructor(private dataProviderService: DataProviderService){
@@ -84,6 +78,7 @@ export class ChartModule implements Module {
      */
     edit() {
         var i = 0;
+        this.series = new Array<Serie>();
         for (var item in this.lineChartSeries ) {
            var itemToAdd = {
                 id: i,
@@ -132,17 +127,6 @@ export class ChartModule implements Module {
         }
     }
 
-    onSelectType(typeId) {
-        this.selectedType = null;
-        for (var i = 0; i < this.types.length; i++)
-        {
-            if (this.types[i].id == typeId) {
-                this.selectedType = this.types[i];
-                this.chart.chartType=this.selectedType.name;
-                this.chart.refresh();
-            }
-        }
-    }
 
     /**
      * re-generates random data
