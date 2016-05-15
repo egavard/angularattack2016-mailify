@@ -16,6 +16,7 @@ import {log} from '../decorators/log.decorator';
 })
 export class ChartModule implements Module {
     @Input() readOnly:boolean;
+    private dataPrepared:boolean = false;
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
     private _chartPositionInformation:ChartPositionInformation
 
@@ -164,6 +165,7 @@ export class ChartModule implements Module {
         this.lineChartLabels = chart.labels;
         this.lineChartSeries = chart.series.map(s => s.title);
         this.lineChartData = chart.series.map(s => s.points);
+        this.dataPrepared = true;
     }
 
     get chartPositionInformation():ChartPositionInformation {

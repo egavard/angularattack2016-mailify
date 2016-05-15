@@ -36,14 +36,11 @@ export class AdminComponent {
         if(storedItems){
             this.items = storedItems;
         }else{
-/*
             let item1 = new ChartModule(dataProviderService);
             item1.chartPositionInformation = new ChartPositionInformation(0,0,5,1);
 
             this.items = [];
             this.items.push(item1);
-*/
-
         }
     }
 

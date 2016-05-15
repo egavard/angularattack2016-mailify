@@ -8,7 +8,7 @@
 			[colours]="lineChartColours"
 			[chartType]="lineChartType"
 			(chartHover)="chartHovered($event)"
-			(chartClick)="chartClicked($event)"></base-chart>
+			(chartClick)="chartClicked($event)" *ngIf="dataPrepared"></base-chart>
 <modal #modal>
 	<modal-header [show-close]="true">
 		<h4 class="modal-title">Configuration</h4>
