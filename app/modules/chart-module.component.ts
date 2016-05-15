@@ -102,7 +102,6 @@ export class ChartModule implements Module {
                 this._series = [];
                 this._chartPositionInformation = new ChartPositionInformation(0, 0, 1, 1);
                 this.randomizeData();
-                setInterval(() => this.randomizeData(), 5000);
 
             }else if('HealthModule' == this.innerType){
                 // fake data
@@ -116,11 +115,9 @@ export class ChartModule implements Module {
                 this._topStyle = new CommonStyle(CommonStyle.COLOR_DEFAULT, 'inherit', 'bold');
                 this._mainStyle = new CommonStyle();
                 this._bottomStyle = new CommonStyle('inherit', '2em', 'bold');
-                setInterval(() => this.randomize(), 5000);
                 this.randomize();
             }else if('TableModule' == this.innerType){
-                this.randomizeData();
-                setInterval(() => this.randomizeTableData(), 5000);
+                this.randomizeTableData();
                 this._striped = true;
                 this._condensed = true;
                 this._showSeriesTitle = true;
@@ -131,7 +128,6 @@ export class ChartModule implements Module {
             this._series = [];
             this._chartPositionInformation = new ChartPositionInformation(0, 0, 1, 1);
             this.randomizeData();
-            setInterval(() => this.randomizeData(), 5000);
 
         }
     }
