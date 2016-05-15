@@ -15,7 +15,7 @@
 
 		<div class="col-md-10">
             <ul *ngFor="let item of items; let i = index">
-                    <chart-module style="display:inline-block;"></chart-module>
+                    <chart-module style="display:inline-block;" [readOnly]="item.readOnly"></chart-module>
             </ul>
         </div>
 	</div>

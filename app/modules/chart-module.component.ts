@@ -15,7 +15,7 @@ import {log} from '../decorators/log.decorator';
     directives:[CHART_DIRECTIVES, ColorPickerDirective, MODAL_DIRECTIVES]
 })
 export class ChartModule implements Module {
-    @Input() readOnly:boolean;
+    @Input() private _readOnly:boolean = false;
     private dataPrepared:boolean = false;
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
     private _chartPositionInformation:ChartPositionInformation
@@ -67,11 +67,9 @@ export class ChartModule implements Module {
 
     @log()
     constructor(private dataProviderService: DataProviderService){
-        this.readOnly = true;
         this.series = new Array<Serie>();
-
-        this.randomizeData();
         this._chartPositionInformation = new ChartPositionInformation(0,0,1,1);
+        this.randomizeData();
     }
 
     getModuleMetadata() {
@@ -174,6 +172,15 @@ export class ChartModule implements Module {
 
     set chartPositionInformation(value:ChartPositionInformation) {
         this._chartPositionInformation = value;
+    }
+
+
+    get readOnly():boolean {
+        return this._readOnly;
+    }
+
+    set readOnly(value:boolean) {
+        this._readOnly = value;
     }
 }
 
