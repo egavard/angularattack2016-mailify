@@ -1,9 +1,10 @@
 <div class="container-fluid">
     <div class="card card-block">
-        <div class="row" *ngFor="let item of items; let i = index">
-            <div class="col-md-6"  >
-                <chart-module style="display:inline-block;"
-                              [attr.id]="item.id"
+        <div class="row playground" >
+            <div class="col-md-12" [ngGrid]="{'max_cols': 12, 'draggable':false, 'resizeable':false}" style="display:inline-block; background-color:#efefef">
+                <div *ngFor="let item of items; let i = index" [ngGridItem]="{'sizex': item.chartPositionInformation.sizeX, 'sizey':item.chartPositionInformation.sizeY, 'col': item.chartPositionInformation.col, 'row': item.chartPositionInformation.row}" >
+                    <chart-module style="display:inline-block;"
+                                  [attr.id]="item.id"
                               [attr.data-sizex]="item.chartPositionInformation.sizeX"
                               [attr.data-sizey]="item.chartPositionInformation.sizeY"
                               [attr.data-col]="item.chartPositionInformation.col"
@@ -11,29 +12,30 @@
                               [readOnly]="item.readOnly"
                               [chartData]="item.chartData"
                               [chartOptions]="item.chartOptions"
-                              [series]="item.series"
+                                  [series]="item.series"
                               [chartColors]="item.chartColors"
                               [chartType]="item.chartType"
                               [sourceUrl]="item.sourceUrl"
-                              [selectedSerie]="item.selectedSerie"
-                              [minThreshold]="item.minThreshold"
-                              [maxThreshold]="item.maxThreshold"
-                              [currentValue]="item.currentValue"
-                              [topText]="item.topText"
-                              [bottomText]="item.bottomText"
-                              [topStyle]="item.topStyle"
-                              [mainStyle]="item.mainStyle"
-                              [bottomStyle]="item.bottomStyle"
-                              [moduleData]="item.moduleData"
-                              [data]="item.data"
-                              [striped]="item.striped"
-                              [condensed]="item.condensed"
-                              [showSeriesTitle]="item.showSeriesTitle"
-                              [innerType]="item.innerType"
-                              [labels]="item.labels"
-                              [modal]="item.modal">
-
-                </chart-module>
+                                  [selectedSerie]="item.selectedSerie"
+                                  [minThreshold]="item.minThreshold"
+                                  [maxThreshold]="item.maxThreshold"
+                                  [currentValue]="item.currentValue"
+                                  [topText]="item.topText"
+                                  [bottomText]="item.bottomText"
+                                  [topStyle]="item.topStyle"
+                                  [mainStyle]="item.mainStyle"
+                                  [bottomStyle]="item.bottomStyle"
+                                  [moduleData]="item.moduleData"
+                                  [data]="item.data"
+                                  [striped]="item.striped"
+                                  [condensed]="item.condensed"
+                                  [showSeriesTitle]="item.showSeriesTitle"
+                                  [innerType]="item.innerType"
+                                  [labels]="item.labels"
+                                  [modal]="item.modal"
+                                  [chartPositionInformation]="chartPositionInformation">
+                    </chart-module>
+                </div>
             </div>
         </div>
     </div>

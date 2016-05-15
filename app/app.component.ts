@@ -4,8 +4,6 @@ import {TopNavComponent} from './dashboard/topnav/topnav.component';
 import {SidebarComponent} from './dashboard/sidebar/sidebar.component';
 import {HomeComponent} from './dashboard/home/home.component';
 import {AdminComponent} from "./dashboard/admin/admin.components";
-import {GridsterItem} from './libs/gridster/gridster';
-import {DebugModule} from './modules/debug-module.component';
 import {ChartModule} from './modules/chart-module.component';
 declare var $;
 @Component({

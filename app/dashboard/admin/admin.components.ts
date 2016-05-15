@@ -1,8 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {ModulesService} from '../../services/modules.service';
 import {ModuleMetadata} from '../../modules/module-metadata.model';
-import {DebugModule} from '../../modules/debug-module.component';
-import {AfterViewInit} from '@angular/core'
+import { AfterViewInit } from '@angular/core'
 import {ChartModule} from '../../modules/chart-module.component';
 import {DataProviderService} from '../../services/data-provider.service';
 import {ChartPositionInformation} from '../../modules/chart-position-information';
@@ -15,7 +14,7 @@ declare var $;
 @Component({
     selector: 'home',
     templateUrl: './app/dashboard/admin/admin.html',
-    directives: [DebugModule, ChartModule, NgGrid, NgGridItem]
+    directives: [ ChartModule, NgGrid, NgGridItem ]
 })
 export class AdminComponent implements AfterViewInit {
     @Input('availableModules') private _availableModules:ModuleMetadata[];
@@ -24,30 +23,30 @@ export class AdminComponent implements AfterViewInit {
     @Input('savedCofig') private _savedConfig:string;
 
 
-    constructor(private modulesService:ModulesService, private dataProviderService:DataProviderService, private moduleConfigService:ModuleConfigService) {
+    constructor(private modulesService: ModulesService, private dataProviderService:DataProviderService, private moduleConfigService:ModuleConfigService) {
         this._availableModules = modulesService.getAvailableModules();
         let storedItems = window.localStorage.getItem('charts');
-        if (storedItems) {
+        if(storedItems){
             this.items = storedItems;
-        } else {
+        }else{
             let item1 = new ChartModule(dataProviderService, 'ChartModule');
-            item1.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);
+            item1.chartPositionInformation = new ChartPositionInformation(0,0,5,1);
             let item2 = new ChartModule(dataProviderService, 'HealthModule');
-            item2.chartPositionInformation = new ChartPositionInformation(6, 0, 5, 1);
+            item2.chartPositionInformation = new ChartPositionInformation(6,0,5,1);
 
             this.items = [];
             this.items.push(item1, item2);
         }
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(){
     }
 
-    addNewModule(availableModule:ModuleMetadata) {
+    addNewModule(availableModule:ModuleMetadata){
         let newModuleType:any = availableModule.getType();
         let newModuleInnerType:any;
 
-        switch ((<ChartModuleMetadata>availableModule).getChartType()) {
+        switch( (<ChartModuleMetadata>availableModule).getChartType()){
             case ChartType.BAR:
                 newModuleInnerType = 'ChartModule';
                 break;
@@ -71,8 +70,8 @@ export class AdminComponent implements AfterViewInit {
 
         let newModule = new newModuleType(this.dataProviderService, newModuleInnerType);
 
-        if (ChartModule == newModuleType) {
-            switch ((<ChartModuleMetadata>availableModule).getChartType()) {
+        if(ChartModule == newModuleType){
+            switch( (<ChartModuleMetadata>availableModule).getChartType()){
                 case ChartType.BAR:
                     newModule.lineChartType = 'bar';
                     break;
@@ -82,7 +81,7 @@ export class AdminComponent implements AfterViewInit {
             }
         }
 
-        newModule.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);
+        newModule.chartPositionInformation = new ChartPositionInformation(0,0,5,1);
         this.items.push(newModule);
     }
 
@@ -130,9 +129,9 @@ export class AdminComponent implements AfterViewInit {
         this.moduleConfigService.getConfigById(this._configId)
             .subscribe(config => {
                 if (config !== null) {
-                    for (let i = 0; i < this._items.length; ++i) {
-                        this._items[i].setConfig(config[i]);
-                    }
+                for (let i = 0; i < this._items.length; ++i) {
+                    this._items[i].setConfig(config[i]);
+                }
                 }
             });
     }

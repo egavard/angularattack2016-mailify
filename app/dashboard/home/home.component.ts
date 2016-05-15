@@ -1,18 +1,15 @@
 import {Component, AfterViewInit} from "@angular/core";
 import {CHART_DIRECTIVES} from "../../libs/ng2-charts-upgrade-rc1/components/charts/charts";
 import {ColorPickerDirective} from "../../libs/color-picker/color-picker.directive";
-import {DebugModule} from "../../modules/debug-module.component";
 import {DataProviderService} from "../../services/data-provider.service";
 import {ChartModule} from "../../modules/chart-module.component";
-import {TableModule} from "../../modules/table-module.component";
-import {HealthModule} from "../../modules/health-module.component";
 import {ChartPositionInformation} from '../../modules/chart-position-information';
-import {ModuleConfigService} from "../../services/module-config.service";
+import {NgGrid, NgGridItem} from 'angular2-grid/dist/NgGrid';
 
 @Component({
     selector: 'home',
     templateUrl: './app/dashboard/home/home.html',
-    directives:[ DebugModule, ChartModule, TableModule, HealthModule, CHART_DIRECTIVES, ColorPickerDirective]
+    directives:[ ChartModule, CHART_DIRECTIVES, ColorPickerDirective, NgGrid, NgGridItem]
 })
 export class HomeComponent implements AfterViewInit {
     
@@ -33,16 +30,16 @@ export class HomeComponent implements AfterViewInit {
                 this.items.push(module);
             }
         } else {
-            let debugModule = new ChartModule(dataService, 'DebugModule');
-            debugModule.chartPositionInformation = new ChartPositionInformation(1, 1, 1, 1);
-            let barModule = new ChartModule(dataService, 'ChartModule');
+        let debugModule = new ChartModule(dataService,'DebugModule');
+        debugModule.chartPositionInformation = new ChartPositionInformation(1,1,5,1);
+        let barModule = new ChartModule(dataService,'ChartModule');
             barModule.chartType = 'bar';
             barModule.chartPositionInformation = new ChartPositionInformation(1, 1, 1, 1);
-            let chartModule = new ChartModule(dataService, 'ChartModule');
+        let chartModule = new ChartModule(dataService,'ChartModule');
             chartModule.chartType = 'line';
             chartModule.chartPositionInformation = new ChartPositionInformation(1, 1, 1, 1);
 
-            this.items.push(debugModule, chartModule, barModule);
+        this.items.push(debugModule, chartModule, barModule);
         }
         
     }

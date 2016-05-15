@@ -22,13 +22,9 @@
     </div>
     <div class="row playground">
 		<div class="col-md-12" [ngGrid]="{'max_cols': 12}" style="display:inline-block; background-color:#efefef">
-            <div *ngFor="let item of items; let i = index" [ngGridItem]="{'sizex': 1, 'sizey':1, 'col': item.chartPositionInformation.col, 'row': item.chartPositionInformation.row}">
+            <div *ngFor="let item of items; let i = index" [ngGridItem]="{'sizex': item.chartPositionInformation.sizeX, 'sizey':item.chartPositionInformation.sizeY, 'col': item.chartPositionInformation.col, 'row': item.chartPositionInformation.row}">
                     <chart-module style="display:inline-block;"
                                   [attr.id]="item.id"
-                                  [attr.data-sizex]="item.chartPositionInformation.sizeX"
-                                  [attr.data-sizey]="item.chartPositionInformation.sizeY"
-                                  [attr.data-col]="item.chartPositionInformation.col"
-                                  [attr.data-row]="item.chartPositionInformation.row"
                                   [readOnly]="item.readOnly"
                                   [chartValues]="item.chartValues"
                                   [labels]="item.labels"
@@ -52,8 +48,10 @@
                                   [condensed]="item.condensed"
                                   [showSeriesTitle]="item.showSeriesTitle"
                                   [innerType]="item.innerType"
-                                  [modal]="item.modal">
+                                  [modal]="item.modal"
+                                  [chartPositionInformation]="chartPositionInformation"
 
+                    >
                     </chart-module>
             </div>
         </div>

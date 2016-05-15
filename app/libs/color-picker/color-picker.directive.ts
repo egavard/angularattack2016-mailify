@@ -17,7 +17,7 @@ export class ColorPickerDirective implements OnInit {
     @Output('colorPickerChange') colorPickerChange = new EventEmitter<string>();
     @Input('cpPosition') cpPosition: string = 'right';
     @Input('cpPositionOffset') cpPositionOffset: string = '0%';
-    @Input('cpPositionRelativeToArrow') cpPositionRelativeToArrow: boolean = false;
+    @Input('cpPositionRelativeToArrow') cpPositionRelativeToArrow: boolean = true;
     @Input('cpOutputFormat') cpOutputFormat: string = 'hex';
     @Input('cpCancelButton') cpCancelButton: boolean = false;
     @Input('cpCancelButtonClass') cpCancelButtonClass: string = 'cp-cancel-button-class';
@@ -301,7 +301,7 @@ export class DialogComponent implements OnInit {
             this.left += this.cpPositionOffset / 100 * boxDirective.width - this.dialogArrowOffset;
         } else {
             this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
-            this.left += boxDirective.width + this.dialogArrowSize;
+         //   this.left += boxDirective.width + this.dialogArrowSize;
         }
     }
 

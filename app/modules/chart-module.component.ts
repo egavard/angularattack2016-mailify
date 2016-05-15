@@ -67,62 +67,62 @@ export class ChartModule implements Module {
     /**
      * HEALTH MODULE
      */
-    @Input('minThreshold') private _minThreshold:number;
-    @Input('maxThreshold') private _maxThreshold:number;
-    @Input('currentValue') private _currentValue:number;
+    @Input('minThreshold')private _minThreshold: number;
+    @Input('maxThreshold')private _maxThreshold: number;
+    @Input('currentValue')private _currentValue: number;
 
-    @Input('topText') private _topText:string;
-    @Input('bottomText') private _bottomText:string;
+    @Input('topText')private _topText: string;
+    @Input('bottomText')private _bottomText: string;
 
     // styles
-    @Input('topStyle') private _topStyle:CommonStyle;
-    @Input('mainStyle') private _mainStyle:CommonStyle;
-    @Input('bottomStyle') private _bottomStyle:CommonStyle;
+    @Input('topStyle')private _topStyle:CommonStyle;
+    @Input('mainStyle')private _mainStyle:CommonStyle;
+    @Input('bottomStyle')private _bottomStyle:CommonStyle;
 
-    @Input('moduleData') private _moduleData:any = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum eros in nunc varius dapibus. Aliquam vel aliquam ante. Vivamus euismod tortor vel tincidunt gravida. Etiam enim velit, consectetur non eleifend in, lobortis sed quam. Vivamus imperdiet odio efficitur leo ultricies ullamcorper. Quisque congue elit in est lobortis, eget accumsan eros rhoncus. Cras congue quam et arcu scelerisque, ut hendrerit turpis ultrices. Praesent quis magna nec massa lacinia porttitor. Proin tristique, ipsum quis varius aliquam, justo nunc molestie sem, quis tristique leo magna at leo. Nullam dapibus efficitur auctor."
+    @Input('moduleData')private _moduleData:any = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum eros in nunc varius dapibus. Aliquam vel aliquam ante. Vivamus euismod tortor vel tincidunt gravida. Etiam enim velit, consectetur non eleifend in, lobortis sed quam. Vivamus imperdiet odio efficitur leo ultricies ullamcorper. Quisque congue elit in est lobortis, eget accumsan eros rhoncus. Cras congue quam et arcu scelerisque, ut hendrerit turpis ultrices. Praesent quis magna nec massa lacinia porttitor. Proin tristique, ipsum quis varius aliquam, justo nunc molestie sem, quis tristique leo magna at leo. Nullam dapibus efficitur auctor."
 
-    @Input('data') private _data:Chart;
+    @Input('data')private _data: Chart;
     @Input('chartValues') private _chartValues:number[][];
     // style properties (move somewhere else ?)
-    @Input('striped') private _striped:boolean;
-    @Input('condensed') private _condensed:boolean;
+    @Input('striped')private _striped: boolean;
+    @Input('condensed')private _condensed: boolean;
 
-    @Input('showSeriesTitle') private _showSeriesTitle:boolean;
+    @Input('showSeriesTitle')private _showSeriesTitle: boolean;
 
     @Input('innerType') innerType:string;
 
 
     constructor(private dataProviderService:DataProviderService, @Optional() innerType?:string) {
-        if (innerType != null) {
+        if(innerType != null){
             this.innerType = innerType;
         }
-        if (this.innerType != null) {
-            if ('ChartModule' == this.innerType) {
+        if(this.innerType != null){
+            if('ChartModule' == this.innerType){
                 this._series = [];
                 this._chartPositionInformation = new ChartPositionInformation(0, 0, 1, 1);
                 this.randomizeData();
 
-            } else if ('HealthModule' == this.innerType) {
+            }else if('HealthModule' == this.innerType){
                 // fake data
                 this._minThreshold = 25;
                 this._maxThreshold = 75;
 
                 this._topText = `This is an health indicator.
-                    Low when < ${this._minThreshold}, 
-                    High when > ${this._maxThreshold} 
-                `;
+            Low when < ${this._minThreshold}, 
+            High when > ${this._maxThreshold} 
+`;
                 this._topStyle = new CommonStyle(CommonStyle.COLOR_DEFAULT, 'inherit', 'bold');
                 this._mainStyle = new CommonStyle();
                 this._bottomStyle = new CommonStyle('inherit', '2em', 'bold');
                 this.randomize();
-            } else if ('TableModule' == this.innerType) {
+            }else if('TableModule' == this.innerType){
                 this.randomizeTableData();
                 this._striped = true;
                 this._condensed = true;
                 this._showSeriesTitle = true;
 
             }
-        } else {
+        }else{
             this.innerType = 'ChartModule';
             this._series = [];
             this._chartPositionInformation = new ChartPositionInformation(0, 0, 1, 1);
@@ -156,7 +156,7 @@ export class ChartModule implements Module {
         this.chartColors = config.colors;
         if (config.position) {
             this._chartPositionInformation = config.position;
-        }
+    }
     }
 
 
@@ -195,14 +195,13 @@ export class ChartModule implements Module {
 
     onSelect(series) {
         var idx = this._series.indexOf(series);
-        console.log(series, idx);
         if (idx > -1) {
             this._selectedSerie = series;
             this._backgroundColor = this._chart.colours[idx]._backgroundColor;
             this._borderColor = this._chart.colours[idx]._borderColor;
             this._pointBackgroundColor = this._chart.colours[idx]._pointBackgroundColor;
+            }
         }
-    }
 
 
     /**
@@ -255,7 +254,7 @@ export class ChartModule implements Module {
 
     private randomizeTableData() {
         this.dataProviderService.getBasicChartFromRandomData(4, 4).then(
-            (chart:Chart) => this.data = chart
+            (chart: Chart) => this.data = chart
         );
         this._dataPrepared = true;
 
@@ -498,9 +497,9 @@ export class ChartModule implements Module {
 
     get chartValues():number[][] {
         return this._chartValues;
-    }
+}
 
     set chartValues(value:number[][]) {
         this._chartValues = value;
-    }
+}
 }
