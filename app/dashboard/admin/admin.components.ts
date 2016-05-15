@@ -81,7 +81,7 @@ export class AdminComponent implements AfterViewInit {
             }
         }
 
-        newModule.chartPositionInformation = new ChartPositionInformation(0,0,5,1);
+        newModule.chartPositionInformation = new ChartPositionInformation(0,0,2,1);
         this.items.push(newModule);
     }
 
