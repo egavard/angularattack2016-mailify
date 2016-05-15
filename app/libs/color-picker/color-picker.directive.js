@@ -22,7 +22,7 @@ var ColorPickerDirective = (function () {
         this.colorPickerChange = new core_1.EventEmitter();
         this.cpPosition = 'right';
         this.cpPositionOffset = '0%';
-        this.cpPositionRelativeToArrow = false;
+        this.cpPositionRelativeToArrow = true;
         this.cpOutputFormat = 'hex';
         this.cpCancelButton = false;
         this.cpCancelButtonClass = 'cp-cancel-button-class';
@@ -343,7 +343,6 @@ var DialogComponent = (function () {
         }
         else {
             this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
-            this.left += boxDirective.width + this.dialogArrowSize;
         }
     };
     DialogComponent.prototype.setSaturation = function (val) {

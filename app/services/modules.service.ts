@@ -1,9 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ModuleMetadata} from "../modules/module-metadata.model.ts";
-import {DebugModuleMetadata} from "../modules/debug-module-metadata.model";
 import {ChartModuleMetadata, ChartType} from "../modules/chart-module-metadata.model";
-import {TableModuleMetadata} from "../modules/table-module-metadata.model";
-import {HealthModuleMetadata} from "../modules/health-module-metadata.model";
 
 @Injectable()
 export class ModulesService {

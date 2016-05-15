@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {ModulesService} from '../../services/modules.service';
 import {ModuleMetadata} from '../../modules/module-metadata.model';
-import {DebugModule} from '../../modules/debug-module.component';
 import { AfterViewInit } from '@angular/core'
 import {ChartModule} from '../../modules/chart-module.component';
 import {DataProviderService} from '../../services/data-provider.service';
@@ -15,7 +14,7 @@ declare var $;
 @Component({
     selector: 'home',
     templateUrl: './app/dashboard/admin/admin.html',
-    directives: [ DebugModule, ChartModule, NgGrid, NgGridItem ]
+    directives: [ ChartModule, NgGrid, NgGridItem ]
 })
 export class AdminComponent implements AfterViewInit {
     private _availableModules: ModuleMetadata[];
