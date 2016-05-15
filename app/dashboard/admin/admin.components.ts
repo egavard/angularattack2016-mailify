@@ -103,7 +103,9 @@ export class AdminComponent implements AfterViewInit {
     }
 
     saveCurrentConfig() {
-        this.moduleConfigService.saveConfig(this._configId, this._items.map(i => i.getConfig()))
+        let configs = this._items.map(i => i.getConfig());
+        console.log(configs);
+        this.moduleConfigService.saveConfig(this._configId, configs)
             .subscribe(() => {
                 this.loadConfig()
             });
@@ -111,6 +113,10 @@ export class AdminComponent implements AfterViewInit {
 
     loadConfig() {
         this.moduleConfigService.getConfigById(this._configId)
-            .subscribe(config => this._items = config);
+            .subscribe(config => {
+                for (let i = 0; i < this._items.length; ++i) {
+                    this._items[i].setConfig(config[i]);
+                }
+            });
     }
 }

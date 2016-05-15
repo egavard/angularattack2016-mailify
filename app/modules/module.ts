@@ -7,4 +7,6 @@ export interface Module {
      * used to serialize and save a module's custom config
      */
     getConfig: () => any;
+
+    setConfig: void;
 }
