@@ -80,10 +80,10 @@ export class AdminComponent implements AfterViewInit {
         if(ChartModule == newModuleType){
             switch( (<ChartModuleMetadata>availableModule).getChartType()){
                 case ChartType.BAR:
-                    newModule.lineChartType = 'bar';
+                    newModule.chartType = 'bar';
                     break;
                 case ChartType.LINE:
-                    newModule.lineChartType = 'line';
+                    newModule.chartType = 'line';
                     break;
             }
         }
