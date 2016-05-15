@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="card card-block">
         <div class="row playground">
-            <div class="col-md-12" [ngGrid]="{'max_cols': 12, 'draggable':false, 'resizeable':false}"
+            <div class="col-md-12" [ngGrid]="{'max_cols': 12, 'draggable':false, 'resizable':false}"
                  style="display:inline-block; background-color:#efefef">
                 <div *ngFor="let item of items; let i = index"
                      [ngGridItem]="{'sizex': item.chartPositionInformation.sizeX, 'sizey':item.chartPositionInformation.sizeY, 'col': item.chartPositionInformation.col, 'row': item.chartPositionInformation.row}">
