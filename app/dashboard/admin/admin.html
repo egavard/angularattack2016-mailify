@@ -2,34 +2,33 @@
     <h4>Manage Dashboard</h4>
 
     <div class="row availableModules">
-        <div class="col-sm-12">
+		<div class="col-sm-12">
             <h5>Modules</h5>
             <ul>
                 <li *ngFor="let availableModule of availableModules">
                     <i class="fa" [ngClass]="availableModule.getIcon()"></i>
                     {{ availableModule.getName() }}
                 </li>
-            </ul>
-        </div>
+			</ul>
+		</div>
     </div>
     <div class="row playground">
-        <div class="col-md-12" [ngGrid]="{'max_cols': 12}" style="display:inline-block; background-color:#efefef">
-            <div *ngFor="let item of items; let i = index"
-                 [ngGridItem]="{'sizex': 3, 'sizey':1, 'col': ((i%3)?1:4), 'row':((i/6)+1)}">
-                <chart-module style="display:inline-block;"
-                              [attr.id]="item.id"
-                              [attr.data-sizex]="item.chartPositionInformation.sizeX"
-                              [attr.data-sizey]="item.chartPositionInformation.sizeY"
-                              [attr.data-col]="item.chartPositionInformation.col"
-                              [attr.data-row]="item.chartPositionInformation.row"
-                              [readOnly]="item.readOnly"
-                              [lineChartData]="item.lineChartData"
-                              [lineChartLabels]="item.lineChartLabels"
-                              [lineChartOptions]="item.lineChartOptions"
-                              [lineChartSeries]="item.lineChartSeries"
-                              [lineChartColours]="item.lineChartColours"
-                              [lineChartType]="item.lineChartType"></chart-module>
+		<div class="col-md-12" [ngGrid]="{'max_cols': 12}" style="display:inline-block; background-color:#efefef">
+            <div *ngFor="let item of items; let i = index" [ngGridItem]="{'sizex': 2, 'sizey':1, 'col': item.chartPositionInformation.col, 'row': item.chartPositionInformation.row}">
+                    <chart-module style="display:inline-block;"
+                                  [attr.id]="item.id"
+                                  [attr.data-sizex]="item.chartPositionInformation.sizeX"
+                                  [attr.data-sizey]="item.chartPositionInformation.sizeY"
+                                  [attr.data-col]="item.chartPositionInformation.col"
+                                  [attr.data-row]="item.chartPositionInformation.row"
+                                  [readOnly]="item.readOnly"
+                                  [lineChartData]="item.lineChartData"
+                                  [lineChartLabels]="item.lineChartLabels"
+                                  [lineChartOptions]="item.lineChartOptions"
+                                  [lineChartSeries]="item.lineChartSeries"
+                                  [lineChartColours]="item.lineChartColours"
+                                  [lineChartType]="item.lineChartType"></chart-module>
             </div>
         </div>
-    </div>
+	</div>
 </div>
