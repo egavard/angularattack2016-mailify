@@ -53,7 +53,6 @@ export class ChartModule implements Module {
     private sourceUrl1: string = '';
 
     ngAfterViewInit(){
-        // this.chart.chartType='line';
     }
 
     @log()
