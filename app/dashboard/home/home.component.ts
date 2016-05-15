@@ -24,11 +24,11 @@ export class HomeComponent implements AfterViewInit {
         this.items = [];
         let debugModule = new ChartModule(dataService,'DebugModule');
         debugModule.chartPositionInformation = new ChartPositionInformation(1,1,1,1);
-        let barModule = new ChartModule(dataService,'DebugModule');
-        barModule.innerType = 'bar';
+        let barModule = new ChartModule(dataService,'ChartModule');
+        barModule.lineChartType = 'bar';
         barModule.chartPositionInformation = new ChartPositionInformation(1,1,1,1);
-        let chartModule = new ChartModule(dataService,'DebugModule');
-        chartModule.innerType = 'line';
+        let chartModule = new ChartModule(dataService,'ChartModule');
+        chartModule.lineChartType = 'line';
         chartModule.chartPositionInformation = new ChartPositionInformation(1,1,1,1);
 
         this.items.push(debugModule, chartModule, barModule);
