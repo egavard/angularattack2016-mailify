@@ -35,11 +35,21 @@ export class AdminComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(){
-        console.log($('.gridster ul'));
         $('.gridster ul').gridster({
             max_cols:12,
+            draggable:{
+                start:function(event,ui){
+                },
+                drag:function(event,ui){
+
+                },
+                stop:function(event,ui){
+                    console.log('stop');
+                    console.log(event);
+                    console.log(ui);
+                }
+            }
         });
-        console.log($('.gridster ul'));
     }
 
     get items():ChartModule[] {
