@@ -6,10 +6,8 @@ export class CommonStyle {
     private _fontWeight: string;
 
     public static COLOR_DEFAULT = 'inherit';
-    public static COLOR_MATCH = 'match';
 
-
-    constructor(color:string = COLOR_DEFAULT, fontSize:string = 'inherit', fontWeight:string = 'normal') {
+    constructor(color:string = CommonStyle.COLOR_DEFAULT, fontSize:string = 'inherit', fontWeight:string = 'normal') {
         this._color = color;
         this._fontSize = fontSize;
         this._fontWeight = fontWeight;

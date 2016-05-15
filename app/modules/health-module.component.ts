@@ -37,7 +37,7 @@ export class HealthModule extends GridsterItem implements Module {
         
         this._topStyle = new CommonStyle(CommonStyle.COLOR_DEFAULT, 'inherit', 'bold');
         this._mainStyle = new CommonStyle();
-        this._bottomStyle = new CommonStyle(CommonStyle.COLOR_DEFAULT, '2em', 'bold');
+        this._bottomStyle = new CommonStyle(CommonStyle.COLOR_MATCH, '2em', 'bold');
     }
 
     getModuleMetadata() {
