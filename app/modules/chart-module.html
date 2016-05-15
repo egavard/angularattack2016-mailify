@@ -5,12 +5,12 @@
 </h4>
 
 <base-chart style="width:100%;" class="chart"
-            [data]="lineChartData"
-            [labels]="lineChartLabels"
-            [options]="lineChartOptions"
-            [series]="lineChartSeries"
-            [colours]="lineChartColours"
-            [chartType]="lineChartType"
+            [data]="data"
+            [labels]="labels"
+            [options]="chartOptions"
+            [series]="series"
+            [colours]="chartColors"
+            [chartType]="chartType"
             (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)" *ngIf="dataPrepared"></base-chart>
 <modal #modal>
@@ -22,7 +22,7 @@
         <h5>Chart type</h5>
         <div class="form-group">
             <select class="form-control" (change)="onSelectType($event.target.value)">
-                <option *ngFor="let serie of types" [value]="serie.id">{{serie.name}}</option>
+                <option *ngFor="let type of types" [value]="type">{{type}}</option>
             </select>
         </div>
 
@@ -31,7 +31,7 @@
             <div class="form-group">
                 <label>Select a series</label>
                 <select class="form-control" (change)="onSelect($event.target.value)">
-                    <option *ngFor="let serie of series" [value]="serie.id">{{serie.name}}</option>
+                    <option *ngFor="let serie of series" [value]="serie">{{serie}}</option>
                 </select>
             </div>
 

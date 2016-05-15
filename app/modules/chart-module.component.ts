@@ -24,114 +24,112 @@ export class ChartModule implements Module {
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
     @Input() private _chartPositionInformation:ChartPositionInformation
 
-    @Input() private backgroundColor:string = "rgba(222, 239, 183, 0.6)";
-    @Input() private borderColor:string = "rgba(222, 239, 183, 1)";
-    @Input() private pointBackgroundColor:string = "rgba(222, 239, 183, 1)";
+    // edition mode placeholders
+    @Input() private backgroundColor:string;
+    @Input() private borderColor:string;
+    @Input() private pointBackgroundColor:string;
+    @Input() private selectedSeries = null;
 
-    @Input() private lineChartData:Array<any> = [];
-    @Input() private lineChartLabels:Array<any> = [];
-    @Input() private lineChartSeries:Array<any> = [];
-    @Input() private lineChartOptions:any = {
+    // data placeholders
+    @Input() series:string[];
+    @Input() data:number[][];
+    @Input() labels:string[];
+
+    @Input() chartOptions:any = {
         animation: false,
         responsive: true,
         elements: {
             line: {
-                borderWidth: 10
+                borderWidth: 1
             }
         },
         multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>'
     };
-    @Input() private lineChartColours:Array<any> = [
-        { // red
-            backgroundColor: this.backgroundColor,
-            borderColor: this.borderColor,
-            pointBackgroundColor: this.pointBackgroundColor,
-        },
-        { // green
-            backgroundColor: "rgba(0, 204, 13, 0.6)",
-            borderColor: "rgba(38, 127, 44, 1)",
-            pointBackgroundColor: "rgba(0, 255, 16, 1)"
-        },
-        { // i'm blue
-            backgroundColor: "rgba(76, 118, 255, 0.6)",
-            borderColor: "rgba(63, 58, 232, 1)",
-            pointBackgroundColor: "rgba(58, 145, 232, 1)",
-        }
+    @Input() chartColors:Array<SeriesColors> = [
+        new SeriesColors("rgba(222, 239, 183, 0.6)",
+            "rgba(222, 239, 183, 1)",
+            "rgba(222, 239, 183, 1)")
+        ,
+        new SeriesColors(
+            "rgba(0, 204, 13, 0.6)",
+            "rgba(38, 127, 44, 1)",
+            "rgba(0, 255, 16, 1)"
+        ),
+        new SeriesColors(
+            "rgba(76, 118, 255, 0.6)",
+            "rgba(63, 58, 232, 1)",
+            "rgba(58, 145, 232, 1)"
+        )
 
     ];
-    @Input() lineChartType:string = 'line';
-    @Input() private sourceUrl1:string = '';
+    @Input() private sourceUrl:string = '';
+    @Input() chartType:string = 'line';
     @ViewChild('modal') modal:ModalComponent;
-    @Input() public series:Serie[];
-    @Input() public selectedSerie = null;
 
     constructor(private dataProviderService:DataProviderService) {
         this.readOnly = true;
         this.series = [];
         this._chartPositionInformation = new ChartPositionInformation(0, 0, 1, 1);
-        this.randomizeData()
-        setInterval(() => this.randomizeData(), 5000);
+        this.randomizeData();
+        //setInterval(() => this.randomizeData(), 5000);
     }
 
     getModuleMetadata() {
         return null;
     }
 
+    get chartPositionInformation():ChartPositionInformation {
+        return this._chartPositionInformation;
+    }
+
+    set chartPositionInformation(value:ChartPositionInformation) {
+        this._chartPositionInformation = value;
+    }
+
     /**
      * Edition mode
      */
     edit() {
-        var i = 0;
-        this.series = new Array<Serie>();
-        for (var item in this.lineChartSeries) {
-            var itemToAdd = {
-                id: i,
-                name: `Serie ${item}`
-            };
-            this.series.push(itemToAdd);
-            i++;
-        }
-        this.selectedSerie = this.series[0];
-        this.backgroundColor = this.chart.colours[this.selectedSerie.id].backgroundColor;
-        this.borderColor = this.chart.colours[this.selectedSerie.id].borderColor;
-        this.pointBackgroundColor = this.chart.colours[this.selectedSerie.id].pointBackgroundColor;
+        this.selectedSeries = this.series[0];
+        this.backgroundColor = this.chart.colours[this.series.indexOf(this.selectedSeries)].backgroundColor;
+        this.borderColor = this.chart.colours[this.series.indexOf(this.selectedSeries)].borderColor;
+        this.pointBackgroundColor = this.chart.colours[this.series.indexOf(this.selectedSeries)].pointBackgroundColor;
         this.modal.open();
     }
 
     backgroundColorChanged(color) {
-        if (this.selectedSerie != null) {
-            this.chart.colours[this.selectedSerie.id].backgroundColor = color;
+        if (this.selectedSeries != null) {
+            this.chart.colours[this.series.indexOf(this.selectedSeries)].backgroundColor = color;
             this.chart.refresh();
         }
     }
 
     borderColorChanged(color) {
-        if (this.selectedSerie != null) {
-            this.chart.colours[this.selectedSerie.id].borderColor = color;
+        if (this.selectedSeries != null) {
+            this.chart.colours[this.series.indexOf(this.selectedSeries)].borderColor = color;
             this.chart.refresh();
         }
     }
 
     pointBackgroundColorChanged(color) {
-        if (this.selectedSerie != null) {
-            this.chart.colours[this.selectedSerie.id].pointBackgroundColor = color;
+        if (this.selectedSeries != null) {
+            this.chart.colours[this.series.indexOf(this.selectedSeries)].pointBackgroundColor = color;
             this.chart.refresh();
         }
     }
 
-    onSelect(serieId) {
-        this.selectedSerie = null;
-        for (var i = 0; i < this.series.length; i++) {
-            if (this.series[i].id == serieId) {
-                this.selectedSerie = this.series[i];
-                this.backgroundColor = this.chart.colours[this.selectedSerie.id].backgroundColor;
-                this.borderColor = this.chart.colours[this.selectedSerie.id].borderColor;
-                this.pointBackgroundColor = this.chart.colours[this.selectedSerie.id].pointBackgroundColor;
-            }
+    onSelect(serie) {
+        let idx = this.series.indexOf(serie);
+        if (idx > -1) {
+            this.selectedSeries = serie;
+            this.backgroundColor = this.chart.colours[idx].backgroundColor;
+            this.borderColor = this.chart.colours[idx].borderColor;
+            this.pointBackgroundColor = this.chart.colours[idx].pointBackgroundColor;
+        } else {
+            throw 'series not found';
         }
     }
-
-
+    
     /**
      * re-generates random data
      */
@@ -142,30 +140,29 @@ export class ChartModule implements Module {
     }
 
     loadDataFromSourceUrl() {
-        this.dataProviderService.getBasicChartFromSourceUrl(this.sourceUrl1).subscribe(
+        this.dataProviderService.getBasicChartFromSourceUrl(this.sourceUrl).subscribe(
             (chart:Chart) => this.loadDataIntoChart(chart),
             error => console.log(error)
         );
     }
 
     private loadDataIntoChart(chart:Chart) {
-        this.lineChartLabels = chart.labels;
-        this.lineChartSeries = chart.series.map(s => s.title);
-        this.lineChartData = chart.series.map(s => s.points);
+        this.labels = chart.labels;
+        this.series = chart.series.map(s => s.title);
+        this.data = chart.series.map(s => s.points);
         this.dataPrepared = true;
     }
 
-    get chartPositionInformation():ChartPositionInformation {
-        return this._chartPositionInformation;
-    }
-
-    set chartPositionInformation(value:ChartPositionInformation) {
-        this._chartPositionInformation = value;
-    }
-    
 }
 
-export class Serie {
-    id:number;
-    name:string;
+export class SeriesColors {
+    backgroundColor:string;
+    borderColor:string;
+    pointBackgroundColor:string;
+
+    constructor(backgroundColor:string, borderColor:string, pointBackgroundColor:string) {
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
+        this.pointBackgroundColor = pointBackgroundColor;
+    }
 }

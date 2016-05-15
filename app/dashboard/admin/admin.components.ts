@@ -26,18 +26,14 @@ export class AdminComponent implements AfterViewInit {
                 private dataProviderService:DataProviderService,
                 private moduleConfigService:ModuleConfigService) {
         this.availableModules = modulesService.getAvailableModules();
-        let storedItems = window.localStorage.getItem('charts');
-        if (storedItems) {
-            this.items = storedItems;
-        } else {
-            let item1 = new ChartModule(dataProviderService);
-            item1.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);
-            let item2 = new ChartModule(dataProviderService);
-            item2.chartPositionInformation = new ChartPositionInformation(6, 0, 5, 1);
 
-            this.items = [];
-            this.items.push(item1, item2);
-        }
+        let item1 = new ChartModule(dataProviderService);
+        item1.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);
+        let item2 = new ChartModule(dataProviderService);
+        item2.chartPositionInformation = new ChartPositionInformation(6, 0, 5, 1);
+
+        this.items = [];
+        this.items.push(item1, item2);
     }
 
     ngAfterViewInit() {
@@ -87,7 +83,7 @@ export class AdminComponent implements AfterViewInit {
     }
 
     saveCurrentConfig() {
-        this.moduleConfigService.saveConfig(this._configId, { foo: 'bar' })
+        this.moduleConfigService.saveConfig(this._configId, this._items)
             .subscribe(() => {
                 this.loadConfig()
             });
@@ -95,6 +91,6 @@ export class AdminComponent implements AfterViewInit {
 
     loadConfig() {
         this.moduleConfigService.getConfigById(this._configId)
-            .subscribe(config => this._savedConfig = config);
+            .subscribe(config => this._items = config);
     }
 }
