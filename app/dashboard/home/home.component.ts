@@ -7,6 +7,7 @@ import {ChartModule} from "../../modules/chart-module.component";
 import {TableModule} from "../../modules/table-module.component";
 import {HealthModule} from "../../modules/health-module.component";
 import {ChartPositionInformation} from '../../modules/chart-position-information';
+import {ModuleConfigService} from "../../services/module-config.service";
 
 @Component({
     selector: 'home',
@@ -20,18 +21,29 @@ export class HomeComponent implements AfterViewInit {
     ngAfterViewInit(){
     }
 
-    constructor(dataService:DataProviderService){
+    constructor(dataService:DataProviderService, moduleConfigService: ModuleConfigService){
+        let savedConfigs = moduleConfigService.currentConfig;
         this.items = [];
-        let debugModule = new ChartModule(dataService,'DebugModule');
-        debugModule.chartPositionInformation = new ChartPositionInformation(1,1,1,1);
-        let barModule = new ChartModule(dataService,'ChartModule');
-        barModule.lineChartType = 'bar';
-        barModule.chartPositionInformation = new ChartPositionInformation(1,1,1,1);
-        let chartModule = new ChartModule(dataService,'ChartModule');
-        chartModule.lineChartType = 'line';
-        chartModule.chartPositionInformation = new ChartPositionInformation(1,1,1,1);
+        if (savedConfigs) {
+            for (let conf of savedConfigs) {
+                let module = new ChartModule(dataService, conf.innerType);
+                module.chartType = conf.type;
+                module.chartColors = conf.colors;
+                module.chartPositionInformation = conf.position;
+                this.items.push(module);
+            }
+        } else {
+            let debugModule = new ChartModule(dataService, 'DebugModule');
+            debugModule.chartPositionInformation = new ChartPositionInformation(1, 1, 1, 1);
+            let barModule = new ChartModule(dataService, 'ChartModule');
+            barModule.chartType = 'bar';
+            barModule.chartPositionInformation = new ChartPositionInformation(1, 1, 1, 1);
+            let chartModule = new ChartModule(dataService, 'ChartModule');
+            chartModule.chartType = 'line';
+            chartModule.chartPositionInformation = new ChartPositionInformation(1, 1, 1, 1);
 
-        this.items.push(debugModule, chartModule, barModule);
+            this.items.push(debugModule, chartModule, barModule);
+        }
         
     }
 

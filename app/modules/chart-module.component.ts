@@ -22,16 +22,14 @@ export class ChartModule implements Module {
     });
     @Input('dataPrepared') private _dataPrepared:boolean = false;
     @ViewChild(BaseChartComponent) private _chart:BaseChartComponent;
-    @Input('chartPositionInformation') private _chartPositionInformation:ChartPositionInformation
+    @Input('chartPositionInformation') private _chartPositionInformation:ChartPositionInformation;
 
-    @Input('backgroundColor') private _backgroundColor:string = "rgba(222, 239, 183, 0.6)";
-    @Input('borderColor') private _borderColor:string = "rgba(222, 239, 183, 1)";
-    @Input('pointBackgroundColor') private _pointBackgroundColor:string = "rgba(222, 239, 183, 1)";
+    @Input('backgroundColor') private _backgroundColor:string;
+    @Input('borderColor') private _borderColor:string;
+    @Input('labels') private _labels:Array<string>;
+    @Input('pointBackgroundColor') private _pointBackgroundColor:string;
 
-    @Input('lineChartData') private _lineChartData:Array<any> = [];
-    @Input('lineChartLabels') private _lineChartLabels:Array<any> = [];
-    @Input('lineChartSeries') private _lineChartSeries:Array<any> = [];
-    @Input('lineChartOptions') private _lineChartOptions:any = {
+    @Input('chartOptions') private _chartOptions:any = {
         animation: false,
         responsive: true,
         elements: {
@@ -41,11 +39,11 @@ export class ChartModule implements Module {
         },
         multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>'
     };
-    @Input('lineChartColours') private _lineChartColours:Array<any> = [
+    @Input('chartColors') private _chartColors:Array<any> = [
         { // red
-            backgroundColor: this._backgroundColor,
-            borderColor: this._borderColor,
-            pointBackgroundColor: this._pointBackgroundColor,
+            backgroundColor: "rgba(222, 239, 183, 0.6)",
+            borderColor: "rgba(222, 239, 183, 1)",
+            pointBackgroundColor: "rgba(222, 239, 183, 1)",
         },
         { // green
             backgroundColor: "rgba(0, 204, 13, 0.6)",
@@ -59,10 +57,10 @@ export class ChartModule implements Module {
         }
 
     ];
-    @Input('lineChartType') private _lineChartType:string = 'line';
-    @Input('sourceUrl1') private _sourceUrl1:string = '';
+    @Input('chartType') private _chartType:string = 'line';
+    @Input('sourceUrl') private _sourceUrl:string = '';
     @Input('modal') @ViewChild('modal') private _modal:ModalComponent;
-    @Input('series') private _series:Serie[];
+    @Input('series') private _series:Array<string>;
     @Input('selectedSerie') private _selectedSerie = null;
 
 
@@ -84,6 +82,7 @@ export class ChartModule implements Module {
     @Input('moduleData') private _moduleData:any = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum eros in nunc varius dapibus. Aliquam vel aliquam ante. Vivamus euismod tortor vel tincidunt gravida. Etiam enim velit, consectetur non eleifend in, lobortis sed quam. Vivamus imperdiet odio efficitur leo ultricies ullamcorper. Quisque congue elit in est lobortis, eget accumsan eros rhoncus. Cras congue quam et arcu scelerisque, ut hendrerit turpis ultrices. Praesent quis magna nec massa lacinia porttitor. Proin tristique, ipsum quis varius aliquam, justo nunc molestie sem, quis tristique leo magna at leo. Nullam dapibus efficitur auctor."
 
     @Input('data') private _data:Chart;
+    @Input('chartValues') private _chartValues:number[][];
     // style properties (move somewhere else ?)
     @Input('striped') private _striped:boolean;
     @Input('condensed') private _condensed:boolean;
@@ -109,9 +108,9 @@ export class ChartModule implements Module {
                 this._maxThreshold = 75;
 
                 this._topText = `This is an health indicator.
-            Low when < ${this._minThreshold}, 
-            High when > ${this._maxThreshold} 
-        `;
+                    Low when < ${this._minThreshold}, 
+                    High when > ${this._maxThreshold} 
+                `;
                 this._topStyle = new CommonStyle(CommonStyle.COLOR_DEFAULT, 'inherit', 'bold');
                 this._mainStyle = new CommonStyle();
                 this._bottomStyle = new CommonStyle('inherit', '2em', 'bold');
@@ -139,8 +138,9 @@ export class ChartModule implements Module {
     // Store config in a proper class
     getConfig() {
         return {
-            type: this.lineChartType,
-            colors: this.lineChartColours.map(c => {
+            innerType: this.innerType,
+            type: this.chartType,
+            colors: this.chartColors.map(c => {
                 return {
                     backgroundColor: c.backgroundColor,
                     borderColor: c.borderColor,
@@ -164,53 +164,43 @@ export class ChartModule implements Module {
      * Edition mode
      */
     edit() {
-        var i = 0;
-        this._series = new Array<Serie>();
-        for (var item in this._lineChartSeries) {
-            var itemToAdd = {
-                id: i,
-                name: `Serie ${item}`
-            };
-            this._series.push(itemToAdd);
-            i++;
-        }
         this._selectedSerie = this._series[0];
-        this._backgroundColor = this._chart.colours[this._selectedSerie.id]._backgroundColor;
-        this._borderColor = this._chart.colours[this._selectedSerie.id]._borderColor;
-        this._pointBackgroundColor = this._chart.colours[this._selectedSerie.id]._pointBackgroundColor;
+
+        this._backgroundColor = this._chart.colours[0]._backgroundColor;
+        this._borderColor = this._chart.colours[0]._borderColor;
+        this._pointBackgroundColor = this._chart.colours[0]._pointBackgroundColor;
         this._modal.open();
     }
 
     backgroundColorChanged(color) {
         if (this._selectedSerie != null) {
-            this._chart.colours[this._selectedSerie.id].backgroundColor = color;
+            this._chart.colours[this._series.indexOf(this._selectedSerie)].backgroundColor = color;
             this._chart.refresh();
         }
     }
 
     borderColorChanged(color) {
         if (this._selectedSerie != null) {
-            this._chart.colours[this._selectedSerie.id].borderColor = color;
+            this._chart.colours[this._series.indexOf(this._selectedSerie)].borderColor = color;
             this._chart.refresh();
         }
     }
 
     pointBackgroundColorChanged(color) {
         if (this._selectedSerie != null) {
-            this._chart.colours[this._selectedSerie.id].pointBackgroundColor = color;
+            this._chart.colours[this._series.indexOf(this._selectedSerie)].pointBackgroundColor = color;
             this._chart.refresh();
         }
     }
 
-    onSelect(serieId) {
-        this._selectedSerie = null;
-        for (var i = 0; i < this._series.length; i++) {
-            if (this._series[i].id == serieId) {
-                this._selectedSerie = this._series[i];
-                this._backgroundColor = this._chart.colours[this._selectedSerie.id]._backgroundColor;
-                this._borderColor = this._chart.colours[this._selectedSerie.id]._borderColor;
-                this._pointBackgroundColor = this._chart.colours[this._selectedSerie.id]._pointBackgroundColor;
-            }
+    onSelect(series) {
+        var idx = this._series.indexOf(series);
+        console.log(series, idx);
+        if (idx > -1) {
+            this._selectedSerie = series;
+            this._backgroundColor = this._chart.colours[idx]._backgroundColor;
+            this._borderColor = this._chart.colours[idx]._borderColor;
+            this._pointBackgroundColor = this._chart.colours[idx]._pointBackgroundColor;
         }
     }
 
@@ -221,16 +211,16 @@ export class ChartModule implements Module {
 
 
     loadDataFromSourceUrl() {
-        this.dataProviderService.getBasicChartFromSourceUrl(this._sourceUrl1).subscribe(
+        this.dataProviderService.getBasicChartFromSourceUrl(this._sourceUrl).subscribe(
             (chart:Chart) => this.loadDataIntoChart(chart),
             error => console.log(error)
         );
     }
 
     private loadDataIntoChart(chart:Chart) {
-        this._lineChartLabels = chart.labels;
-        this._lineChartSeries = chart.series.map(s => s.title);
-        this._lineChartData = chart.series.map(s => s.points);
+        this._labels = chart.labels;
+        this._series = chart.series.map(s => s.title);
+        this._chartValues = chart.series.map(s => s.points);
         this._dataPrepared = true;
     }
 
@@ -336,60 +326,46 @@ export class ChartModule implements Module {
         this._pointBackgroundColor = value;
     }
 
-    get lineChartData():Array<any> {
-        return this._lineChartData;
+
+    get labels():Array<string> {
+        return this._labels;
     }
 
-    set lineChartData(value:Array<any>) {
-        this._lineChartData = value;
+    set labels(value:Array<string>) {
+        this._labels = value;
     }
 
-    get lineChartLabels():Array<any> {
-        return this._lineChartLabels;
+
+    get chartOptions():any {
+        return this._chartOptions;
     }
 
-    set lineChartLabels(value:Array<any>) {
-        this._lineChartLabels = value;
+    set chartOptions(value:any) {
+        this._chartOptions = value;
     }
 
-    get lineChartSeries():Array<any> {
-        return this._lineChartSeries;
+    get chartColors():Array<any> {
+        return this._chartColors;
     }
 
-    set lineChartSeries(value:Array<any>) {
-        this._lineChartSeries = value;
+    set chartColors(value:Array<any>) {
+        this._chartColors = value;
     }
 
-    get lineChartOptions():any {
-        return this._lineChartOptions;
+    get chartType():string {
+        return this._chartType;
     }
 
-    set lineChartOptions(value:any) {
-        this._lineChartOptions = value;
+    set chartType(value:string) {
+        this._chartType = value;
     }
 
-    get lineChartColours():Array<any> {
-        return this._lineChartColours;
+    get sourceUrl():string {
+        return this._sourceUrl;
     }
 
-    set lineChartColours(value:Array<any>) {
-        this._lineChartColours = value;
-    }
-
-    get lineChartType():string {
-        return this._lineChartType;
-    }
-
-    set lineChartType(value:string) {
-        this._lineChartType = value;
-    }
-
-    get sourceUrl1():string {
-        return this._sourceUrl1;
-    }
-
-    set sourceUrl1(value:string) {
-        this._sourceUrl1 = value;
+    set sourceUrl(value:string) {
+        this._sourceUrl = value;
     }
 
     get modal():ModalComponent {
@@ -400,11 +376,11 @@ export class ChartModule implements Module {
         this._modal = value;
     }
 
-    get series():Serie[] {
+    get series():Array<string> {
         return this._series;
     }
 
-    set series(value:Array) {
+    set series(value:Array<string>) {
         this._series = value;
     }
 
@@ -520,9 +496,11 @@ export class ChartModule implements Module {
         this._showSeriesTitle = value;
     }
 
-}
+    get chartValues():number[][] {
+        return this._chartValues;
+    }
 
-export class Serie {
-    id:number;
-    name:string;
+    set chartValues(value:number[][]) {
+        this._chartValues = value;
+    }
 }

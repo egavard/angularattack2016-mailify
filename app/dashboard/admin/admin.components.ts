@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ModulesService} from '../../services/modules.service';
 import {ModuleMetadata} from '../../modules/module-metadata.model';
 import {DebugModule} from '../../modules/debug-module.component';
@@ -18,26 +18,26 @@ declare var $;
     directives: [DebugModule, ChartModule, NgGrid, NgGridItem]
 })
 export class AdminComponent implements AfterViewInit {
-    private _availableModules:ModuleMetadata[];
-    private _items:ChartModule[];
-    private _configId:string;
-    private _savedConfig:string;
+    @Input('availableModules') private _availableModules:ModuleMetadata[];
+    @Input('items') private _items:ChartModule[];
+    @Input('configId') private _configId:string;
+    @Input('savedCofig') private _savedConfig:string;
 
 
-    constructor(private modulesService: ModulesService, private dataProviderService:DataProviderService, private moduleConfigService:ModuleConfigService) {
+    constructor(private modulesService:ModulesService, private dataProviderService:DataProviderService, private moduleConfigService:ModuleConfigService) {
         this._availableModules = modulesService.getAvailableModules();
         let storedItems = window.localStorage.getItem('charts');
-        if(storedItems){
+        if (storedItems) {
             this.items = storedItems;
-        }else{
+        } else {
             let item1 = new ChartModule(dataProviderService, 'ChartModule');
-        item1.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);
+            item1.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);
             let item2 = new ChartModule(dataProviderService, 'HealthModule');
-            item2.chartPositionInformation = new ChartPositionInformation(6,0,5,1);
+            item2.chartPositionInformation = new ChartPositionInformation(6, 0, 5, 1);
 
             this.items = [];
             this.items.push(item1, item2);
-    }
+        }
     }
 
     ngAfterViewInit() {
@@ -47,23 +47,39 @@ export class AdminComponent implements AfterViewInit {
         let newModuleType:any = availableModule.getType();
         let newModuleInnerType:any;
 
-        switch( (<ChartModuleMetadata>availableModule).getChartType()){
-            case ChartType.BAR:newModuleInnerType = 'ChartModule';break;
-            case ChartType.LINE:newModuleInnerType = 'ChartModule';break;
-            case ChartType.DEBUG:newModuleInnerType = 'DebugModule';break;
-            case ChartType.HEALTH:newModuleInnerType = 'HealthModule';break;
-            case ChartType.TABLE:newModuleInnerType = 'TableModule';break;
-            default: newModuleInnerType = 'ChartModule';break;
-            }
+        switch ((<ChartModuleMetadata>availableModule).getChartType()) {
+            case ChartType.BAR:
+                newModuleInnerType = 'ChartModule';
+                break;
+            case ChartType.LINE:
+                newModuleInnerType = 'ChartModule';
+                break;
+            case ChartType.DEBUG:
+                newModuleInnerType = 'DebugModule';
+                break;
+            case ChartType.HEALTH:
+                newModuleInnerType = 'HealthModule';
+                break;
+            case ChartType.TABLE:
+                newModuleInnerType = 'TableModule';
+                break;
+            default:
+                newModuleInnerType = 'ChartModule';
+                break;
+        }
 
 
         let newModule = new newModuleType(this.dataProviderService, newModuleInnerType);
 
-        if(ChartModule == newModuleType){
-            switch( (<ChartModuleMetadata>availableModule).getChartType()){
-                case ChartType.BAR:newModule.lineChartType = 'bar';break;
-                case ChartType.LINE:newModule.lineChartType = 'line';break;
-        }
+        if (ChartModule == newModuleType) {
+            switch ((<ChartModuleMetadata>availableModule).getChartType()) {
+                case ChartType.BAR:
+                    newModule.lineChartType = 'bar';
+                    break;
+                case ChartType.LINE:
+                    newModule.lineChartType = 'line';
+                    break;
+            }
         }
 
         newModule.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);

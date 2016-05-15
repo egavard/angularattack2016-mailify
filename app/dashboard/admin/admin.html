@@ -30,14 +30,13 @@
                                   [attr.data-col]="item.chartPositionInformation.col"
                                   [attr.data-row]="item.chartPositionInformation.row"
                                   [readOnly]="item.readOnly"
-                                  [lineChartData]="item.lineChartData"
-                                  [lineChartLabels]="item.lineChartLabels"
-                                  [lineChartOptions]="item.lineChartOptions"
-                                  [lineChartSeries]="item.lineChartSeries"
-                                  [lineChartColours]="item.lineChartColours"
-                                  [lineChartType]="item.lineChartType"
-                                  [sourceUrl1]="item.sourceUrl1"
+                                  [chartValues]="item.chartValues"
+                                  [labels]="item.labels"
+                                  [chartOptions]="item.chartOptions"
                                   [series]="item.series"
+                                  [chartColors]="item.chartColors"
+                                  [chartType]="item.chartType"
+                                  [sourceUrl]="item.sourceUrl"
                                   [selectedSerie]="item.selectedSerie"
                                   [minThreshold]="item.minThreshold"
                                   [maxThreshold]="item.maxThreshold"
@@ -53,7 +52,6 @@
                                   [condensed]="item.condensed"
                                   [showSeriesTitle]="item.showSeriesTitle"
                                   [innerType]="item.innerType"
-                                  [labels]="item.labels"
                                   [modal]="item.modal">
 
                     </chart-module>

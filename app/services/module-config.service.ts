@@ -1,13 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
-export const FIREBASE: string = 'https://aa2016-mailify.firebaseio.com';
+export const FIREBASE:string = 'https://aa2016-mailify.firebaseio.com';
 
 @Injectable()
 export class ModuleConfigService {
-    constructor(private http: Http) {
+    private _currentConfig:any;
+
+    constructor(private http:Http) {
     }
 
-    getConfigById(configId: string) {
+    getConfigById(configId:string) {
         if (configId) {
             return this.http.get(`${FIREBASE}/configs/${configId}.json`)
                 .map(response => response.json());
@@ -16,11 +18,16 @@ export class ModuleConfigService {
         }
     }
 
-    saveConfig(configId: string, config: any) {
+    saveConfig(configId:string, config:any) {
         if (configId) {
+            this._currentConfig = config;
             return this.http.put(`${FIREBASE}/configs/${configId}.json`, JSON.stringify(config));
         } else {
             throw 'invalid config id';
         }
+    }
+    
+    get currentConfig():any {
+        return this._currentConfig;
     }
 }
