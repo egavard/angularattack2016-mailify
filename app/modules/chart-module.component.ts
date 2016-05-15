@@ -16,23 +16,24 @@ import {log} from '../decorators/log.decorator';
 })
 export class ChartModule implements Module {
     @Input() private _readOnly:boolean = false;
-    private dataPrepared:boolean = false;
+    @Input() private id:string = '';
+    @Input() private dataPrepared:boolean = false;
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
-    private _chartPositionInformation:ChartPositionInformation
+    @Input() private _chartPositionInformation:ChartPositionInformation
 
-    private backgroundColor: string = "rgba(255,107,13,1)";
-    private borderColor: string = "rgba(232,65,12,1)";
-    private pointBackgroundColor: string = "rgba(255,25,0,1)";
+    @Input() private backgroundColor: string = "rgba(255,107,13,1)";
+    @Input() private borderColor: string = "rgba(232,65,12,1)";
+    @Input() private pointBackgroundColor: string = "rgba(255,25,0,1)";
 
-    private lineChartData:Array<any> = [];
-    private lineChartLabels:Array<any> = [];
-    private lineChartSeries:Array<any> = [];
-    private lineChartOptions:any = {
+    @Input() private lineChartData:Array<any> = [];
+    @Input() private lineChartLabels:Array<any> = [];
+    @Input() private lineChartSeries:Array<any> = [];
+    @Input() private lineChartOptions:any = {
         animation: false,
         responsive: true,
         multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>'
     };
-    private lineChartColours:Array<any> = [
+    @Input() private lineChartColours:Array<any> = [
         { // red
             backgroundColor: this.backgroundColor,
             borderColor: this.borderColor,
@@ -51,16 +52,16 @@ export class ChartModule implements Module {
 
     ];
     @Input() lineChartType:string = 'line';
-    private sourceUrl1: string = '';
+    @Input() private sourceUrl1: string = '';
     @ViewChild('modal') modal: ModalComponent;
-    public series: Serie[];
-    public selectedSerie=null;
-    public types: Serie[] = [
+    @Input() public series: Serie[];
+    @Input() public selectedSerie=null;
+    @Input() public types: Serie[] = [
         { "id": 1, "name": "line" },
         { "id": 2, "name": "bar" },
         { "id": 3, "name": "radar" }
     ];
-    public selectedType: Serie = this.types[0];
+    @Input() public selectedType: Serie = this.types[0];
 
     ngAfterViewInit(){
     }
