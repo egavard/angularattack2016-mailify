@@ -3,10 +3,6 @@
     <div class="row">
         <div class="col-md-4">
             <form>
-                <div class="form-group">
-                    <label>Config Id</label>
-                    <input class="form-control" type="text" [(ngModel)]="configId" placeholder="Config ID (any string or number)" />
-                </div>
                 <button class="btn btn-sm btn-default" (click)="loadConfig()">Load config</button>
                 <button class="btn btn-sm btn-primary" (click)="saveCurrentConfig()">Save config</button>
             </form>
