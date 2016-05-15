@@ -8,5 +8,5 @@ export interface Module {
      */
     getConfig: () => any;
 
-    setConfig: void;
+   // setConfig: () => void;
 }

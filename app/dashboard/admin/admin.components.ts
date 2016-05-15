@@ -18,14 +18,14 @@ declare var $;
     directives: [ DebugModule, ChartModule, NgGrid, NgGridItem ]
 })
 export class AdminComponent implements AfterViewInit {
-    private availableModules: ModuleMetadata[];
+    private _availableModules: ModuleMetadata[];
     private _items:ChartModule[];
     private _configId:string;
     private _savedConfig:string;
 
 
     constructor(private modulesService: ModulesService, private dataProviderService:DataProviderService, private moduleConfigService:ModuleConfigService) {
-        this.availableModules = modulesService.getAvailableModules();
+        this._availableModules = modulesService.getAvailableModules();
         let storedItems = window.localStorage.getItem('charts');
         if(storedItems){
             this.items = storedItems;
@@ -95,11 +95,11 @@ export class AdminComponent implements AfterViewInit {
     }
 
     get availableModules():Array<ModuleMetadata> {
-        return this.availableModules;
+        return this._availableModules;
     }
 
     set availableModules(value:Array<ModuleMetadata>) {
-        this.availableModules = value;
+        this._availableModules = value;
     }
 
     saveCurrentConfig() {

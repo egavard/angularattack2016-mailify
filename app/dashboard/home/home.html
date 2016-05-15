@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="card card-block">
-        <div class="row">
-            <div class="col-md-6" *ngFor="let item of items; let i = index" >
+        <div class="row" *ngFor="let item of items; let i = index">
+            <div class="col-md-6"  >
                 <chart-module style="display:inline-block;"
                               [attr.id]="item.id"
                               [attr.data-sizex]="item.chartPositionInformation.sizeX"
