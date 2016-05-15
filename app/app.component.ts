@@ -25,10 +25,6 @@ export class AppComponent {
         this._items = new Array<ChartModule>();
     }
     ngAfterViewInit(){
-        $(".gridster ul").gridster({
-            widget_margins: [10, 10],
-            widget_base_dimensions: [140, 140]
-        })
     }
     get items():ChartModule[] {
         return this._items;

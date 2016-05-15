@@ -35,20 +35,8 @@ export class AdminComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(){
-        $('.gridster ul').gridster({
-            max_cols:12,
-            draggable:{
-                start:function(event,ui){
-                },
-                drag:function(event,ui){
-
-                },
-                stop:function(event,ui){
-                    console.log('stop');
-                    console.log(event);
-                    console.log(ui);
-                }
-            }
+        $(".gridster").shapeshift({
+            minColumns: 3
         });
     }
 

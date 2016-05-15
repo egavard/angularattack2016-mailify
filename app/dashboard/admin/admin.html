@@ -5,7 +5,7 @@
 		</div>
 	</div>
 
-	<div class="row gridster card card-block availableModules">
+	<div class="row card card-block availableModules">
 		<div class="col-sm-2">
 			<h4>Modules</h4>
 			<ul *ngFor="let availableModule of availableModules">
@@ -14,24 +14,21 @@
 		</div>
 
 		<div class="col-md-10 gridster">
-            <ul>
-                <li *ngFor="let item of items; let i = index">
-                        <chart-module style="display:inline-block;"
-                                      [attr.id]="item.id"
-                                      [attr.data-sizex]="item.chartPositionInformation.sizeX"
-                                      [attr.data-sizey]="item.chartPositionInformation.sizeY"
-                                      [attr.data-col]="item.chartPositionInformation.col"
-                                      [attr.data-row]="item.chartPositionInformation.row"
-                                      [readOnly]="item.readOnly"
-                                      [lineChartData]="item.lineChartData"
-                                      [lineChartLabels]="item.lineChartLabels"
-                                      [lineChartOptions]="item.lineChartOptions"
-                                      [lineChartSeries]="item.lineChartSeries"
-                                      [lineChartColours]="item.lineChartColours"
-                                      [lineChartType]="item.lineChartType"
-                                      draggable="true"></chart-module>
-                </li>
-            </ul>
+            <div *ngFor="let item of items; let i = index">
+                    <chart-module style="display:inline-block;"
+                                  [attr.id]="item.id"
+                                  [attr.data-sizex]="item.chartPositionInformation.sizeX"
+                                  [attr.data-sizey]="item.chartPositionInformation.sizeY"
+                                  [attr.data-col]="item.chartPositionInformation.col"
+                                  [attr.data-row]="item.chartPositionInformation.row"
+                                  [readOnly]="item.readOnly"
+                                  [lineChartData]="item.lineChartData"
+                                  [lineChartLabels]="item.lineChartLabels"
+                                  [lineChartOptions]="item.lineChartOptions"
+                                  [lineChartSeries]="item.lineChartSeries"
+                                  [lineChartColours]="item.lineChartColours"
+                                  [lineChartType]="item.lineChartType"></chart-module>
+            </div>
         </div>
 	</div>
 </div>
