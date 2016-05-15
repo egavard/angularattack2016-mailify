@@ -25,9 +25,16 @@ export class AdminComponent implements AfterViewInit {
 
     constructor(private modulesService: ModulesService, private dataProviderService:DataProviderService, private moduleConfigService:ModuleConfigService) {
         this._availableModules = modulesService.getAvailableModules();
-        let storedItems = window.localStorage.getItem('charts');
-        if(storedItems){
-            this.items = storedItems;
+        let savedConfigs = moduleConfigService.currentConfig;
+        this.items = [];
+        if (savedConfigs) {
+            for (let conf of savedConfigs) {
+                let module = new ChartModule(dataProviderService, conf.innerType);
+                module.chartType = conf.type;
+                module.chartColors = conf.colors;
+                module.chartPositionInformation = conf.position;
+                this.items.push(module);
+            }
         }else{
             this.items = [];
             let debugModule = new ChartModule(dataProviderService,'DebugModule');
@@ -35,7 +42,8 @@ export class AdminComponent implements AfterViewInit {
             debugModule.moduleData = 'Please use dashboard to change this home page';
             this.items.push(debugModule);
         }
-        this.configId = window.localStorage.getItem('configId')
+        this.configId = window.localStorage.getItem('configId');
+        this.loadConfig();
     }
 
     ngAfterViewInit(){
