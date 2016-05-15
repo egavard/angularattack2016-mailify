@@ -6,14 +6,15 @@
 	</div>
 
 	<div class="row card card-block availableModules">
-		<div class="col-sm-2">
+		<div class="col-sm-12">
 			<h4>Modules</h4>
-			<ul *ngFor="let availableModule of availableModules">
-				<li><i class="fa" [ngClass]="availableModule.getIcon()"></i> {{ availableModule.getName() }}</li>
+			<ul *ngFor="let availableModule of availableModules" style="display:inline-block">
+				<li style="display:inline-block"><i class="fa" [ngClass]="availableModule.getIcon()"></i> {{ availableModule.getName() }}</li>
 			</ul>
 		</div>
-
-		<div class="col-md-10" [ngGrid]="{'max_cols': 12}">
+    </div>
+    <div class="row card card-block">
+		<div class="col-md-12" [ngGrid]="{'max_cols': 12}" style="display:inline-block; background-color:#efefef">
             <div *ngFor="let item of items; let i = index" [ngGridItem]="{'sizex': 3, 'sizey':1, 'col': ((i%3)?1:4), 'row':((i/6)+1)}">
                     <chart-module style="display:inline-block;"
                                   [attr.id]="item.id"
