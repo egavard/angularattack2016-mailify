@@ -3,6 +3,7 @@ import {Module} from "./module";
 import {GridsterItem} from "../libs/gridster/gridster";
 import {DataProviderService} from "../services/data-provider.service";
 import {Component} from "@angular/core"
+import {CommonStyle} from "../models/common-style.model";
 
 @Component({
     selector: 'health-module',
@@ -11,17 +12,18 @@ import {Component} from "@angular/core"
 export class HealthModule extends GridsterItem implements Module {
     readOnly:boolean = true;
 
-    getModuleMetadata() {
-        return null;
-    }
-
     private _minThreshold: number;
     private _maxThreshold: number;
     private _currentValue: number;
 
+    // content
     private _topText: string;
     private _bottomText: string;
-    private _colors: any;
+
+    // styles
+    private _topStyle:CommonStyle;
+    private _mainStyle:CommonStyle;
+    private _bottomStyle:CommonStyle;
 
     constructor(private dataProviderService: DataProviderService) {
         super();
@@ -32,10 +34,14 @@ export class HealthModule extends GridsterItem implements Module {
 
         this._topText = 'This is a top text';
         this._bottomText = `${this._currentValue}`;
-        this._colors = {
-            top: 'inherit',
-            bottom: 'inherit'
-        };
+        
+        this._topStyle = new CommonStyle(CommonStyle.COLOR_DEFAULT, 'inherit', 'bold');
+        this._mainStyle = new CommonStyle();
+        this._bottomStyle = new CommonStyle(CommonStyle.COLOR_DEFAULT, '2em', 'bold');
+    }
+
+    getModuleMetadata() {
+        return null;
     }
 
     getModuleClass() {
@@ -91,5 +97,30 @@ export class HealthModule extends GridsterItem implements Module {
 
     set bottomText(value:string) {
         this._bottomText = value;
+    }
+
+
+    get topStyle():CommonStyle {
+        return this._topStyle;
+    }
+
+    set topStyle(value:CommonStyle) {
+        this._topStyle = value;
+    }
+
+    get mainStyle():CommonStyle {
+        return this._mainStyle;
+    }
+
+    set mainStyle(value:CommonStyle) {
+        this._mainStyle = value;
+    }
+
+    get bottomStyle():CommonStyle {
+        return this._bottomStyle;
+    }
+
+    set bottomStyle(value:CommonStyle) {
+        this._bottomStyle = value;
     }
 }
