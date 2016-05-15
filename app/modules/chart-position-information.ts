@@ -3,6 +3,6 @@
  */
 export class ChartPositionInformation{
 
-    constructor(col:number,  row:number,  sizeX:number,  sizeY:number){}
+    constructor(public col:number,  public row:number, public sizeX:number, public sizeY:number){}
 
 }
