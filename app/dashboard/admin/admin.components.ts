@@ -2,14 +2,13 @@ import {Component} from '@angular/core';
 import {ModulesService} from '../../services/modules.service';
 import {ModuleMetadata} from '../../modules/module-metadata.model';
 import {DebugModule} from '../../modules/debug-module.component';
-import {log} from '../../decorators/log.decorator';
 import { AfterViewInit } from '@angular/core'
 import {ChartModule} from '../../modules/chart-module.component';
 import {DataProviderService} from '../../services/data-provider.service';
 import {ChartPositionInformation} from '../../modules/chart-position-information';
 import {NgGrid, NgGridItem} from 'angular2-grid/dist/NgGrid';
-import {Type} from '@angular/core';
 import {ChartModuleMetadata, ChartType} from '../../modules/chart-module-metadata.model';
+import {ModuleConfigService} from '../../services/module-config.service';
 
 declare var $;
 
@@ -21,8 +20,11 @@ declare var $;
 export class AdminComponent implements AfterViewInit {
     private availableModules: ModuleMetadata[];
     private _items:ChartModule[];
+    private _configId:string;
+    private _savedConfig:string;
 
-    constructor(private modulesService: ModulesService, private dataProviderService:DataProviderService) {
+
+    constructor(private modulesService: ModulesService, private dataProviderService:DataProviderService, private moduleConfigService:ModuleConfigService) {
         this.availableModules = modulesService.getAvailableModules();
         let storedItems = window.localStorage.getItem('charts');
         if(storedItems){
@@ -93,11 +95,11 @@ export class AdminComponent implements AfterViewInit {
     }
 
     get availableModules():Array<ModuleMetadata> {
-        return this._availableModules;
+        return this.availableModules;
     }
 
     set availableModules(value:Array<ModuleMetadata>) {
-        this._availableModules = value;
+        this.availableModules = value;
     }
 
     saveCurrentConfig() {
