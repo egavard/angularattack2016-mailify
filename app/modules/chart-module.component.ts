@@ -15,7 +15,7 @@ import {log} from '../decorators/log.decorator';
     directives: [CHART_DIRECTIVES, ColorPickerDirective, MODAL_DIRECTIVES]
 })
 export class ChartModule implements Module {
-    @Input() private _readOnly:boolean = false;
+    @Input() readOnly:boolean;
     @Input() private id:string = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
@@ -66,6 +66,7 @@ export class ChartModule implements Module {
     @Input() public selectedSerie = null;
 
     constructor(private dataProviderService:DataProviderService) {
+        this.readOnly = true;
         this.series = [];
         this._chartPositionInformation = new ChartPositionInformation(0, 0, 1, 1);
         this.randomizeData()
@@ -161,15 +162,7 @@ export class ChartModule implements Module {
     set chartPositionInformation(value:ChartPositionInformation) {
         this._chartPositionInformation = value;
     }
-
-
-    get readOnly():boolean {
-        return this._readOnly;
-    }
-
-    set readOnly(value:boolean) {
-        this._readOnly = value;
-    }
+    
 }
 
 export class Serie {

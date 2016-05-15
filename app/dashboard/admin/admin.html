@@ -1,6 +1,23 @@
 <div class="container-fluid admin">
     <h4>Manage Dashboard</h4>
-
+    <div class="row">
+        <div class="col-md-4">
+            <form>
+                <div class="form-group">
+                    <label>Config Id</label>
+                    <input class="form-control" type="text" [(ngModel)]="configId" placeholder="Config ID (any string or number)" />
+                </div>
+                <div *ngIf="savedConfig">
+                    <p>Config saved as:</p>
+                <pre>
+                    {{ savedConfig | json }}
+                </pre>
+                </div>
+                <button class="btn btn-sm btn-default" (click)="loadConfig()">Load config</button>
+                <button class="btn btn-sm btn-primary" (click)="saveCurrentConfig()">Save config</button>
+            </form>
+        </div>
+    </div>
     <div class="row availableModules">
 		<div class="col-sm-12">
 			<h5>Modules</h5>

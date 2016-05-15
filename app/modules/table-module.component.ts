@@ -22,6 +22,7 @@ export class TableModule extends GridsterItem implements Module {
 
     constructor(private dataProviderService: DataProviderService) {
         super();
+        this.readOnly = true;
         this.randomizeData();
         setInterval(() => this.randomizeData(), 5000);
         this._striped = true;

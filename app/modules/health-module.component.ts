@@ -11,7 +11,7 @@ import {HealthModuleMetadata} from "./health-module-metadata.model";
     templateUrl: './app/modules/health-module.html'
 })
 export class HealthModule extends GridsterItem implements Module {
-    readOnly:boolean = true;
+    readOnly:boolean;
 
     private _minThreshold: number;
     private _maxThreshold: number;
@@ -28,6 +28,7 @@ export class HealthModule extends GridsterItem implements Module {
 
     constructor(private dataProviderService: DataProviderService) {
         super();
+        this.readOnly = true;
         // fake data
         this._minThreshold = 25;
         this._maxThreshold = 75;

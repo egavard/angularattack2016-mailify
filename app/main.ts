@@ -7,6 +7,8 @@ import { ROUTER_PROVIDERS } from '@angular/router';
 import { HTTP_PROVIDERS } from '@angular/http';
 import {ModulesService} from "./services/modules.service";
 import { MODAL_DIRECTIVES } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {ModuleConfigService} from "./services/module-config.service";
 
 
-bootstrap(AppComponent, [ROUTER_PROVIDERS, HTTP_PROVIDERS, DataProviderService, ColorPickerService, DataGenerator, ModulesService, MODAL_DIRECTIVES]);
+bootstrap(AppComponent, [ROUTER_PROVIDERS, HTTP_PROVIDERS, ModuleConfigService,
+    DataProviderService, ColorPickerService, DataGenerator, ModulesService, MODAL_DIRECTIVES]);
