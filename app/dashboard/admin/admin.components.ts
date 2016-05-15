@@ -30,9 +30,9 @@ export class AdminComponent implements AfterViewInit {
             this.items = storedItems;
         }else{
             let item1 = new ChartModule(dataProviderService, 'ChartModule');
-            item1.chartPositionInformation = new ChartPositionInformation(0,0,5,1);
+            item1.chartPositionInformation = new ChartPositionInformation(0,0,2,1);
             let item2 = new ChartModule(dataProviderService, 'HealthModule');
-            item2.chartPositionInformation = new ChartPositionInformation(6,0,5,1);
+            item2.chartPositionInformation = new ChartPositionInformation(4,0,2,1);
 
             this.items = [];
             this.items.push(item1, item2);

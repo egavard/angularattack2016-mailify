@@ -31,16 +31,10 @@ export class HomeComponent implements AfterViewInit {
                 this.items.push(module);
             }
         } else {
-        let debugModule = new ChartModule(dataService,'DebugModule');
-        debugModule.chartPositionInformation = new ChartPositionInformation(1,1,5,1);
-        let barModule = new ChartModule(dataService,'ChartModule');
-            barModule.chartType = 'bar';
-            barModule.chartPositionInformation = new ChartPositionInformation(1, 1, 1, 1);
-        let chartModule = new ChartModule(dataService,'ChartModule');
-            chartModule.chartType = 'line';
-            chartModule.chartPositionInformation = new ChartPositionInformation(1, 1, 1, 1);
-
-        this.items.push(debugModule, chartModule, barModule);
+            let debugModule = new ChartModule(dataService,'DebugModule');
+            debugModule.chartPositionInformation = new ChartPositionInformation(1,1,2,1);
+            debugModule.moduleData = 'Please use dashboard to change this home page';
+            this.items.push(debugModule);
         }
         
     }
