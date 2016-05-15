@@ -21,6 +21,14 @@ export class AppComponent {
     private _items:ChartModule[];
     constructor(){
         this._items = new Array<ChartModule>();
+        let configId = window.localStorage.getItem('configId');
+        if(configId == null || configId == undefined){
+            configId ='xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+            window.localStorage.setItem('configId',configId);
+        }
     }
     ngAfterViewInit(){
     }

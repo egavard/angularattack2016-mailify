@@ -20,7 +20,7 @@ export class AdminComponent implements AfterViewInit {
     @Input('availableModules') private _availableModules:ModuleMetadata[];
     @Input('items') private _items:ChartModule[];
     @Input('configId') private _configId:string;
-    @Input('savedCofig') private _savedConfig:string;
+    @Input('savedConfig') private _savedConfig:string;
 
 
     constructor(private modulesService: ModulesService, private dataProviderService:DataProviderService, private moduleConfigService:ModuleConfigService) {
@@ -35,6 +35,7 @@ export class AdminComponent implements AfterViewInit {
             debugModule.moduleData = 'Please use dashboard to change this home page';
             this.items.push(debugModule);
         }
+        this.configId = window.localStorage.getItem('configId')
     }
 
     ngAfterViewInit(){
