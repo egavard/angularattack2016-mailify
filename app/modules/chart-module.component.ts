@@ -4,7 +4,7 @@ import {BaseChartComponent, CHART_DIRECTIVES} from "../libs/ng2-charts-upgrade-r
 import {Chart} from "../models/chart.model";
 import {ColorPickerDirective} from "../libs/color-picker/color-picker.directive";
 import {Module} from "./module";
-import { MODAL_DIRECTIVES } from 'ng2-bs3-modal/ng2-bs3-modal';
+import {MODAL_DIRECTIVES, ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
 import {ChartModuleMetadata} from "./chart-module-metadata.model";
 import {ChartPositionInformation} from './chart-position-information';
 import {log} from '../decorators/log.decorator';
@@ -51,6 +51,15 @@ export class ChartModule implements Module {
     ];
     @Input() lineChartType:string = 'line';
     private sourceUrl1: string = '';
+    @ViewChild('modal') modal: ModalComponent;
+    public series: Serie[];
+    public selectedSerie=null;
+    public types: Serie[] = [
+        { "id": 1, "name": "line" },
+        { "id": 2, "name": "bar" },
+        { "id": 3, "name": "radar" }
+    ];
+    public selectedType: Serie = this.types[0];
 
     ngAfterViewInit(){
     }
@@ -73,25 +82,21 @@ export class ChartModule implements Module {
     /**
      * Edition mode
      */
-
-    @ViewChild('modal')
-    modal: ModalComponent;
-
     edit() {
-        var i = 0
+        var i = 0;
         for (var item in this.lineChartSeries ) {
            var itemToAdd = {
                 id: i,
                 name: "Serie " + item
             };
-            this.series.push(itemToAdd)
+            this.series.push(itemToAdd);
         i++;
         }
-        this.selectedSerie = this.series[0]
-        this.backgroundColor = this.chart.colours[this.selectedSerie.id].backgroundColor
-        this.borderColor = this.chart.colours[this.selectedSerie.id].borderColor
-        this.pointBackgroundColor = this.chart.colours[this.selectedSerie.id].pointBackgroundColor
-        this.modal.open()
+        this.selectedSerie = this.series[0];
+        this.backgroundColor = this.chart.colours[this.selectedSerie.id].backgroundColor;
+        this.borderColor = this.chart.colours[this.selectedSerie.id].borderColor;
+        this.pointBackgroundColor = this.chart.colours[this.selectedSerie.id].pointBackgroundColor;
+        this.modal.open();
     }
 
     backgroundColorChanged(color){
@@ -114,27 +119,19 @@ export class ChartModule implements Module {
         }
     }
 
-    public series: Serie[];
-    public selectedSerie=null;
     onSelect(serieId) {
         this.selectedSerie = null;
         for (var i = 0; i < this.series.length; i++)
         {
             if (this.series[i].id == serieId) {
                 this.selectedSerie = this.series[i];
-                this.backgroundColor = this.chart.colours[this.selectedSerie.id].backgroundColor
-                this.borderColor = this.chart.colours[this.selectedSerie.id].borderColor
-                this.pointBackgroundColor = this.chart.colours[this.selectedSerie.id].pointBackgroundColor
+                this.backgroundColor = this.chart.colours[this.selectedSerie.id].backgroundColor;
+                this.borderColor = this.chart.colours[this.selectedSerie.id].borderColor;
+                this.pointBackgroundColor = this.chart.colours[this.selectedSerie.id].pointBackgroundColor;
             }
         }
     }
 
-    public types: Serie[] = [
-        { "id": 1, "name": "line" },
-        { "id": 2, "name": "bar" },
-        { "id": 3, "name": "radar" }
-    ];
-    public selectedType: Serie = this.types[0];
     onSelectType(typeId) {
         this.selectedType = null;
         for (var i = 0; i < this.types.length; i++)
@@ -177,8 +174,6 @@ export class ChartModule implements Module {
         this._chartPositionInformation = value;
     }
 }
-
-
 
 export class Serie {
     id: number;
