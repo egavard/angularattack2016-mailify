@@ -13,9 +13,11 @@
 			</ul>
 		</div>
 
-		<div class="col-md-10">
-            <ul *ngFor="let item of items; let i = index">
-                    <chart-module style="display:inline-block;" [readOnly]="item.readOnly"></chart-module>
+		<div class="col-md-10 gridster">
+            <ul>
+                <li *ngFor="let item of items; let i = index">
+                        <chart-module style="display:inline-block;" [readOnly]="item.readOnly" draggable="true"></chart-module>
+                </li>
             </ul>
         </div>
 	</div>
