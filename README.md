@@ -1,48 +1,35 @@
-# This is your [AngularAttack](https://www.angularattack.com) 2016 Repo
 
-This repo is the start of your AngularAttack 2016 entry. It contains the simple [Angular2 starter](https://angular.io/docs/ts/latest/quickstart.html) files.
-
-**DO NOT MAKE ANY CODE CHECKINS TO THIS REPOSITORY BEFORE THE COMPETITION OFFICIALLY BEGINS.**
-
-**DOING SO COULD DISQUALIFY YOU.**
+# Stats builder
 
 
-However, before the competition starts, there are some things we encourage you to do to get prepared for the competition.
+## Description :
+Data reporting service, created to easily display data with a personalized interface.
+The owner of the page can administrate the interface by choosing its structure and each component.
+
+Each module can be customized by choosing the data input, colors, size and placement.
+Different types of widgets are available :
+
+ - Line chart
+ - Bar chart
+ - Radar chart
+ - Text
+ - Health indicator
+
+## Libraries used  :
+Angular 2 (MIT) : https://github.com/angular/angular/
+Angular2-grid (MIT) : https://github.com/BTMorton/angular2-grid
+Twitter Bootstrap (MIT) : https://github.com/twbs/bootstrap
+Chart.js (MIT) : https://github.com/chartjs/Chart.js
+ng2-charts (MIT) : https://github.com/valor-software/ng2-charts
+jQUery : https://github.com/jquery/jquery
+ng2-bs3-modal (ISC) : https://github.com/dougludlow/ng2-bs3-modal
+angular2-color-picker (MIT) : https://github.com/Alberplz/angular2-color-picker
 
 
-### Step 1) Get Your Local Environment setup
-
-Clone this repo locally, and make sure all your team members have access to it.
-
-* Install the latest [Node / NPM](https://nodejs.org).
-
-* `git clone git@github.com:rumblex/angularattack2016-mailify.git`
-
-* `cd angularattack2016-mailify`
-
-* `npm install`
-
-* `npm start` will start the server locally to test that everything is running correctly
-
-
-### Step 2) Deploy Your App
-
-While you can't make any checkins before the comp, what you **can** do right now is deploy this sample app to [Surge](https://surge.sh) (our competition hosting provider).
-
-* `npm install -g surge`
-
-* `surge .`
-
-Note: please do not remove the `CNAME` file, as that tells it where to deploy to.
-
-If you receive an error message `"You do not have permission to publish to mailify.2016.angularattack.io"`, it might mean another team member has already deployed your project to Surge. Ask them to run the next step to give you access.
-
-### Step 3) Add Your Team Members to Surge
-
-* `surge . --add remi.winckel@gmail.com,loic.dreux@gmail.com,anthony.legay@gmail.com,gavard.e@gmail.com`
-
-
-### Step 4) Wait til competition starts
-
-It begins at exactly [May 14 at 00:00 UTC](https://www.wolframalpha.com/input/?i=May+14,+2016+0:00+UTC). Once the competition starts,   you can write over this project.
-
+## Next steps :
+- Allow admin to import files.
+- Allow developers to add their own connectors that provide JSON data.
+- Allow admin to provide a read-only link to the dashboard.
+- App should be embeddable into a Ionic app (iOS & Android).
+- Internationalisation.
+- Add more widgets.
