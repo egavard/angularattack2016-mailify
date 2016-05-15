@@ -1,21 +1,23 @@
 <div class="container-fluid">
     <div class="card card-block">
-        <div class="row playground" >
-            <div class="col-md-12" [ngGrid]="{'max_cols': 12, 'draggable':false, 'resizeable':false}" style="display:inline-block; background-color:#efefef">
-                <div *ngFor="let item of items; let i = index" [ngGridItem]="{'sizex': item.chartPositionInformation.sizeX, 'sizey':item.chartPositionInformation.sizeY, 'col': item.chartPositionInformation.col, 'row': item.chartPositionInformation.row}" >
+        <div class="row playground">
+            <div class="col-md-12" [ngGrid]="{'max_cols': 12, 'draggable':false, 'resizeable':false}"
+                 style="display:inline-block; background-color:#efefef">
+                <div *ngFor="let item of items; let i = index"
+                     [ngGridItem]="{'sizex': item.chartPositionInformation.sizeX, 'sizey':item.chartPositionInformation.sizeY, 'col': item.chartPositionInformation.col, 'row': item.chartPositionInformation.row}">
                     <chart-module style="display:inline-block;"
                                   [attr.id]="item.id"
-                              [attr.data-sizex]="item.chartPositionInformation.sizeX"
-                              [attr.data-sizey]="item.chartPositionInformation.sizeY"
-                              [attr.data-col]="item.chartPositionInformation.col"
-                              [attr.data-row]="item.chartPositionInformation.row"
-                              [readOnly]="item.readOnly"
-                              [chartData]="item.chartData"
-                              [chartOptions]="item.chartOptions"
+                                  [attr.data-sizex]="item.chartPositionInformation.sizeX"
+                                  [attr.data-sizey]="item.chartPositionInformation.sizeY"
+                                  [attr.data-col]="item.chartPositionInformation.col"
+                                  [attr.data-row]="item.chartPositionInformation.row"
+                                  [readOnly]="item.readOnly"
+                                  [chartData]="item.chartData"
+                                  [chartOptions]="item.chartOptions"
                                   [series]="item.series"
-                              [chartColors]="item.chartColors"
-                              [chartType]="item.chartType"
-                              [sourceUrl]="item.sourceUrl"
+                                  [chartColors]="item.chartColors"
+                                  [chartType]="item.chartType"
+                                  [sourceUrl]="item.sourceUrl"
                                   [selectedSerie]="item.selectedSerie"
                                   [minThreshold]="item.minThreshold"
                                   [maxThreshold]="item.maxThreshold"

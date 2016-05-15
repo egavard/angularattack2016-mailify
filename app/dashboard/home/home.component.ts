@@ -5,6 +5,7 @@ import {DataProviderService} from "../../services/data-provider.service";
 import {ChartModule} from "../../modules/chart-module.component";
 import {ChartPositionInformation} from '../../modules/chart-position-information';
 import {NgGrid, NgGridItem} from 'angular2-grid/dist/NgGrid';
+import {ModuleConfigService} from "../../services/module-config.service";
 
 @Component({
     selector: 'home',
