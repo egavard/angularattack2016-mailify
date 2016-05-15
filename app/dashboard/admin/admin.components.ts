@@ -8,6 +8,7 @@ import {ChartModule} from '../../modules/chart-module.component';
 import {DataProviderService} from '../../services/data-provider.service';
 import {ChartPositionInformation} from '../../modules/chart-position-information';
 import {NgGrid, NgGridItem} from 'angular2-grid/dist/NgGrid';
+import {ChartType} from '../../modules/chart-module-metadata.model';
 declare var $;
 
 @Component({
@@ -36,6 +37,21 @@ export class AdminComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(){
+    }
+
+    addNewModule(availableModule:ModuleMetadata){
+        let newModule;
+        if( typeof(availableModule.getType) == ChartType){
+            newModule = new ChartModule(this.dataProviderService);
+            switch (availableModule.getType){
+                case ChartType.BAR:newModule.lineChartType = 'bar';break;
+                case ChartType.LINE:newModule.lineChartType = 'line';break;
+            }
+        }else{
+            newModule = new availableModule.getType();
+        }
+        newModule.chartPositionInformation = new ChartPositionInformation(0,0,5,1);
+        this.items.push(newModule);
     }
 
     get items():ChartModule[] {

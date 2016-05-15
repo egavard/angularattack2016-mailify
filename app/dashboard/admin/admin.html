@@ -3,12 +3,9 @@
 
     <div class="row availableModules">
 		<div class="col-sm-12">
-            <h5>Modules</h5>
-            <ul>
-                <li *ngFor="let availableModule of availableModules">
-                    <i class="fa" [ngClass]="availableModule.getIcon()"></i>
-                    {{ availableModule.getName() }}
-                </li>
+			<h5>Modules</h5>
+			<ul *ngFor="let availableModule of availableModules" style="display:inline-block">
+				<li style="display:inline-block" (click)="addNewModule(availableModule)"><i class="fa" [ngClass]="availableModule.getIcon()"></i> {{ availableModule.getName() }}</li>
 			</ul>
 		</div>
     </div>
