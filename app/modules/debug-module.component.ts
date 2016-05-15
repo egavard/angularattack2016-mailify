@@ -10,10 +10,6 @@ import {Module} from "./module";
 })
 export class DebugModule extends GridsterItem implements Module {
     @Input() readOnly:boolean;
-    @Input() sizeX:number = 1;
-    @Input() sizeY:number = 1;
-    @Input() row:number = 1;
-    @Input() col:number = 1;
 
     constructor() {
         super();

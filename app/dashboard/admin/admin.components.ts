@@ -14,13 +14,11 @@ declare var $;
 @Component({
     selector: 'home',
     templateUrl: './app/dashboard/admin/admin.html',
-    directives: [DebugModule, ChartModule, NgGrid, NgGridItem]
+    directives: [ DebugModule, ChartModule, NgGrid, NgGridItem ]
 })
 export class AdminComponent implements AfterViewInit {
-    private _availableModules:ModuleMetadata[];
+    private availableModules: ModuleMetadata[];
     private _items:ChartModule[];
-    private _configId:string;
-    private _savedConfig:string;
 
     constructor(private modulesService:ModulesService,
                 private dataProviderService:DataProviderService,
@@ -36,26 +34,47 @@ export class AdminComponent implements AfterViewInit {
         this._items.push(item1, item2);
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(){
     }
 
-    addNewModule(availableModule:ModuleMetadata) {
-        let newModule;
-        if (typeof(availableModule.getType) == ChartType) {
-            newModule = new ChartModule(this.dataProviderService);
-            switch (availableModule.getType) {
-                case ChartType.BAR:
-                    newModule.lineChartType = 'bar';
-                    break;
-                case ChartType.LINE:
-                    newModule.lineChartType = 'line';
-                    break;
-            }
-        } else {
-            newModule = new availableModule.getType();
+    addNewModule(availableModule:ModuleMetadata){
+        let newModuleType:any = availableModule.getType();
+        let newModuleInnerType:any;
+
+        switch( (<ChartModuleMetadata>availableModule).getChartType()){
+            case ChartType.BAR:newModuleInnerType = 'ChartModule';break;
+            case ChartType.LINE:newModuleInnerType = 'ChartModule';break;
+            case ChartType.DEBUG:newModuleInnerType = 'DebugModule';break;
+            case ChartType.HEALTH:newModuleInnerType = 'HealthModule';break;
+            case ChartType.TABLE:newModuleInnerType = 'TableModule';break;
+            default: newModuleInnerType = 'ChartModule';break;
         }
-        newModule.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);
-        this._items.push(newModule);
+
+
+        let newModule = new newModuleType(this.dataProviderService, newModuleInnerType);
+
+        if(ChartModule == newModuleType){
+            switch( (<ChartModuleMetadata>availableModule).getChartType()){
+                case ChartType.BAR:newModule.lineChartType = 'bar';break;
+                case ChartType.LINE:newModule.lineChartType = 'line';break;
+                default: newModule.lineChartType = 'bar';newModule.innerType = 'ChartModule';break;
+            }
+        }
+        /*if( typeof(newModuleType) == ChartType){
+            console.log('chartType');
+            newModule = new ChartModule(this.dataProviderService);
+            switch (availableModule.getType){
+                case ChartType.BAR:newModule.lineChartType = 'bar';break;
+                case ChartType.LINE:newModule.lineChartType = 'line';break;
+            }
+        }else{
+            newModule = new (availableModule.getType())(this.dataProviderService);
+        }
+        console.log(this.items[0]);
+        console.log(newModule);
+        console.log(JSON.stringify(newModule));
+        newModule.chartPositionInformation = new ChartPositionInformation(0,0,5,1);
+        */this.items.push(newModule);
     }
 
     get items():ChartModule[] {

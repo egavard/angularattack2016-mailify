@@ -36,12 +36,25 @@
                                   [attr.data-col]="item.chartPositionInformation.col"
                                   [attr.data-row]="item.chartPositionInformation.row"
                                   [readOnly]="item.readOnly"
-                                  [data]="item.data"
-                                  [labels]="item.labels"
-                                  [chartOptions]="item.chartOptions"
+                                  [lineChartData]="item.lineChartData"
+                                  [lineChartLabels]="item.lineChartLabels"
+                                  [lineChartOptions]="item.lineChartOptions"
+                                  [lineChartSeries]="item.lineChartSeries"
+                                  [lineChartColours]="item.lineChartColours"
+                                  [lineChartType]="item.lineChartType"
+                                  [sourceUrl1]="item.sourceUrl1"
                                   [series]="item.series"
-                                  [chartColors]="item.chartColors"
-                                  [chartType]="item.chartType"></chart-module>
+                                  [selectedSerie]="item.selectedSerie"
+                                  [minThreshold]="item.minThreshold"
+                                  [maxThreshold]="item.maxThreshold"
+                                  [currentValue]="item.currentValue"
+                                  [topText]="item.topText"
+                                  [bottomText]="item.bottomText"
+                                  [moduleData]="item.moduleData"
+                                  [data]="item.data"
+                                  [striped]="item.striped"
+                                  [condensed]="item.condensed"
+                                  [showSeriesTitle]="item.showSeriesTitle"></chart-module>
             </div>
         </div>
 	</div>
