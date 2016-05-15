@@ -101,7 +101,22 @@
                 <h4 class="modal-title">Configuration</h4>
             </modal-header>
             <modal-body>
-                <textarea class="form-control" rows="6" [(ngModel)]="moduleData" tabEnabled autofocus> </textarea>
+                <div class="form-group">
+                    <label>Top Text</label>
+                    <input class="form-control" [value]="topText" />
+                </div>
+                <div class="form-group">
+                    <label>Bottom Text</label>
+                    <input class="form-control" [value]="bottomText" />
+                </div>
+                <div class="form-group">
+                    <label>minThreshold</label>
+                    <input type="number" class="form-control" [value]="minThreshold" />
+                </div>
+                <div class="form-group">
+                    <label>maxThreshold</label>
+                    <input type="number" class="form-control" [value]="maxThreshold" />
+                </div>
             </modal-body>
             <modal-footer [show-default-buttons]="true"></modal-footer>
         </modal>
