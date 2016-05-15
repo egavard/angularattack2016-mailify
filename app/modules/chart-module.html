@@ -1,61 +1,129 @@
-<h4>
-    <button *ngIf="!readOnly" (click)="edit()" class="btn btn-sm btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i>
-    </button>
-    Chart Module
-</h4>
+<div [ngSwitch]="innerType">
+    <div *ngSwitchWhen="ChartModule">
+        <h4>
+            <button *ngIf="!readOnly" (click)="edit()" class="btn btn-sm btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i>
+            </button>
+            Chart Module
+        </h4>
 
-<base-chart style="width:100%;" class="chart"
-            [data]="lineChartData"
-            [labels]="lineChartLabels"
-            [options]="lineChartOptions"
-            [series]="lineChartSeries"
-            [colours]="lineChartColours"
-            [chartType]="lineChartType"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)" *ngIf="dataPrepared"></base-chart>
-<modal #modal>
-    <modal-header [show-close]="true">
-        <h4 class="modal-title">Configuration</h4>
-    </modal-header>
-    <modal-body>
+        <base-chart style="width:100%;" class="chart"
+                    [data]="lineChartData"
+                    [labels]="lineChartLabels"
+                    [options]="lineChartOptions"
+                    [series]="lineChartSeries"
+                    [colours]="lineChartColours"
+                    [chartType]="lineChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)" *ngIf="dataPrepared"></base-chart>
+        <modal #modal>
+            <modal-header [show-close]="true">
+                <h4 class="modal-title">Configuration</h4>
+            </modal-header>
+            <modal-body>
 
-        <h5>Chart type</h5>
-        <div class="form-group">
-            <select class="form-control" (change)="onSelectType($event.target.value)">
-                <option *ngFor="let serie of types" [value]="serie.id">{{serie.name}}</option>
-            </select>
+                <h5>Chart type</h5>
+                <div class="form-group">
+                    <select class="form-control" (change)="onSelectType($event.target.value)">
+                        <option *ngFor="let serie of types" [value]="serie.id">{{serie.name}}</option>
+                    </select>
+                </div>
+
+                <h5>Series</h5>
+                <form>
+                    <div class="form-group">
+                        <label>Select a series</label>
+                        <select class="form-control" (change)="onSelect($event.target.value)">
+                            <option *ngFor="let serie of series" [value]="serie.id">{{serie.name}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fill color</label>
+                        <input class="form-control" [(colorPicker)]="backgroundColor" [style.background]="backgroundColor"
+                               [value]="backgroundColor" (colorPickerChange)="backgroundColorChanged($event)"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Border color</label>
+                        <input class="form-control" [(colorPicker)]="borderColor" [style.background]="borderColor"
+                               [value]="borderColor" (colorPickerChange)="borderColorChanged($event)"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Point fill color</label>
+                        <input class="form-control" [(colorPicker)]="pointBackgroundColor"
+                               [style.background]="pointBackgroundColor"
+                               [value]="pointBackgroundColor" (colorPickerChange)="pointBackgroundColorChanged($event)"/>
+                    </div>
+                </form>
+
+            </modal-body>
+            <modal-footer [show-default-buttons]="true"></modal-footer>
+        </modal>
+    </div>
+    <div *ngSwitchWhen="DebugModule">
+        <h4><button *ngIf="!readOnly" (click)="modal.open('lg')" class="btn btn-sm btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+            Debug Module
+        </h4>
+
+        <p>{{moduleData}}</p>
+        <modal #modal>
+            <modal-header [show-close]="true">
+                <h4 class="modal-title">Configuration</h4>
+            </modal-header>
+            <modal-body>
+                <textarea class="form-control" rows="6" [(ngModel)]="moduleData" tabEnabled autofocus> </textarea>
+            </modal-body>
+            <modal-footer [show-default-buttons]="true"></modal-footer>
+        </modal>
+    </div>
+    <div *ngSwitchWhen="HealthModule">
+        <h4>
+            <button *ngIf="!readOnly" (click)="modal.open('lg')" class="btn btn-sm btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+            Health Module
+        </h4>
+
+        <div class="row health-module default">
+            <div class="col-md-12 description" *ngIf="topText"
+                 [style.color]="topStyle.color" [style.font-size]="topStyle.fontSize" [style.font-weight]="topStyle.fontWeight">
+                {{ topText }}
+            </div>
+            <div class="col-md-12">
+                <i class="fa" [ngClass]="getModuleClass()"></i>
+            </div>
+            <div class="col-md-12 description" *ngIf="bottomText"
+                 [style.color]="bottomStyle.color" [style.font-size]="bottomStyle.fontSize" [style.font-weight]="bottomStyle.fontWeight">
+                {{ bottomText }}
+            </div>
         </div>
+    </div>
+    <div *ngSwitchWhen="TableModule">
+        <h4>
+            <button *ngIf="!readOnly" (click)="modal.open('lg')" class="btn btn-sm btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+            Table Module
+        </h4>
 
-        <h5>Series</h5>
-        <form>
-            <div class="form-group">
-                <label>Select a series</label>
-                <select class="form-control" (change)="onSelect($event.target.value)">
-                    <option *ngFor="let serie of series" [value]="serie.id">{{serie.name}}</option>
-                </select>
-            </div>
+        <table class="table" [class.table-striped]="striped" [class.table-sm]="condensed">
+            <thead>
+            <tr>
+                <th *ngIf="showSeriesTitle"></th>
+                <th *ngFor="let label of data.labels">{{ label }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let serie of data.series">
+                <td *ngIf="showSeriesTitle">
+                    {{ serie.title }}
+                </td>
+                <td *ngFor="let point of serie.points">
+                    {{ point }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-            <div class="form-group">
-                <label>Fill color</label>
-                <input class="form-control" [(colorPicker)]="backgroundColor" [style.background]="backgroundColor"
-                       [value]="backgroundColor" (colorPickerChange)="backgroundColorChanged($event)"/>
-            </div>
 
-            <div class="form-group">
-                <label>Border color</label>
-                <input class="form-control" [(colorPicker)]="borderColor" [style.background]="borderColor"
-                       [value]="borderColor" (colorPickerChange)="borderColorChanged($event)"/>
-            </div>
 
-            <div class="form-group">
-                <label>Point fill color</label>
-                <input class="form-control" [(colorPicker)]="pointBackgroundColor"
-                       [style.background]="pointBackgroundColor"
-                       [value]="pointBackgroundColor" (colorPickerChange)="pointBackgroundColorChanged($event)"/>
-            </div>
-        </form>
-
-    </modal-body>
-    <modal-footer [show-default-buttons]="true"></modal-footer>
-</modal>
 

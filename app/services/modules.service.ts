@@ -11,11 +11,11 @@ export class ModulesService {
 
     constructor() {
         this.modulesMetadata = [
-            new DebugModuleMetadata(),
+            new ChartModuleMetadata("fa-bug", "Debug Chart", ChartType.DEBUG),
             new ChartModuleMetadata("fa-line-chart", "Line Chart", ChartType.LINE),
             new ChartModuleMetadata("fa-bar-chart", "Bar Chart", ChartType.BAR),
-            new TableModuleMetadata(),
-            new HealthModuleMetadata()
+            new ChartModuleMetadata("fa-table", "Table Chart", ChartType.TABLE),
+            new ChartModuleMetadata("fa-heart", "Heart Chart", ChartType.HEALTH),
         ];
     }
     

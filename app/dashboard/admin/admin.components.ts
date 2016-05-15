@@ -8,7 +8,9 @@ import {ChartModule} from '../../modules/chart-module.component';
 import {DataProviderService} from '../../services/data-provider.service';
 import {ChartPositionInformation} from '../../modules/chart-position-information';
 import {NgGrid, NgGridItem} from 'angular2-grid/dist/NgGrid';
-import {ChartType} from '../../modules/chart-module-metadata.model';
+import {Type} from '@angular/core';
+import {ChartModuleMetadata, ChartType} from '../../modules/chart-module-metadata.model';
+
 declare var $;
 
 @Component({
@@ -40,18 +42,43 @@ export class AdminComponent implements AfterViewInit {
     }
 
     addNewModule(availableModule:ModuleMetadata){
-        let newModule;
-        if( typeof(availableModule.getType) == ChartType){
+        let newModuleType:any = availableModule.getType();
+        let newModuleInnerType:any;
+
+        switch( (<ChartModuleMetadata>availableModule).getChartType()){
+            case ChartType.BAR:newModuleInnerType = 'ChartModule';break;
+            case ChartType.LINE:newModuleInnerType = 'ChartModule';break;
+            case ChartType.DEBUG:newModuleInnerType = 'DebugModule';break;
+            case ChartType.HEALTH:newModuleInnerType = 'HealthModule';break;
+            case ChartType.TABLE:newModuleInnerType = 'TableModule';break;
+            default: newModuleInnerType = 'ChartModule';break;
+        }
+
+
+        let newModule = new newModuleType(this.dataProviderService, newModuleInnerType);
+
+        if(ChartModule == newModuleType){
+            switch( (<ChartModuleMetadata>availableModule).getChartType()){
+                case ChartType.BAR:newModule.lineChartType = 'bar';break;
+                case ChartType.LINE:newModule.lineChartType = 'line';break;
+                default: newModule.lineChartType = 'bar';newModule.innerType = 'ChartModule';break;
+            }
+        }
+        /*if( typeof(newModuleType) == ChartType){
+            console.log('chartType');
             newModule = new ChartModule(this.dataProviderService);
             switch (availableModule.getType){
                 case ChartType.BAR:newModule.lineChartType = 'bar';break;
                 case ChartType.LINE:newModule.lineChartType = 'line';break;
             }
         }else{
-            newModule = new availableModule.getType();
+            newModule = new (availableModule.getType())(this.dataProviderService);
         }
+        console.log(this.items[0]);
+        console.log(newModule);
+        console.log(JSON.stringify(newModule));
         newModule.chartPositionInformation = new ChartPositionInformation(0,0,5,1);
-        this.items.push(newModule);
+        */this.items.push(newModule);
     }
 
     get items():ChartModule[] {

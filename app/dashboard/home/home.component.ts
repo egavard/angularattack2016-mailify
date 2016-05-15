@@ -6,6 +6,7 @@ import {DataProviderService} from "../../services/data-provider.service";
 import {ChartModule} from "../../modules/chart-module.component";
 import {TableModule} from "../../modules/table-module.component";
 import {HealthModule} from "../../modules/health-module.component";
+import {ChartPositionInformation} from '../../modules/chart-position-information';
 
 @Component({
     selector: 'home',
@@ -13,12 +14,18 @@ import {HealthModule} from "../../modules/health-module.component";
     directives:[ DebugModule, ChartModule, TableModule, HealthModule, CHART_DIRECTIVES, ColorPickerDirective]
 })
 export class HomeComponent implements AfterViewInit {
-
+    
+    private items:ChartModule[];
+    
     ngAfterViewInit(){
     }
 
-    constructor(){
-
+    constructor(dataService:DataProviderService){
+        this.items = [];
+        let debugModule = new ChartModule(dataService,'DebugModule');
+        debugModule.chartPositionInformation = new ChartPositionInformation(1,1,1,1);
+        this.items.push(debugModule);
+        
     }
 
 

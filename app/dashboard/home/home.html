@@ -1,68 +1,36 @@
 <div class="container-fluid">
     <div class="card card-block">
-
-
         <div class="row">
-            <div class="col-md-6">
-                <debug-module></debug-module>
-
-                <chart-module [lineChartType]="'bar'"></chart-module>
+            <div class="col-md-6" *ngFor="let item of items; let i = index" >
+                <chart-module style="display:inline-block;"
+                              [attr.id]="item.id"
+                              [attr.data-sizex]="item.chartPositionInformation.sizeX"
+                              [attr.data-sizey]="item.chartPositionInformation.sizeY"
+                              [attr.data-col]="item.chartPositionInformation.col"
+                              [attr.data-row]="item.chartPositionInformation.row"
+                              [readOnly]="item.readOnly"
+                              [lineChartData]="item.lineChartData"
+                              [lineChartLabels]="item.lineChartLabels"
+                              [lineChartOptions]="item.lineChartOptions"
+                              [lineChartSeries]="item.lineChartSeries"
+                              [lineChartColours]="item.lineChartColours"
+                              [lineChartType]="item.lineChartType"
+                              [sourceUrl1]="item.sourceUrl1"
+                              [series]="item.series"
+                              [selectedSerie]="item.selectedSerie"
+                              [minThreshold]="item.minThreshold"
+                              [maxThreshold]="item.maxThreshold"
+                              [currentValue]="item.currentValue"
+                              [topText]="item.topText"
+                              [bottomText]="item.bottomText"
+                              [moduleData]="item.moduleData"
+                              [data]="item.data"
+                              [striped]="item.striped"
+                              [condensed]="item.condensed"
+                              [showSeriesTitle]="item.showSeriesTitle"
+                              [innerType]="item.innerType"
+                ></chart-module>
             </div>
-            <div class="col-md-6">
-                <chart-module [lineChartType]="'line'"></chart-module>
-
-                <chart-module [lineChartType]="'radar'"></chart-module>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <table-module></table-module>
-            </div>
-            <div class="col-md-6">
-                <health-module></health-module>
-            </div>
-            <!--<div class="row">
-                <div class="col-md-6">
-                    <div style="width:100%;">
-                        <base-chart style="width:100%;" class="chart"
-                                    [data]="lineChartData"
-                                    [labels]="lineChartLabels"
-                                    [options]="lineChartOptions"
-                                    [series]="lineChartSeries"
-                                    [colours]="lineChartColours"
-                                    [chartType]="lineChartType"
-                                    (chartHover)="chartHovered($event)"
-                                    (chartClick)="chartClicked($event)"></base-chart>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <form>
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <div>
-                                <label class="control-label">Random data</label>
-                            </div>
-                            <input type="button" (click)="randomizeData()" value="Randomize" class="btn btn-primary"/>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="control-label">Source URL</label>
-                            <div class="input-group">
-                                <input class="form-control" type="text" [(ngModel)]="sourceUrl1"/>
-                                    <span class="input-group-btn">
-                                        <input type="button" value="Load" (click)="loadDataFromSourceUrl()"
-                                               class="btn btn-primary"/>
-                                    </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label class="control-label">Fill color</label>
-                        <input class="form-control" [(colorPicker)]="fillColor1" [style.background]="fillColor1"
-                               [value]="fillColor1" (colorPickerChange)="functionwhencolorchange($event)"/>
-                    </div>
-                </form>
-            </div>-->
         </div>
     </div>
 </div>

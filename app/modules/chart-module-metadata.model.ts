@@ -2,7 +2,7 @@ import {ModuleMetadata} from "./module-metadata.model";
 import {ChartModule} from "./chart-module.component";
 
 export enum ChartType {
-    LINE, BAR
+    TABLE, DEBUG, HEALTH, LINE, BAR
 }
 
 export class ChartModuleMetadata implements ModuleMetadata {
