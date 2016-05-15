@@ -96,6 +96,16 @@
                 {{ bottomText }}
             </div>
         </div>
+        <modal #modal>
+            <modal-header [show-close]="true">
+                <h4 class="modal-title">Configuration</h4>
+            </modal-header>
+            <modal-body>
+                <textarea class="form-control" rows="6" [(ngModel)]="moduleData" tabEnabled autofocus> </textarea>
+            </modal-body>
+            <modal-footer [show-default-buttons]="true"></modal-footer>
+        </modal>
+
     </div>
     <div *ngSwitchWhen="'TableModule'">
         <h4>
@@ -121,6 +131,16 @@
             </tr>
             </tbody>
         </table>
+        <modal #modal>
+            <modal-header [show-close]="true">
+                <h4 class="modal-title">Configuration</h4>
+            </modal-header>
+            <modal-body>
+                <textarea class="form-control" rows="6" [(ngModel)]="moduleData" tabEnabled autofocus> </textarea>
+            </modal-body>
+            <modal-footer [show-default-buttons]="true"></modal-footer>
+        </modal>
+
     </div>
 </div>
 

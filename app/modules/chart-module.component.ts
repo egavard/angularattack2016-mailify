@@ -61,7 +61,7 @@ export class ChartModule implements Module {
     ];
     @Input('lineChartType') private _lineChartType:string = 'line';
     @Input('sourceUrl1') private _sourceUrl1:string = '';
-    @ViewChild('_modal') private _modal:ModalComponent;
+    @Input('modal') @ViewChild('modal') private _modal:ModalComponent;
     @Input('series') private _series:Serie[];
     @Input('selectedSerie') private _selectedSerie = null;
 
@@ -77,9 +77,9 @@ export class ChartModule implements Module {
     @Input('bottomText')private _bottomText: string;
 
     // styles
-    private _topStyle:CommonStyle;
-    private _mainStyle:CommonStyle;
-    private _bottomStyle:CommonStyle;
+    @Input('topStyle')private _topStyle:CommonStyle;
+    @Input('mainStyle')private _mainStyle:CommonStyle;
+    @Input('bottomStyle')private _bottomStyle:CommonStyle;
 
     @Input('moduleData')private _moduleData:any = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum eros in nunc varius dapibus. Aliquam vel aliquam ante. Vivamus euismod tortor vel tincidunt gravida. Etiam enim velit, consectetur non eleifend in, lobortis sed quam. Vivamus imperdiet odio efficitur leo ultricies ullamcorper. Quisque congue elit in est lobortis, eget accumsan eros rhoncus. Cras congue quam et arcu scelerisque, ut hendrerit turpis ultrices. Praesent quis magna nec massa lacinia porttitor. Proin tristique, ipsum quis varius aliquam, justo nunc molestie sem, quis tristique leo magna at leo. Nullam dapibus efficitur auctor."
 
