@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ModulesService} from '../../services/modules.service';
 import {ModuleMetadata} from '../../modules/module-metadata.model';
 import {DebugModule} from '../../modules/debug-module.component';
-import { AfterViewInit } from '@angular/core'
+import {AfterViewInit} from '@angular/core'
 import {ChartModule} from '../../modules/chart-module.component';
 import {DataProviderService} from '../../services/data-provider.service';
 import {ChartPositionInformation} from '../../modules/chart-position-information';
@@ -15,10 +15,10 @@ declare var $;
 @Component({
     selector: 'home',
     templateUrl: './app/dashboard/admin/admin.html',
-    directives: [ DebugModule, ChartModule, NgGrid, NgGridItem ]
+    directives: [DebugModule, ChartModule, NgGrid, NgGridItem]
 })
 export class AdminComponent implements AfterViewInit {
-    private _availableModules: ModuleMetadata[];
+    private _availableModules:ModuleMetadata[];
     private _items:ChartModule[];
     private _configId:string;
     private _savedConfig:string;
@@ -31,19 +31,19 @@ export class AdminComponent implements AfterViewInit {
             this.items = storedItems;
         }else{
             let item1 = new ChartModule(dataProviderService, 'ChartModule');
-            item1.chartPositionInformation = new ChartPositionInformation(0,0,5,1);
+        item1.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);
             let item2 = new ChartModule(dataProviderService, 'HealthModule');
             item2.chartPositionInformation = new ChartPositionInformation(6,0,5,1);
 
             this.items = [];
             this.items.push(item1, item2);
-        }
+    }
     }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
     }
 
-    addNewModule(availableModule:ModuleMetadata){
+    addNewModule(availableModule:ModuleMetadata) {
         let newModuleType:any = availableModule.getType();
         let newModuleInnerType:any;
 
@@ -54,7 +54,7 @@ export class AdminComponent implements AfterViewInit {
             case ChartType.HEALTH:newModuleInnerType = 'HealthModule';break;
             case ChartType.TABLE:newModuleInnerType = 'TableModule';break;
             default: newModuleInnerType = 'ChartModule';break;
-        }
+            }
 
 
         let newModule = new newModuleType(this.dataProviderService, newModuleInnerType);
@@ -63,10 +63,10 @@ export class AdminComponent implements AfterViewInit {
             switch( (<ChartModuleMetadata>availableModule).getChartType()){
                 case ChartType.BAR:newModule.lineChartType = 'bar';break;
                 case ChartType.LINE:newModule.lineChartType = 'line';break;
-            }
+        }
         }
 
-        newModule.chartPositionInformation = new ChartPositionInformation(0,0,5,1);
+        newModule.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);
         this.items.push(newModule);
     }
 
@@ -104,7 +104,6 @@ export class AdminComponent implements AfterViewInit {
 
     saveCurrentConfig() {
         let configs = this._items.map(i => i.getConfig());
-        console.log(configs);
         this.moduleConfigService.saveConfig(this._configId, configs)
             .subscribe(() => {
                 this.loadConfig()
@@ -114,8 +113,10 @@ export class AdminComponent implements AfterViewInit {
     loadConfig() {
         this.moduleConfigService.getConfigById(this._configId)
             .subscribe(config => {
-                for (let i = 0; i < this._items.length; ++i) {
-                    this._items[i].setConfig(config[i]);
+                if (config !== null) {
+                    for (let i = 0; i < this._items.length; ++i) {
+                        this._items[i].setConfig(config[i]);
+                    }
                 }
             });
     }

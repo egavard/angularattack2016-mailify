@@ -7,12 +7,6 @@
                     <label>Config Id</label>
                     <input class="form-control" type="text" [(ngModel)]="configId" placeholder="Config ID (any string or number)" />
                 </div>
-                <div *ngIf="savedConfig">
-                    <p>Config saved as:</p>
-                <pre>
-                    {{ savedConfig | json }}
-                </pre>
-                </div>
                 <button class="btn btn-sm btn-default" (click)="loadConfig()">Load config</button>
                 <button class="btn btn-sm btn-primary" (click)="saveCurrentConfig()">Save config</button>
             </form>
@@ -28,7 +22,7 @@
     </div>
     <div class="row playground">
 		<div class="col-md-12" [ngGrid]="{'max_cols': 12}" style="display:inline-block; background-color:#efefef">
-            <div *ngFor="let item of items; let i = index" [ngGridItem]="{'sizex': 2, 'sizey':1, 'col': item.chartPositionInformation.col, 'row': item.chartPositionInformation.row}">
+            <div *ngFor="let item of items; let i = index" [ngGridItem]="{'sizex': 1, 'sizey':1, 'col': item.chartPositionInformation.col, 'row': item.chartPositionInformation.row}">
                     <chart-module style="display:inline-block;"
                                   [attr.id]="item.id"
                                   [attr.data-sizex]="item.chartPositionInformation.sizeX"

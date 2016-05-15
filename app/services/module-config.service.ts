@@ -8,8 +8,12 @@ export class ModuleConfigService {
     }
 
     getConfigById(configId: string) {
-        return this.http.get(`${FIREBASE}/configs/${configId}.json`)
-            .map(response => response.json());
+        if (configId) {
+            return this.http.get(`${FIREBASE}/configs/${configId}.json`)
+                .map(response => response.json());
+        } else {
+            throw 'invalid config id';
+        }
     }
 
     saveConfig(configId: string, config: any) {
