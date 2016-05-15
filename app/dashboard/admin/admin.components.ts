@@ -7,12 +7,13 @@ import { AfterViewInit } from '@angular/core'
 import {ChartModule} from '../../modules/chart-module.component';
 import {DataProviderService} from '../../services/data-provider.service';
 import {ChartPositionInformation} from '../../modules/chart-position-information';
+import {NgGrid, NgGridItem} from 'angular2-grid/dist/NgGrid';
 declare var $;
 
 @Component({
     selector: 'home',
     templateUrl: './app/dashboard/admin/admin.html',
-    directives: [ DebugModule, ChartModule ]
+    directives: [ DebugModule, ChartModule, NgGrid, NgGridItem ]
 })
 export class AdminComponent implements AfterViewInit {
     private availableModules: ModuleMetadata[];
@@ -35,9 +36,6 @@ export class AdminComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(){
-        $(".gridster").shapeshift({
-            minColumns: 3
-        });
     }
 
     get items():ChartModule[] {

@@ -10,7 +10,8 @@
 		'ng2-bootstrap':              'node_modules/ng2-bootstrap',
         'ng2-bs3-modal':               'node_modules/ng2-bs3-modal',
 		'moment':                     'node_modules/moment',
-		'color-picker':               'app/libs/color-picker'
+		'color-picker':               'app/libs/color-picker',
+        'angular2-grid':               'node_modules/angular2-grid'
 
 
     };
@@ -24,7 +25,8 @@
 		'ng2-bootstrap':              { defaultExtension: 'js' },
         'ng2-bs3-modal':              { defaultExtension: 'js' },
         'moment':                     { main: 'moment.js', defaultExtension: 'js' },
-		'color-picker':               { defaultExtension: 'js' }
+		'color-picker':               { defaultExtension: 'js' },
+        'angular2-grid':              { defaultExtension: 'js', main:'NgGrid.js'}
     };
 
     var packageNames = [
