@@ -13,8 +13,8 @@
 			</ul>
 		</div>
 
-		<div class="col-md-10" [ngGrid]>
-            <div *ngFor="let item of items; let i = index" [ngGridItem]>
+		<div class="col-md-10" [ngGrid]="{'max_cols': 12}">
+            <div *ngFor="let item of items; let i = index" [ngGridItem]="{'sizex': 3, 'sizey':1, 'col': ((i%3)?1:4), 'row':((i/6)+1)}">
                     <chart-module style="display:inline-block;"
                                   [attr.id]="item.id"
                                   [attr.data-sizex]="item.chartPositionInformation.sizeX"
