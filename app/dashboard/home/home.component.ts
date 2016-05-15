@@ -24,6 +24,7 @@ export class HomeComponent implements AfterViewInit {
         this.items = [];
         let debugModule = new ChartModule(dataService,'DebugModule');
         debugModule.chartPositionInformation = new ChartPositionInformation(1,1,1,1);
+        console.log(debugModule);
         this.items.push(debugModule);
         
     }

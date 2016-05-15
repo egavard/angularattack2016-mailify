@@ -1,5 +1,5 @@
-import {Component, ViewChild, Input, Optional} from '@angular/core';
-import {COMMON_DIRECTIVES} from '@angular/common';
+import {Component, ViewChild, Input, Optional, AfterContentInit} from '@angular/core';
+import {NgSwitch, NgSwitchWhen} from '@angular/common';
 import {DataProviderService} from '../services/data-provider.service';
 import {BaseChartComponent, CHART_DIRECTIVES} from '../libs/ng2-charts-upgrade-rc1/components/charts/charts';
 import {Chart} from '../models/chart.model';
@@ -12,11 +12,11 @@ import {CommonStyle} from '../models/common-style.model';
 @Component({
     selector: 'chart-module',
     templateUrl: './app/modules/chart-module.html',
-    directives: [CHART_DIRECTIVES, ColorPickerDirective, MODAL_DIRECTIVES, COMMON_DIRECTIVES]
+    directives: [CHART_DIRECTIVES, ColorPickerDirective, MODAL_DIRECTIVES, NgSwitch, NgSwitchWhen]
 })
 export class ChartModule implements Module {
     @Input() private _readOnly:boolean = false;
-    @Input() private _id:string = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    @Input() private _id:string = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
     });
@@ -93,11 +93,11 @@ export class ChartModule implements Module {
     @Input()private _innerType:string;
 
 
-    constructor(private dataProviderService:DataProviderService, @Optional() innerModuleType?:string) {
-        if(innerModuleType){
-            this.innerType = innerModuleType;
+    constructor(private dataProviderService:DataProviderService, @Optional() innerType?:string) {
+        if(innerType != null){
+            this.innerType = innerType;
         }
-        if(this.innerType){
+        if(this.innerType != null){
             if('ChartModule' == this.innerType){
                 this._series = [];
                 this._chartPositionInformation = new ChartPositionInformation(0, 0, 1, 1);
@@ -127,6 +127,7 @@ export class ChartModule implements Module {
 
             }
         }else{
+            this.innerType = 'ChartModule';
             this._series = [];
             this._chartPositionInformation = new ChartPositionInformation(0, 0, 1, 1);
             this.randomizeData();
@@ -134,6 +135,7 @@ export class ChartModule implements Module {
 
         }
     }
+
 
     getModuleMetadata() {
         return null;
@@ -232,6 +234,8 @@ export class ChartModule implements Module {
     private randomize() {
         this._currentValue = Math.round(Math.random() * 100);
         this._bottomText = `Current value: ${this._currentValue}`;
+        this._dataPrepared = true;
+
     }
 
     randomizeData() {
@@ -244,6 +248,8 @@ export class ChartModule implements Module {
         this.dataProviderService.getBasicChartFromRandomData(4, 4).then(
             (chart: Chart) => this.data = chart
         );
+        this._dataPrepared = true;
+
     }
 
 
