@@ -17,6 +17,11 @@
             <ul>
                 <li *ngFor="let item of items; let i = index">
                         <chart-module style="display:inline-block;"
+                                      [attr.id]="item.id"
+                                      [attr.data-sizex]="item.chartPositionInformation.sizeX"
+                                      [attr.data-sizey]="item.chartPositionInformation.sizeY"
+                                      [attr.data-col]="item.chartPositionInformation.col"
+                                      [attr.data-row]="item.chartPositionInformation.row"
                                       [readOnly]="item.readOnly"
                                       [lineChartData]="item.lineChartData"
                                       [lineChartLabels]="item.lineChartLabels"
@@ -24,11 +29,7 @@
                                       [lineChartSeries]="item.lineChartSeries"
                                       [lineChartColours]="item.lineChartColours"
                                       [lineChartType]="item.lineChartType"
-                                      [attr.data-sizex]="item.chartPositionInformation.sizeX"
-                                      [attr.data-sizey]="item.chartPositionInformation.sizeY"
-                                      [attr.data-col]="item.chartPositionInformation.col"
-                                      [attr.data-row]="item.chartPositionInformation.row"
-                                      draggable="true" id="item.id"></chart-module>
+                                      draggable="true"></chart-module>
                 </li>
             </ul>
         </div>

@@ -16,7 +16,10 @@ import {log} from '../decorators/log.decorator';
 })
 export class ChartModule implements Module {
     @Input() private _readOnly:boolean = false;
-    @Input() private id:string = '';
+    @Input() private id:string = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
     @Input() private dataPrepared:boolean = false;
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
     @Input() private _chartPositionInformation:ChartPositionInformation
@@ -62,9 +65,6 @@ export class ChartModule implements Module {
         { "id": 3, "name": "radar" }
     ];
     @Input() public selectedType: Serie = this.types[0];
-
-    ngAfterViewInit(){
-    }
 
     @log()
     constructor(private dataProviderService: DataProviderService){
