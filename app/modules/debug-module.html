@@ -1,4 +1,7 @@
-<h4><button *ngIf="!readOnly" (click)="modal.open('lg')" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button> Debug Module</h4>
+<h4><button *ngIf="!readOnly" (click)="modal.open('lg')" class="btn btn-sm btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+    Debug Module
+</h4>
+
 <p>{{moduleData}}</p>
 <modal #modal>
     <modal-header [show-close]="true">

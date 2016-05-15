@@ -24,9 +24,9 @@ export class ChartModule implements Module {
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
     @Input() private _chartPositionInformation:ChartPositionInformation
 
-    @Input() private backgroundColor: string = "rgba(255,107,13,1)";
-    @Input() private borderColor: string = "rgba(232,65,12,1)";
-    @Input() private pointBackgroundColor: string = "rgba(255,25,0,1)";
+    @Input() private backgroundColor: string = "rgba(222, 239, 183, 0.6)";
+    @Input() private borderColor: string = "rgba(222, 239, 183, 1)";
+    @Input() private pointBackgroundColor: string = "rgba(222, 239, 183, 1)";
 
     @Input() private lineChartData:Array<any> = [];
     @Input() private lineChartLabels:Array<any> = [];
@@ -34,6 +34,11 @@ export class ChartModule implements Module {
     @Input() private lineChartOptions:any = {
         animation: false,
         responsive: true,
+        elements: {
+            line: {
+                borderWidth: 1
+            }
+        },
         multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>'
     };
     @Input() private lineChartColours:Array<any> = [
@@ -43,14 +48,14 @@ export class ChartModule implements Module {
             pointBackgroundColor: this.pointBackgroundColor,
         },
         { // green
-            backgroundColor: "rgba(0,204,13,1)",
-            borderColor: "rgba(38,127,44,1)",
-            pointBackgroundColor: "rgba(0,255,16,1)"
+            backgroundColor: "rgba(0, 204, 13, 0.6)",
+            borderColor: "rgba(38, 127, 44, 1)",
+            pointBackgroundColor: "rgba(0, 255, 16, 1)"
         },
         { // i'm blue
-            backgroundColor: "rgba(76,118,255,1)",
-            borderColor: "rgba(63,58,232,1)",
-            pointBackgroundColor: "rgba(58,145,232,1)",
+            backgroundColor: "rgba(76, 118, 255, 0.6)",
+            borderColor: "rgba(63, 58, 232, 1)",
+            pointBackgroundColor: "rgba(58, 145, 232, 1)",
         }
 
     ];
@@ -60,9 +65,8 @@ export class ChartModule implements Module {
     @Input() public series: Serie[];
     @Input() public selectedSerie=null;
 
-    @log()
     constructor(private dataProviderService: DataProviderService){
-        this.series = new Array<Serie>();
+        this.series = [];
         this._chartPositionInformation = new ChartPositionInformation(0,0,1,1);
         this.randomizeData();
     }
@@ -70,8 +74,6 @@ export class ChartModule implements Module {
     getModuleMetadata() {
         return null;
     }
-
-
 
     /**
      * Edition mode
@@ -82,7 +84,7 @@ export class ChartModule implements Module {
         for (var item in this.lineChartSeries ) {
            var itemToAdd = {
                 id: i,
-                name: "Serie " + item
+                name: `Serie ${item}`
             };
             this.series.push(itemToAdd);
         i++;

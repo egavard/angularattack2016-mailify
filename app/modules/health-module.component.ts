@@ -4,6 +4,7 @@ import {GridsterItem} from "../libs/gridster/gridster";
 import {DataProviderService} from "../services/data-provider.service";
 import {Component} from "@angular/core"
 import {CommonStyle} from "../models/common-style.model";
+import {HealthModuleMetadata} from "./health-module-metadata.model";
 
 @Component({
     selector: 'health-module',
@@ -30,18 +31,18 @@ export class HealthModule extends GridsterItem implements Module {
         // fake data
         this._minThreshold = 25;
         this._maxThreshold = 75;
-        this._currentValue = 80;
+        this._currentValue = 20;
 
         this._topText = 'This is a top text';
         this._bottomText = `${this._currentValue}`;
         
         this._topStyle = new CommonStyle(CommonStyle.COLOR_DEFAULT, 'inherit', 'bold');
         this._mainStyle = new CommonStyle();
-        this._bottomStyle = new CommonStyle(CommonStyle.COLOR_MATCH, '2em', 'bold');
+        this._bottomStyle = new CommonStyle('inherit', '2em', 'bold');
     }
 
     getModuleMetadata() {
-        return null;
+        return new HealthModuleMetadata();
     }
 
     getModuleClass() {
@@ -98,8 +99,7 @@ export class HealthModule extends GridsterItem implements Module {
     set bottomText(value:string) {
         this._bottomText = value;
     }
-
-
+    
     get topStyle():CommonStyle {
         return this._topStyle;
     }

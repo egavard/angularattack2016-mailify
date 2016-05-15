@@ -1,41 +1,61 @@
-<h4><button *ngIf="!readOnly" (click)="edit()" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>Chart Module</h4>
+<h4>
+    <button *ngIf="!readOnly" (click)="edit()" class="btn btn-sm btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i>
+    </button>
+    Chart Module
+</h4>
 
 <base-chart style="width:100%;" class="chart"
-			[data]="lineChartData"
-			[labels]="lineChartLabels"
-			[options]="lineChartOptions"
-			[series]="lineChartSeries"
-			[colours]="lineChartColours"
-			[chartType]="lineChartType"
-			(chartHover)="chartHovered($event)"
-			(chartClick)="chartClicked($event)" *ngIf="dataPrepared"></base-chart>
+            [data]="lineChartData"
+            [labels]="lineChartLabels"
+            [options]="lineChartOptions"
+            [series]="lineChartSeries"
+            [colours]="lineChartColours"
+            [chartType]="lineChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)" *ngIf="dataPrepared"></base-chart>
 <modal #modal>
-	<modal-header [show-close]="true">
-		<h4 class="modal-title">Configuration</h4>
-	</modal-header>
-	<modal-body>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">Configuration</h4>
+    </modal-header>
+    <modal-body>
 
-        <select (change)="onSelect($event.target.value)">
-            <option *ngFor="#serie of series" [value]="serie.id">{{serie.name}}</option>
-        </select>
+        <h5>Chart type</h5>
+        <div class="form-group">
+            <select class="form-control" (change)="onSelectType($event.target.value)">
+                <option *ngFor="let serie of types" [value]="serie.id">{{serie.name}}</option>
+            </select>
+        </div>
 
-        <p>
-			<label class="control-label">backgroundColor : </label>
-			<input [(colorPicker)]="backgroundColor" [style.background]="backgroundColor" [value]="backgroundColor" (colorPickerChange)="backgroundColorChanged($event)"/>
-		</p>
+        <h5>Series</h5>
+        <form>
+            <div class="form-group">
+                <label>Select a series</label>
+                <select class="form-control" (change)="onSelect($event.target.value)">
+                    <option *ngFor="let serie of series" [value]="serie.id">{{serie.name}}</option>
+                </select>
+            </div>
 
-		<p>
-			<label class="control-label">borderColor : </label>
-			<input [(colorPicker)]="borderColor" [style.background]="borderColor" [value]="borderColor" (colorPickerChange)="borderColorChanged($event)"/>
-		</p>
+            <div class="form-group">
+                <label>Fill color</label>
+                <input class="form-control" [(colorPicker)]="backgroundColor" [style.background]="backgroundColor"
+                       [value]="backgroundColor" (colorPickerChange)="backgroundColorChanged($event)"/>
+            </div>
 
-        <p>
-            <label class="control-label">pointBackgroundColor : </label>
-            <input [(colorPicker)]="pointBackgroundColor" [style.background]="pointBackgroundColor" [value]="pointBackgroundColor" (colorPickerChange)="pointBackgroundColorChanged($event)"/>
-        </p>
+            <div class="form-group">
+                <label>Border color</label>
+                <input class="form-control" [(colorPicker)]="borderColor" [style.background]="borderColor"
+                       [value]="borderColor" (colorPickerChange)="borderColorChanged($event)"/>
+            </div>
 
+            <div class="form-group">
+                <label>Point fill color</label>
+                <input class="form-control" [(colorPicker)]="pointBackgroundColor"
+                       [style.background]="pointBackgroundColor"
+                       [value]="pointBackgroundColor" (colorPickerChange)="pointBackgroundColorChanged($event)"/>
+            </div>
+        </form>
 
-	</modal-body>
-	<modal-footer [show-default-buttons]="true"></modal-footer>
+    </modal-body>
+    <modal-footer [show-default-buttons]="true"></modal-footer>
 </modal>
 
