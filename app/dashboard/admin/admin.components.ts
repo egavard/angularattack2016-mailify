@@ -61,24 +61,11 @@ export class AdminComponent implements AfterViewInit {
             switch( (<ChartModuleMetadata>availableModule).getChartType()){
                 case ChartType.BAR:newModule.lineChartType = 'bar';break;
                 case ChartType.LINE:newModule.lineChartType = 'line';break;
-                default: newModule.lineChartType = 'bar';newModule.innerType = 'ChartModule';break;
             }
         }
-        /*if( typeof(newModuleType) == ChartType){
-            console.log('chartType');
-            newModule = new ChartModule(this.dataProviderService);
-            switch (availableModule.getType){
-                case ChartType.BAR:newModule.lineChartType = 'bar';break;
-                case ChartType.LINE:newModule.lineChartType = 'line';break;
-            }
-        }else{
-            newModule = new (availableModule.getType())(this.dataProviderService);
-        }
-        console.log(this.items[0]);
-        console.log(newModule);
-        console.log(JSON.stringify(newModule));
+
         newModule.chartPositionInformation = new ChartPositionInformation(0,0,5,1);
-        */this.items.push(newModule);
+        this.items.push(newModule);
     }
 
     get items():ChartModule[] {

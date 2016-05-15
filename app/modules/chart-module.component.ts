@@ -1,4 +1,4 @@
-import {Component, ViewChild, Input, Optional, AfterContentInit} from '@angular/core';
+import {Component, ViewChild, Input, Optional, OnChanges} from '@angular/core';
 import {NgSwitch, NgSwitchWhen} from '@angular/common';
 import {DataProviderService} from '../services/data-provider.service';
 import {BaseChartComponent, CHART_DIRECTIVES} from '../libs/ng2-charts-upgrade-rc1/components/charts/charts';
@@ -15,23 +15,23 @@ import {CommonStyle} from '../models/common-style.model';
     directives: [CHART_DIRECTIVES, ColorPickerDirective, MODAL_DIRECTIVES, NgSwitch, NgSwitchWhen]
 })
 export class ChartModule implements Module {
-    @Input() private _readOnly:boolean = false;
-    @Input() private _id:string = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    @Input('readOnly') private _readOnly:boolean = false;
+    @Input('id') private _id:string = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
     });
-    @Input() private _dataPrepared:boolean = false;
+    @Input('dataPrepared') private _dataPrepared:boolean = false;
     @ViewChild(BaseChartComponent) private _chart:BaseChartComponent;
-    @Input() private _chartPositionInformation:ChartPositionInformation
+    @Input('chartPositionInformation') private _chartPositionInformation:ChartPositionInformation
 
-    @Input() private _backgroundColor:string = "rgba(222, 239, 183, 0.6)";
-    @Input() private _borderColor:string = "rgba(222, 239, 183, 1)";
-    @Input() private _pointBackgroundColor:string = "rgba(222, 239, 183, 1)";
+    @Input('backgroundColor') private _backgroundColor:string = "rgba(222, 239, 183, 0.6)";
+    @Input('borderColor') private _borderColor:string = "rgba(222, 239, 183, 1)";
+    @Input('pointBackgroundColor') private _pointBackgroundColor:string = "rgba(222, 239, 183, 1)";
 
-    @Input() private _lineChartData:Array<any> = [];
-    @Input() private _lineChartLabels:Array<any> = [];
-    @Input() private _lineChartSeries:Array<any> = [];
-    @Input() private _lineChartOptions:any = {
+    @Input('lineChartData') private _lineChartData:Array<any> = [];
+    @Input('lineChartLabels') private _lineChartLabels:Array<any> = [];
+    @Input('lineChartSeries') private _lineChartSeries:Array<any> = [];
+    @Input('lineChartOptions') private _lineChartOptions:any = {
         animation: false,
         responsive: true,
         elements: {
@@ -41,7 +41,7 @@ export class ChartModule implements Module {
         },
         multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>'
     };
-    @Input() private _lineChartColours:Array<any> = [
+    @Input('lineChartColours') private _lineChartColours:Array<any> = [
         { // red
             backgroundColor: this._backgroundColor,
             borderColor: this._borderColor,
@@ -59,38 +59,38 @@ export class ChartModule implements Module {
         }
 
     ];
-    @Input() private _lineChartType:string = 'line';
-    @Input() private _sourceUrl1:string = '';
+    @Input('lineChartType') private _lineChartType:string = 'line';
+    @Input('sourceUrl1') private _sourceUrl1:string = '';
     @ViewChild('_modal') private _modal:ModalComponent;
-    @Input() private _series:Serie[];
-    @Input() private _selectedSerie = null;
+    @Input('series') private _series:Serie[];
+    @Input('selectedSerie') private _selectedSerie = null;
 
 
     /**
      * HEALTH MODULE
      */
-    @Input()private _minThreshold: number;
-    @Input()private _maxThreshold: number;
-    @Input()private _currentValue: number;
+    @Input('minThreshold')private _minThreshold: number;
+    @Input('maxThreshold')private _maxThreshold: number;
+    @Input('currentValue')private _currentValue: number;
 
-    @Input()private _topText: string;
-    @Input()private _bottomText: string;
+    @Input('topText')private _topText: string;
+    @Input('bottomText')private _bottomText: string;
 
     // styles
     private _topStyle:CommonStyle;
     private _mainStyle:CommonStyle;
     private _bottomStyle:CommonStyle;
 
-    @Input()private _moduleData:any = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum eros in nunc varius dapibus. Aliquam vel aliquam ante. Vivamus euismod tortor vel tincidunt gravida. Etiam enim velit, consectetur non eleifend in, lobortis sed quam. Vivamus imperdiet odio efficitur leo ultricies ullamcorper. Quisque congue elit in est lobortis, eget accumsan eros rhoncus. Cras congue quam et arcu scelerisque, ut hendrerit turpis ultrices. Praesent quis magna nec massa lacinia porttitor. Proin tristique, ipsum quis varius aliquam, justo nunc molestie sem, quis tristique leo magna at leo. Nullam dapibus efficitur auctor."
+    @Input('moduleData')private _moduleData:any = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum eros in nunc varius dapibus. Aliquam vel aliquam ante. Vivamus euismod tortor vel tincidunt gravida. Etiam enim velit, consectetur non eleifend in, lobortis sed quam. Vivamus imperdiet odio efficitur leo ultricies ullamcorper. Quisque congue elit in est lobortis, eget accumsan eros rhoncus. Cras congue quam et arcu scelerisque, ut hendrerit turpis ultrices. Praesent quis magna nec massa lacinia porttitor. Proin tristique, ipsum quis varius aliquam, justo nunc molestie sem, quis tristique leo magna at leo. Nullam dapibus efficitur auctor."
 
-    @Input()private _data: Chart;
+    @Input('data')private _data: Chart;
     // style properties (move somewhere else ?)
-    @Input()private _striped: boolean;
-    @Input()private _condensed: boolean;
+    @Input('striped')private _striped: boolean;
+    @Input('condensed')private _condensed: boolean;
 
-    @Input()private _showSeriesTitle: boolean;
+    @Input('showSeriesTitle')private _showSeriesTitle: boolean;
 
-    @Input()private _innerType:string;
+    @Input('innerType') innerType:string;
 
 
     constructor(private dataProviderService:DataProviderService, @Optional() innerType?:string) {
@@ -135,7 +135,6 @@ export class ChartModule implements Module {
 
         }
     }
-
 
     getModuleMetadata() {
         return null;
@@ -501,13 +500,6 @@ export class ChartModule implements Module {
         this._showSeriesTitle = value;
     }
 
-    get innerType():string {
-        return this._innerType;
-    }
-
-    set innerType(value:string) {
-        this._innerType = value;
-    }
 }
 
 export class Serie {
