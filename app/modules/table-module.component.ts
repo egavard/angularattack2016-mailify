@@ -22,9 +22,8 @@ export class TableModule extends GridsterItem implements Module {
 
     constructor(private dataProviderService: DataProviderService) {
         super();
-        dataProviderService.getBasicChartFromRandomData(4, 4).then(
-            (chart: Chart) => this.data = chart
-        );
+        this.randomizeData();
+        setInterval(() => this.randomizeData(), 5000);
         this._striped = true;
         this._condensed = true;
         this._showSeriesTitle = true;
@@ -33,7 +32,13 @@ export class TableModule extends GridsterItem implements Module {
     getModuleMetadata() {
         return new TableModuleMetadata();
     }
-    
+
+    private randomizeData() {
+        this.dataProviderService.getBasicChartFromRandomData(4, 4).then(
+            (chart: Chart) => this.data = chart
+        );
+    }
+
     get data():Chart {
         return this._data;
     }

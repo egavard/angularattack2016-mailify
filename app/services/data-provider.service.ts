@@ -11,7 +11,7 @@ export class DataProviderService {
     constructor(private http: Http, private dataGenerator:DataGenerator) {
     }
 
-    getBasicChartFromRandomData(numberOfCategories = 8, numberOfSeries = 2, maxValue = 100):Promise<Chart> {
+    getBasicChartFromRandomData(numberOfCategories = 5, numberOfSeries = 2, maxValue = 100):Promise<Chart> {
         return Promise.resolve(
             this.dataGenerator.generateDummyData(numberOfCategories, numberOfSeries, maxValue).then((data: any) => {
                 return new Chart(data.labels, data.series);

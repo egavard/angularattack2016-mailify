@@ -31,14 +31,16 @@ export class HealthModule extends GridsterItem implements Module {
         // fake data
         this._minThreshold = 25;
         this._maxThreshold = 75;
-        this._currentValue = 20;
 
-        this._topText = 'This is a top text';
-        this._bottomText = `${this._currentValue}`;
-        
+        this._topText = `This is an health indicator.
+            Low when < ${this._minThreshold}, 
+            High when > ${this._maxThreshold} 
+        `;
         this._topStyle = new CommonStyle(CommonStyle.COLOR_DEFAULT, 'inherit', 'bold');
         this._mainStyle = new CommonStyle();
         this._bottomStyle = new CommonStyle('inherit', '2em', 'bold');
+        setInterval(() => this.randomize(), 5000);
+        this.randomize();
     }
 
     getModuleMetadata() {
@@ -47,9 +49,9 @@ export class HealthModule extends GridsterItem implements Module {
 
     getModuleClass() {
         let typeClasses = {
-            'low': 'fa-minus',
-            'high': 'fa-plus',
-            'default': 'fa-circle'
+            'low': 'fa-arrow-circle-down',
+            'high': 'fa-arrow-circle-up',
+            'default': 'fa-minus-square'
         };
         if (this._currentValue < this._minThreshold) {
             return `${typeClasses.low} low`;
@@ -122,5 +124,10 @@ export class HealthModule extends GridsterItem implements Module {
 
     set bottomStyle(value:CommonStyle) {
         this._bottomStyle = value;
+    }
+
+    private randomize() {
+        this._currentValue = Math.round(Math.random() * 100);
+        this._bottomText = `Current value: ${this._currentValue}`;
     }
 }

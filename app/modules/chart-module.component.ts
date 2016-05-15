@@ -12,21 +12,21 @@ import {log} from '../decorators/log.decorator';
 @Component({
     selector: 'chart-module',
     templateUrl: './app/modules/chart-module.html',
-    directives:[CHART_DIRECTIVES, ColorPickerDirective, MODAL_DIRECTIVES]
+    directives: [CHART_DIRECTIVES, ColorPickerDirective, MODAL_DIRECTIVES]
 })
 export class ChartModule implements Module {
     @Input() private _readOnly:boolean = false;
-    @Input() private id:string = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    @Input() private id:string = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
     });
     @Input() private dataPrepared:boolean = false;
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
     @Input() private _chartPositionInformation:ChartPositionInformation
 
-    @Input() private backgroundColor: string = "rgba(222, 239, 183, 0.6)";
-    @Input() private borderColor: string = "rgba(222, 239, 183, 1)";
-    @Input() private pointBackgroundColor: string = "rgba(222, 239, 183, 1)";
+    @Input() private backgroundColor:string = "rgba(222, 239, 183, 0.6)";
+    @Input() private borderColor:string = "rgba(222, 239, 183, 1)";
+    @Input() private pointBackgroundColor:string = "rgba(222, 239, 183, 1)";
 
     @Input() private lineChartData:Array<any> = [];
     @Input() private lineChartLabels:Array<any> = [];
@@ -36,7 +36,7 @@ export class ChartModule implements Module {
         responsive: true,
         elements: {
             line: {
-                borderWidth: 1
+                borderWidth: 10
             }
         },
         multiTooltipTemplate: '<%if (datasetLabel){%><%=datasetLabel %>: <%}%><%= value %>'
@@ -60,15 +60,16 @@ export class ChartModule implements Module {
 
     ];
     @Input() lineChartType:string = 'line';
-    @Input() private sourceUrl1: string = '';
-    @ViewChild('modal') modal: ModalComponent;
-    @Input() public series: Serie[];
-    @Input() public selectedSerie=null;
+    @Input() private sourceUrl1:string = '';
+    @ViewChild('modal') modal:ModalComponent;
+    @Input() public series:Serie[];
+    @Input() public selectedSerie = null;
 
-    constructor(private dataProviderService: DataProviderService){
+    constructor(private dataProviderService:DataProviderService) {
         this.series = [];
-        this._chartPositionInformation = new ChartPositionInformation(0,0,1,1);
-        this.randomizeData();
+        this._chartPositionInformation = new ChartPositionInformation(0, 0, 1, 1);
+        this.randomizeData()
+        setInterval(() => this.randomizeData(), 5000);
     }
 
     getModuleMetadata() {
@@ -81,13 +82,13 @@ export class ChartModule implements Module {
     edit() {
         var i = 0;
         this.series = new Array<Serie>();
-        for (var item in this.lineChartSeries ) {
-           var itemToAdd = {
+        for (var item in this.lineChartSeries) {
+            var itemToAdd = {
                 id: i,
                 name: `Serie ${item}`
             };
             this.series.push(itemToAdd);
-        i++;
+            i++;
         }
         this.selectedSerie = this.series[0];
         this.backgroundColor = this.chart.colours[this.selectedSerie.id].backgroundColor;
@@ -96,20 +97,21 @@ export class ChartModule implements Module {
         this.modal.open();
     }
 
-    backgroundColorChanged(color){
+    backgroundColorChanged(color) {
         if (this.selectedSerie != null) {
             this.chart.colours[this.selectedSerie.id].backgroundColor = color;
             this.chart.refresh();
         }
     }
-    borderColorChanged(color){
-    if (this.selectedSerie != null) {
+
+    borderColorChanged(color) {
+        if (this.selectedSerie != null) {
             this.chart.colours[this.selectedSerie.id].borderColor = color;
             this.chart.refresh();
         }
     }
-   
-    pointBackgroundColorChanged(color){
+
+    pointBackgroundColorChanged(color) {
         if (this.selectedSerie != null) {
             this.chart.colours[this.selectedSerie.id].pointBackgroundColor = color;
             this.chart.refresh();
@@ -118,8 +120,7 @@ export class ChartModule implements Module {
 
     onSelect(serieId) {
         this.selectedSerie = null;
-        for (var i = 0; i < this.series.length; i++)
-        {
+        for (var i = 0; i < this.series.length; i++) {
             if (this.series[i].id == serieId) {
                 this.selectedSerie = this.series[i];
                 this.backgroundColor = this.chart.colours[this.selectedSerie.id].backgroundColor;
@@ -134,19 +135,19 @@ export class ChartModule implements Module {
      * re-generates random data
      */
     randomizeData() {
-        this.dataProviderService.getBasicChartFromRandomData(10, 3).then(
-            (chart: Chart) => this.loadDataIntoChart(chart)
+        this.dataProviderService.getBasicChartFromRandomData(5, 3).then(
+            (chart:Chart) => this.loadDataIntoChart(chart)
         );
     }
 
     loadDataFromSourceUrl() {
         this.dataProviderService.getBasicChartFromSourceUrl(this.sourceUrl1).subscribe(
-            (chart: Chart) => this.loadDataIntoChart(chart),
+            (chart:Chart) => this.loadDataIntoChart(chart),
             error => console.log(error)
         );
     }
-    @log()
-    private loadDataIntoChart(chart: Chart) {
+
+    private loadDataIntoChart(chart:Chart) {
         this.lineChartLabels = chart.labels;
         this.lineChartSeries = chart.series.map(s => s.title);
         this.lineChartData = chart.series.map(s => s.points);
@@ -172,6 +173,6 @@ export class ChartModule implements Module {
 }
 
 export class Serie {
-    id: number;
-    name: string;
+    id:number;
+    name:string;
 }
