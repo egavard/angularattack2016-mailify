@@ -111,7 +111,7 @@ export class ChartModule implements Module {
                 this._topText = `This is an health indicator.
             Low when < ${this._minThreshold}, 
             High when > ${this._maxThreshold} 
-        `;
+`;
                 this._topStyle = new CommonStyle(CommonStyle.COLOR_DEFAULT, 'inherit', 'bold');
                 this._mainStyle = new CommonStyle();
                 this._bottomStyle = new CommonStyle('inherit', '2em', 'bold');
@@ -170,9 +170,9 @@ export class ChartModule implements Module {
             i++;
         }
         this._selectedSerie = this._series[0];
-        this._backgroundColor = this._chart.colours[this._selectedSerie.id]._backgroundColor;
-        this._borderColor = this._chart.colours[this._selectedSerie.id]._borderColor;
-        this._pointBackgroundColor = this._chart.colours[this._selectedSerie.id]._pointBackgroundColor;
+        this._backgroundColor = this._chart.colours[this._selectedSerie.id].backgroundColor;
+        this._borderColor = this._chart.colours[this._selectedSerie.id].borderColor;
+        this._pointBackgroundColor = this._chart.colours[this._selectedSerie.id].pointBackgroundColor;
         this._modal.open();
     }
 
@@ -202,9 +202,9 @@ export class ChartModule implements Module {
         for (var i = 0; i < this._series.length; i++) {
             if (this._series[i].id == serieId) {
                 this._selectedSerie = this._series[i];
-                this._backgroundColor = this._chart.colours[this._selectedSerie.id]._backgroundColor;
-                this._borderColor = this._chart.colours[this._selectedSerie.id]._borderColor;
-                this._pointBackgroundColor = this._chart.colours[this._selectedSerie.id]._pointBackgroundColor;
+                this._backgroundColor = this._chart.colours[this._selectedSerie.id].backgroundColor;
+                this._borderColor = this._chart.colours[this._selectedSerie.id].borderColor;
+                this._pointBackgroundColor = this._chart.colours[this._selectedSerie.id].pointBackgroundColor;
             }
         }
     }
