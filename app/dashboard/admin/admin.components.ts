@@ -17,7 +17,7 @@ declare var $;
     directives: [DebugModule, ChartModule, NgGrid, NgGridItem]
 })
 export class AdminComponent implements AfterViewInit {
-    private availableModules:ModuleMetadata[];
+    private _availableModules:ModuleMetadata[];
     private _items:ChartModule[];
     private _configId:string;
     private _savedConfig:string;
@@ -25,15 +25,15 @@ export class AdminComponent implements AfterViewInit {
     constructor(private modulesService:ModulesService,
                 private dataProviderService:DataProviderService,
                 private moduleConfigService:ModuleConfigService) {
-        this.availableModules = modulesService.getAvailableModules();
+        this._availableModules = modulesService.getAvailableModules();
 
         let item1 = new ChartModule(dataProviderService);
         item1.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);
         let item2 = new ChartModule(dataProviderService);
         item2.chartPositionInformation = new ChartPositionInformation(6, 0, 5, 1);
 
-        this.items = [];
-        this.items.push(item1, item2);
+        this._items = [];
+        this._items.push(item1, item2);
     }
 
     ngAfterViewInit() {
@@ -55,7 +55,7 @@ export class AdminComponent implements AfterViewInit {
             newModule = new availableModule.getType();
         }
         newModule.chartPositionInformation = new ChartPositionInformation(0, 0, 5, 1);
-        this.items.push(newModule);
+        this._items.push(newModule);
     }
 
     get items():ChartModule[] {
@@ -82,8 +82,16 @@ export class AdminComponent implements AfterViewInit {
         this._savedConfig = value;
     }
 
+    get availableModules():Array<ModuleMetadata> {
+        return this._availableModules;
+    }
+
+    set availableModules(value:Array<ModuleMetadata>) {
+        this._availableModules = value;
+    }
+
     saveCurrentConfig() {
-        this.moduleConfigService.saveConfig(this._configId, this._items)
+        this.moduleConfigService.saveConfig(this._configId, this._items.map(i => i.getConfig()))
             .subscribe(() => {
                 this.loadConfig()
             });

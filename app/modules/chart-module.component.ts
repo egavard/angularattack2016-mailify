@@ -22,7 +22,7 @@ export class ChartModule implements Module {
     });
     @Input() private dataPrepared:boolean = false;
     @ViewChild(BaseChartComponent) chart:BaseChartComponent;
-    @Input() private _chartPositionInformation:ChartPositionInformation
+    @Input() private _chartPositionInformation:ChartPositionInformation;
 
     // edition mode placeholders
     @Input() private backgroundColor:string;
@@ -78,6 +78,14 @@ export class ChartModule implements Module {
         return null;
     }
 
+    getConfig() {
+        console.log(this.chart);
+        return {
+            type: this.chart.chartType,
+            colors: this.chart.colours
+        };
+    }
+
     get chartPositionInformation():ChartPositionInformation {
         return this._chartPositionInformation;
     }
@@ -129,7 +137,7 @@ export class ChartModule implements Module {
             throw 'series not found';
         }
     }
-    
+
     /**
      * re-generates random data
      */
