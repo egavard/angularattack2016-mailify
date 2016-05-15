@@ -13,9 +13,23 @@
 			</ul>
 		</div>
 
-		<div class="col-md-10">
-            <ul *ngFor="let item of items; let i = index">
-                <chart-module [attr.data-row]="item.chartPositionInformation.row" [attr.data-col]="item.chartPositionInformation.col" [attr.data-sizex]="item.chartPositionInformation.sizeX" [attr.data-sizey]="item.chartPositionInformation.sizeY" style="display:inline-block; border:solid 1px red"></chart-module>
+		<div class="col-md-10 gridster">
+            <ul>
+                <li *ngFor="let item of items; let i = index">
+                        <chart-module style="display:inline-block;"
+                                      [readOnly]="item.readOnly"
+                                      [lineChartData]="item.lineChartData"
+                                      [lineChartLabels]="item.lineChartLabels"
+                                      [lineChartOptions]="item.lineChartOptions"
+                                      [lineChartSeries]="item.lineChartSeries"
+                                      [lineChartColours]="item.lineChartColours"
+                                      [lineChartType]="item.lineChartType"
+                                      [attr.data-sizex]="item.chartPositionInformation.sizeX"
+                                      [attr.data-sizey]="item.chartPositionInformation.sizeY"
+                                      [attr.data-col]="item.chartPositionInformation.col"
+                                      [attr.data-row]="item.chartPositionInformation.row"
+                                      draggable="true" id="item.id"></chart-module>
+                </li>
             </ul>
         </div>
 	</div>

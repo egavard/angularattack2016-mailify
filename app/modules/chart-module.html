@@ -1,4 +1,4 @@
-<h4><button *ngIf="!readOnly" (click)="modal.open('lg')" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button> Chart Module</h4>
+<h4><button *ngIf="!readOnly" (click)="edit()" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>Chart Module</h4>
 
 <base-chart style="width:100%;" class="chart"
 			[data]="lineChartData"
@@ -8,13 +8,24 @@
 			[colours]="lineChartColours"
 			[chartType]="lineChartType"
 			(chartHover)="chartHovered($event)"
-			(chartClick)="chartClicked($event)"></base-chart>
+			(chartClick)="chartClicked($event)" *ngIf="dataPrepared"></base-chart>
 <modal #modal>
 	<modal-header [show-close]="true">
 		<h4 class="modal-title">Configuration</h4>
 	</modal-header>
 	<modal-body>
-		<p>
+
+
+        <select (change)="onSelectType($event.target.value)">
+            <option *ngFor="#serie of types" [value]="serie.id">{{serie.name}}</option>
+        </select>
+
+
+        <select (change)="onSelect($event.target.value)">
+            <option *ngFor="#serie of series" [value]="serie.id">{{serie.name}}</option>
+        </select>
+
+        <p>
 			<label class="control-label">backgroundColor : </label>
 			<input [(colorPicker)]="backgroundColor" [style.background]="backgroundColor" [value]="backgroundColor" (colorPickerChange)="backgroundColorChanged($event)"/>
 		</p>
