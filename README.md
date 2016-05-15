@@ -16,15 +16,15 @@ Different types of widgets are available :
  - Health indicator
 
 ## Libraries used  :
-Angular 2 (MIT) : https://github.com/angular/angular/
-Angular2-grid (MIT) : https://github.com/BTMorton/angular2-grid
-Twitter Bootstrap (MIT) : https://github.com/twbs/bootstrap
-Chart.js (MIT) : https://github.com/chartjs/Chart.js
-ng2-charts (MIT) : https://github.com/valor-software/ng2-charts
-jQUery : https://github.com/jquery/jquery
-ng2-bs3-modal (ISC) : https://github.com/dougludlow/ng2-bs3-modal
-angular2-color-picker (MIT) : https://github.com/Alberplz/angular2-color-picker
 
+ - Angular 2 (MIT) : https://github.com/angular/angular/
+ - Angular2-grid  (MIT) : https://github.com/BTMorton/angular2-grid
+ - Twitter Bootstrap (MIT) : https://github.com/twbs/bootstrap
+ -  Chart.js (MIT) : https://github.com/chartjs/Chart.js
+ - ng2-charts (MIT) : https://github.com/valor-software/ng2-charts
+ - jQUery : https://github.com/jquery/jquery
+ - ng2-bs3-modal (ISC) : https://github.com/dougludlow/ng2-bs3-modal
+ - angular2-color-picker (MIT) : https://github.com/Alberplz/angular2-color-picker
 
 ## Next steps :
 - Allow admin to import files.
